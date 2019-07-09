@@ -1,0 +1,7 @@
+apply plugin: 'com.releaseshub.gradle.plugin'
+
+buildscript {
+	dependencies {
+		classpath 'com.jdroidtools:releases-hub-gradle-plugin:0.1.0-SNAPSHOT'
+	}
+}

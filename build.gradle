@@ -1,0 +1,69 @@
+version = '0.1.0'
+
+// https://github.com/maxirosson/jdroid-gradle-plugin/releases
+ext.JDROID_GRADLE_PLUGIN_VERSION = '2.0.0'
+
+// https://github.com/maxirosson/jdroid-java/releases
+ext.JDROID_JAVA_VERSION = '2.0.0'
+
+ext.KOTLIN_ENABLED = false
+
+apply plugin: 'com.jdroidtools.root'
+apply plugin: 'com.jdroidtools.component.builder'
+buildscript {
+	repositories {
+		jcenter()
+		String localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
+		boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
+		if (isLocalMavenRepoEnabled) {
+			String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
+			if (localMavenRepo != null) {
+				maven { url localMavenRepo }
+			}
+		}
+		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+		mavenCentral()
+		gradlePluginPortal()
+	}
+	dependencies {
+
+		// https://github.com/maxirosson/jdroid-component-builder/releases
+		classpath 'com.jdroidtools:jdroid-component-builder:2.0.0'
+
+		// https://github.com/maxirosson/jdroid-gradle-plugin/releases
+		classpath 'com.jdroidtools:jdroid-gradle-root-plugin:2.0.0'
+	}
+}
+
+subprojects {
+	buildscript {
+		repositories {
+			jcenter()
+			String localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
+			boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
+			if (isLocalMavenRepoEnabled) {
+				String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
+				if (localMavenRepo != null) {
+					maven { url localMavenRepo }
+				}
+			}
+			maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+			mavenCentral()
+			gradlePluginPortal()
+		}
+	}
+
+	repositories {
+		jcenter()
+		String localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
+		boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
+		if (isLocalMavenRepoEnabled) {
+			String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
+			if (localMavenRepo != null) {
+				maven { url localMavenRepo }
+			}
+		}
+		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+		mavenCentral()
+	}
+}

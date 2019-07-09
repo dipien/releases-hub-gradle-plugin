@@ -1,0 +1,34 @@
+buildscript {
+
+	repositories {
+		google()
+		mavenCentral()
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.android.tools.build:gradle:3.4.1'
+	}
+}
+
+allprojects {
+	repositories {
+		google()
+		mavenCentral()
+		jcenter()
+	}
+
+	buildscript {
+		repositories {
+			google()
+			mavenCentral()
+			jcenter()
+			String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
+			if (localMavenRepo != null) {
+				maven { url localMavenRepo }
+			}
+			maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+		}
+	}
+
+}
+

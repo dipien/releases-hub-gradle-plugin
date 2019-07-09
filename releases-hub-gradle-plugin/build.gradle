@@ -1,0 +1,23 @@
+ext.PROJECT_NAME = 'Releases Hub Gradle Plugin'
+ext.ARTIFACT_ID = 'releases-hub-gradle-plugin'
+
+apply plugin: 'com.jdroidtools.gradle.plugin'
+
+buildscript {
+	dependencies {
+		classpath 'com.jdroidtools:jdroid-gradle-project-plugin:' + JDROID_GRADLE_PLUGIN_VERSION
+	}
+}
+
+dependencies {
+	compile 'com.jdroidtools:jdroid-java-core:' + JDROID_JAVA_VERSION
+}
+
+gradlePlugin {
+	plugins {
+		publisherPlugin {
+			id = 'com.releaseshub.gradle.plugin'
+			implementationClass = 'com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin'
+		}
+	}
+}
