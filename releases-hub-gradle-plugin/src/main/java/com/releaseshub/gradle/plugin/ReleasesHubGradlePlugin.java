@@ -12,7 +12,7 @@ public class ReleasesHubGradlePlugin implements Plugin<Project> {
 	
 	@Override
 	public void apply(Project project) {
-		project.getExtensions().create(EXTENSION_NAME, ReleasesHubGradlePlugin.class, project);
+		project.getExtensions().create(EXTENSION_NAME, ReleasesHubGradlePluginExtension.class, project);
 		project.getTasks().create("listDependencies", ListDependenciesTask.class);
 	}
 
