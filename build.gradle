@@ -6,7 +6,8 @@ ext.JDROID_GRADLE_PLUGIN_VERSION = '2.0.0'
 // https://github.com/maxirosson/jdroid-java/releases
 ext.JDROID_JAVA_VERSION = '2.0.0'
 
-ext.KOTLIN_ENABLED = false
+// https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
+ext.KOTLIN_VERSION = "1.3.40"
 
 apply plugin: 'com.jdroidtools.root'
 apply plugin: 'com.jdroidtools.component.builder'

@@ -1,23 +1,27 @@
-ext.PROJECT_NAME = 'Releases Hub Gradle Plugin'
-ext.ARTIFACT_ID = 'releases-hub-gradle-plugin'
+ext.PROJECT_NAME = "Releases Hub Gradle Plugin"
+ext.ARTIFACT_ID = "releases-hub-gradle-plugin"
 
-apply plugin: 'com.jdroidtools.gradle.plugin'
+apply plugin: "com.jdroidtools.gradle.plugin"
+apply plugin: "kotlin"
 
 buildscript {
 	dependencies {
-		classpath 'com.jdroidtools:jdroid-gradle-project-plugin:' + JDROID_GRADLE_PLUGIN_VERSION
+		classpath "com.jdroidtools:jdroid-gradle-project-plugin:" + JDROID_GRADLE_PLUGIN_VERSION
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.40")
 	}
 }
 
 dependencies {
-	compile 'com.jdroidtools:jdroid-java-core:' + JDROID_JAVA_VERSION
+	compile "com.jdroidtools:jdroid-java-core:" + JDROID_JAVA_VERSION
+	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:" + KOTLIN_VERSION
+	compile "org.jetbrains.kotlin:kotlin-reflect:" + KOTLIN_VERSION
 }
 
 gradlePlugin {
 	plugins {
 		publisherPlugin {
-			id = 'com.releaseshub.gradle.plugin'
-			implementationClass = 'com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin'
+			id = "com.releaseshub.gradle.plugin"
+			implementationClass = "com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin"
 		}
 	}
 }
