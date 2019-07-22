@@ -1,7 +1,15 @@
-apply plugin: 'com.releaseshub.gradle.plugin'
+apply plugin: "kotlin"
+apply plugin: "com.releaseshub.gradle.plugin"
+apply from: "$rootDir/dependencies.gradle"
 
 buildscript {
+	apply from: "$rootDir/build_dependencies.gradle"
 	dependencies {
-		classpath 'com.jdroidtools:releases-hub-gradle-plugin:0.1.0-SNAPSHOT'
+		classpath(libs.kotlin_plugin )
+		classpath(libs.releases_hub_gradle_plugin)
 	}
+}
+
+dependencies {
+	compile(libs.kotlin)
 }
