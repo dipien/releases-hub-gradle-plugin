@@ -1,11 +1,5 @@
 version = '0.1.0'
 
-// https://github.com/maxirosson/jdroid-gradle-plugin/releases
-ext.JDROID_GRADLE_PLUGIN_VERSION = '2.1.0-SNAPSHOT'
-
-// https://github.com/maxirosson/jdroid-java/releases
-ext.JDROID_JAVA_VERSION = '2.0.0'
-
 apply plugin: 'com.jdroidtools.root'
 apply plugin: 'com.jdroidtools.component.builder'
 buildscript {
@@ -23,13 +17,11 @@ buildscript {
 		mavenCentral()
 		gradlePluginPortal()
 	}
+
+	apply from: "build_dependencies.gradle"
 	dependencies {
-
-		// https://github.com/maxirosson/jdroid-component-builder/releases
-		classpath 'com.jdroidtools:jdroid-component-builder:2.0.0'
-
-		// https://github.com/maxirosson/jdroid-gradle-plugin/releases
-		classpath 'com.jdroidtools:jdroid-gradle-root-plugin:2.1.0-SNAPSHOT'
+		classpath libs.jdroid_component_builder
+		classpath libs.jdroid_gradle_root_plugin
 	}
 }
 

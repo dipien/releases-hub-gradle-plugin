@@ -2,15 +2,17 @@ ext.PROJECT_NAME = "Releases Hub Gradle Plugin"
 ext.ARTIFACT_ID = "releases-hub-gradle-plugin"
 
 apply plugin: "com.jdroidtools.gradle.plugin"
+apply from: "$rootDir/dependencies.gradle"
 
 buildscript {
+	apply from: "$rootDir/build_dependencies.gradle"
 	dependencies {
-		classpath "com.jdroidtools:jdroid-gradle-project-plugin:" + JDROID_GRADLE_PLUGIN_VERSION
+		classpath libs.jdroid_gradle_project_plugin
 	}
 }
 
 dependencies {
-	compile "com.jdroidtools:jdroid-java-core:" + JDROID_JAVA_VERSION
+	compile libs.jdroid_java_core
 }
 
 gradlePlugin {

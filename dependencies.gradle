@@ -1,0 +1,6 @@
+def libs = [:]
+
+// https://github.com/maxirosson/jdroid-java/releases
+libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:2.0.0"
+
+rootProject.ext['libs'] = libs
