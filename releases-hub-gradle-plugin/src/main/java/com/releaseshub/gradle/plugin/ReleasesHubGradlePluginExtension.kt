@@ -9,4 +9,8 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
 
 	private val propertyResolver: PropertyResolver = PropertyResolver(project)
 
+	var dependenciesFilesPaths = mutableListOf<String>()
+	var includes = mutableListOf<String>()
+	var excludes = mutableListOf<String>()
+
 }

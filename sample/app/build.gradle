@@ -13,3 +13,7 @@ buildscript {
 dependencies {
 	compile(libs.kotlin)
 }
+
+releasesHub {
+	dependenciesFilesPaths = ["dependencies.gradle", "build_dependencies.gradle"]
+}

@@ -12,7 +12,8 @@ buildscript {
 }
 
 dependencies {
-	compile libs.jdroid_java_core
+	compile(libs.jdroid_java_core)
+	testCompile("junit:junit:4.12")
 }
 
 gradlePlugin {
