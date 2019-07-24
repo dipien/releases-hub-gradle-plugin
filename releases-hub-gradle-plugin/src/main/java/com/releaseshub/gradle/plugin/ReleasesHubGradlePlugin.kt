@@ -20,6 +20,8 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 		val listDependenciesTask = project.tasks.create("listDependencies", ListDependenciesTask::class.java)
 		project.afterEvaluate {
 			listDependenciesTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
+			listDependenciesTask.includes = extension.includes
+			listDependenciesTask.excludes = extension.excludes
 		}
 	}
 }

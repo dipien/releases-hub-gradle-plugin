@@ -83,5 +83,3 @@ workflows:
       - test:
           requires:
             - build
-
-# Tests

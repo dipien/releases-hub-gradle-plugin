@@ -8,6 +8,8 @@ import org.gradle.api.logging.LogLevel
 open class ListDependenciesTask : AbstractTask() {
 
 	var dependenciesFilesPaths = mutableListOf<String>()
+	var includes = mutableListOf<String>()
+	var excludes = mutableListOf<String>()
 
 	init {
 		description = "List all dependencies"
@@ -18,7 +20,7 @@ open class ListDependenciesTask : AbstractTask() {
 			logger.log(LogLevel.LIFECYCLE, "$it dependencies")
 			project.rootProject.file(it).forEachLine { line ->
 				val dependency = DependencyExtractor.extractDependency(line)
-				if (dependency != null) {
+				if (dependency != null && dependency.match(includes, excludes)) {
 					println(dependency)
 				}
 			}
