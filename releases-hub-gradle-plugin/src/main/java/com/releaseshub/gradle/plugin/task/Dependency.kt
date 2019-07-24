@@ -17,4 +17,8 @@ data class Dependency(val groupId: String, val artifactId: String, val version: 
 		val artifactIdToMatch = if (split.size > 1) split[1] else null
 		return groupIdToMatch == groupId && (artifactIdToMatch == null || artifactIdToMatch == artifactId)
 	}
+
+	override fun toString(): String {
+		return "$groupId:$artifactId:$version"
+	}
 }

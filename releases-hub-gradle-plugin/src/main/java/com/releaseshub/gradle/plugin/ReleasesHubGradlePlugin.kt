@@ -1,6 +1,7 @@
 package com.releaseshub.gradle.plugin
 
 import com.releaseshub.gradle.plugin.task.ListDependenciesTask
+import com.releaseshub.gradle.plugin.task.ListDependenciesToUpgradeTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -22,6 +23,13 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 			listDependenciesTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
 			listDependenciesTask.includes = extension.includes
 			listDependenciesTask.excludes = extension.excludes
+		}
+
+		val listDependenciesToUpgradeTask = project.tasks.create("listDependenciesToUpgrade", ListDependenciesToUpgradeTask::class.java)
+		project.afterEvaluate {
+			listDependenciesToUpgradeTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
+			listDependenciesToUpgradeTask.includes = extension.includes
+			listDependenciesToUpgradeTask.excludes = extension.excludes
 		}
 	}
 }
