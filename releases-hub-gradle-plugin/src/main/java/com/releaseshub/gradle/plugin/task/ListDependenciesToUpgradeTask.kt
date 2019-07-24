@@ -1,6 +1,7 @@
 package com.releaseshub.gradle.plugin.task
 
 
+import com.releaseshub.gradle.plugin.artifacts.Artifact
 import com.releaseshub.gradle.plugin.artifacts.ArtifactsService
 import com.releaseshub.gradle.plugin.common.AbstractTask
 
@@ -16,18 +17,17 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 	}
 
 	override fun onExecute() {
-        val dependencies = mutableListOf<Dependency>()
+        val artifacts = mutableListOf<Artifact>()
 		dependenciesFilesPaths.forEach {
 			project.rootProject.file(it).forEachLine { line ->
-				val dependency = DependencyExtractor.extractDependency(line)
+				val dependency = ArtifactExtractor.extractArtifact(line)
 				if (dependency != null && dependency.match(includes, excludes)) {
-                    dependencies.add(dependency)
+					artifacts.add(dependency)
 				}
 			}
 		}
 
-        val artifacts = ArtifactsService.getArtifactsToUpdate(dependencies)
-        artifacts.forEach {
+		ArtifactsService.getArtifactsToUpdate(artifacts).forEach {
             println(" - $it -> ${it.latestVersion}")
         }
 	}
