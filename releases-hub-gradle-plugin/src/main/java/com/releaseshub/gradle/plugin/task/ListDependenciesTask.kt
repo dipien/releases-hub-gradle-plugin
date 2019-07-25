@@ -18,9 +18,9 @@ open class ListDependenciesTask : AbstractTask() {
 		dependenciesFilesPaths.forEach {
 			println(it)
 			project.rootProject.file(it).forEachLine { line ->
-				val dependency = ArtifactExtractor.extractArtifact(line)
-				if (dependency != null && dependency.match(includes, excludes)) {
-					println(" - $dependency")
+				val artifact = DependenciesParser.extractArtifact(line)
+				if (artifact != null && artifact.match(includes, excludes)) {
+					println(" - $artifact")
 				}
 			}
 			println()

@@ -26,7 +26,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 			filesMap[it] = lines
 
 			lines.forEach { line ->
-				val artifact = ArtifactExtractor.extractArtifact(line)
+				val artifact = DependenciesParser.extractArtifact(line)
 				if (artifact != null && artifact.match(includes, excludes)) {
 					artifacts.add(artifact)
 				}
@@ -35,12 +35,21 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
 		val artifactsToUpgrade = ArtifactsService.getArtifactsToUpdate(artifacts.toList())
 
+		val upgradeResults = mutableListOf<UpgradeResult>()
 		filesMap.entries.forEach {
 			File(it.key).bufferedWriter().use { out ->
 				it.value.forEach { line ->
-					out.write(line + "\n")
+					val upgradeResult = DependenciesParser.upgradeDependency(line, artifactsToUpgrade)
+					if (upgradeResult.upgraded) {
+						upgradeResults.add(upgradeResult)
+					}
+					out.write(upgradeResult.line + "\n")
 				}
 			}
+		}
+
+		upgradeResults.forEach {
+			println(it)
 		}
 	}
 
