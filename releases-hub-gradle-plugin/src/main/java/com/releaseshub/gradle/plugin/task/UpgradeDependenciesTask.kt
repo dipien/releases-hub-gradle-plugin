@@ -4,22 +4,28 @@ package com.releaseshub.gradle.plugin.task
 import com.releaseshub.gradle.plugin.artifacts.Artifact
 import com.releaseshub.gradle.plugin.artifacts.ArtifactsService
 import com.releaseshub.gradle.plugin.common.AbstractTask
+import java.io.File
 
-
-open class ListDependenciesToUpgradeTask : AbstractTask() {
+open class UpgradeDependenciesTask : AbstractTask() {
 
 	var dependenciesFilesPaths = mutableListOf<String>()
 	var includes = mutableListOf<String>()
 	var excludes = mutableListOf<String>()
 
 	init {
-		description = "List all dependencies to upgrade"
+		description = "Upgrade dependencies"
 	}
 
 	override fun onExecute() {
-        val artifacts = mutableListOf<Artifact>()
+
+		val artifacts = mutableSetOf<Artifact>()
+		val filesMap = mutableMapOf<String, List<String>>()
+
 		dependenciesFilesPaths.forEach {
-			project.rootProject.file(it).forEachLine { line ->
+			val lines = project.rootProject.file(it).readLines()
+			filesMap[it] = lines
+
+			lines.forEach { line ->
 				val artifact = ArtifactExtractor.extractArtifact(line)
 				if (artifact != null && artifact.match(includes, excludes)) {
 					artifacts.add(artifact)
@@ -27,9 +33,15 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 			}
 		}
 
-		ArtifactsService.getArtifactsToUpdate(artifacts).forEach {
-            println(" - $it -> ${it.latestVersion}")
-        }
+		val artifactsToUpgrade = ArtifactsService.getArtifactsToUpdate(artifacts.toList())
+
+		filesMap.entries.forEach {
+			File(it.key).bufferedWriter().use { out ->
+				it.value.forEach { line ->
+					out.write(line + "\n")
+				}
+			}
+		}
 	}
 
 }
