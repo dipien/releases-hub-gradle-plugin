@@ -49,7 +49,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 		}
 
 		upgradeResults.forEach {
-			println(it)
+			println(" - ${it.artifact} -> ${it.artifact!!.latestVersion}")
 		}
 	}
 

@@ -16,6 +16,7 @@ class DependenciesParserTest {
 	fun extractFromCommentTest() {
 		Assert.assertNull(DependenciesParser.extractArtifact("// this is a comment"))
 		Assert.assertNull(DependenciesParser.extractArtifact("  // this is a comment"))
+		Assert.assertNull(DependenciesParser.extractArtifact("""// this is a comment "com.jdroidtools:jdroid-java-core:2.0.0""""))
 	}
 
 	@Test
@@ -58,5 +59,19 @@ class DependenciesParserTest {
 		artifact.latestVersion = "1.0.0"
 		artifactsToUpgrade.add(artifact)
 		Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(line, artifactsToUpgrade))
+	}
+
+	@Test
+	fun upgradeTest() {
+		val artifactsToUpgrade = mutableListOf<Artifact>()
+		val artifact = Artifact()
+		artifact.groupId = "com.jdroidtools"
+		artifact.artifactId = "jdroid-java-core"
+		artifact.latestVersion = "3.0.0"
+		artifactsToUpgrade.add(artifact)
+		val oldLine = """libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:2.0.0""""
+		val newLine = """libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:3.0.0""""
+		val upgradeResult = UpgradeResult(true, "2.0.0", artifact, newLine)
+		Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(oldLine, artifactsToUpgrade))
 	}
 }
