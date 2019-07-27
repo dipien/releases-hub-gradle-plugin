@@ -27,7 +27,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 			}
 		}
 
-		ArtifactsService.getArtifactsToUpdate(artifacts).forEach {
+		ArtifactsService.getArtifactsToUpgrade(artifacts).forEach {
             println(" - $it -> ${it.latestVersion}")
         }
 	}

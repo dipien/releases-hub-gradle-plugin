@@ -33,7 +33,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 			}
 		}
 
-		val artifactsToUpgrade = ArtifactsService.getArtifactsToUpdate(artifacts.toList())
+		val artifactsToUpgrade = ArtifactsService.getArtifactsToUpgrade(artifacts.toList())
 
 		val upgradeResults = mutableListOf<UpgradeResult>()
 		filesMap.entries.forEach {

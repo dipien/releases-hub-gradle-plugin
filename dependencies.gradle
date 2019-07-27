@@ -3,4 +3,7 @@ def libs = [:]
 // https://github.com/maxirosson/jdroid-java/releases
 libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:2.0.0"
 
+// https://github.com/maxirosson/jdroid-java-http/releases
+libs.jdroid_java_http_okhttp = "com.jdroidtools:jdroid-java-http-okhttp:3.0.0-SNAPSHOT"
+
 rootProject.ext['libs'] = libs

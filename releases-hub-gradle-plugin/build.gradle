@@ -13,6 +13,8 @@ buildscript {
 
 dependencies {
 	compile(libs.jdroid_java_core)
+	compile(libs.jdroid_java_http_okhttp)
+
 	testCompile("junit:junit:4.12")
 }
 
