@@ -6,7 +6,7 @@ object ArtifactsService {
 
     fun getArtifactsToUpgrade(artifacts: List<Artifact>): List<Artifact> {
         val appService = AppService()
-        val artifactsToUpgrade = appService.getArtifactsTooUpgrade(artifacts)
+        val artifactsToUpgrade = appService.getArtifactsToUpgrade(artifacts)
         return artifactsToUpgrade.onEach { artifactToUpgrade ->
             artifactToUpgrade.previousVersion = artifacts.find {
                 it.groupId == artifactToUpgrade.groupId && it.artifactId == artifactToUpgrade.artifactId

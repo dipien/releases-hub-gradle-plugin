@@ -9,7 +9,7 @@ import com.releaseshub.gradle.plugin.artifacts.Artifact
 
 class AppService : AbstractApiService() {
 
-    fun getArtifactsTooUpgrade(artifacts: List<Artifact>): List<Artifact> {
+    fun getArtifactsToUpgrade(artifacts: List<Artifact>): List<Artifact> {
         val httpService = newPostService("artifactsToUpgrade")
         autoMarshall(httpService, artifacts)
         return httpService.execute(GsonParser(object : TypeToken<Collection<Artifact>>() {}.type))
