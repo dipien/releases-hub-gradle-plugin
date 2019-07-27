@@ -41,7 +41,7 @@ class DependenciesParserTest {
 		val artifact = Artifact()
 		artifact.groupId = "a"
 		artifact.artifactId = "b"
-		artifact.latestVersion = "1.0.0"
+		artifact.toVersion = "1.0.0"
 		artifactsToUpgrade.add(artifact)
 		Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(line, artifactsToUpgrade))
 	}
@@ -56,7 +56,7 @@ class DependenciesParserTest {
 		val artifact = Artifact()
 		artifact.groupId = "a"
 		artifact.artifactId = "b"
-		artifact.latestVersion = "1.0.0"
+		artifact.toVersion = "1.0.0"
 		artifactsToUpgrade.add(artifact)
 		Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(line, artifactsToUpgrade))
 	}
@@ -67,7 +67,7 @@ class DependenciesParserTest {
 		val artifact = Artifact()
 		artifact.groupId = "com.jdroidtools"
 		artifact.artifactId = "jdroid-java-core"
-		artifact.latestVersion = "3.0.0"
+		artifact.toVersion = "3.0.0"
 		artifactsToUpgrade.add(artifact)
 		val oldLine = """libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:2.0.0""""
 		val newLine = """libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:3.0.0""""

@@ -22,7 +22,7 @@ object DependenciesParser {
 			}
 			if (artifact != null) {
 				val oldVersion = matchResult.groupValues[3]
-				val newLine = line.replaceFirst(oldVersion, artifact.latestVersion!!)
+				val newLine = line.replaceFirst(oldVersion, artifact.toVersion!!)
 				return UpgradeResult(true, oldVersion, artifact, newLine)
 			}
 		}

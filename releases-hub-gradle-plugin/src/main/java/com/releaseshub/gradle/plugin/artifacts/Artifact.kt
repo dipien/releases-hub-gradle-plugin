@@ -1,26 +1,22 @@
 package com.releaseshub.gradle.plugin.artifacts
 
-import java.util.Date
-
 class Artifact {
 
     var name: String? = null
-    var owner: String? = null
     var groupId: String? = null
     var artifactId: String? = null
-    var latestReleaseDate: Date? = null
-    var previousVersion: String? = null
-    var latestVersion: String? = null
+    var fromVersion: String? = null
+    var toVersion: String? = null
     var sourceCodeUrl: String? = null
     var releaseNotesUrl: String? = null
     var documentationLinks: List<String>? = null
 
     constructor() { }
 
-    constructor(groupId: String, artifactId: String, previousVersion: String) {
+    constructor(groupId: String, artifactId: String, fromVersion: String) {
         this.groupId = groupId
         this.artifactId = artifactId
-        this.previousVersion = previousVersion
+        this.fromVersion = fromVersion
     }
 
     fun match(includes : List<String>, excludes : List<String>) : Boolean {
@@ -40,7 +36,7 @@ class Artifact {
     }
 
     override fun toString(): String {
-        return "$groupId:$artifactId:$previousVersion"
+        return "$groupId:$artifactId:$fromVersion"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -51,8 +47,8 @@ class Artifact {
 
         if (groupId != other.groupId) return false
         if (artifactId != other.artifactId) return false
-        if (previousVersion != other.previousVersion) return false
-        if (latestVersion != other.latestVersion) return false
+        if (fromVersion != other.fromVersion) return false
+        if (toVersion != other.toVersion) return false
 
         return true
     }
@@ -61,8 +57,8 @@ class Artifact {
         var result = super.hashCode()
         result = 31 * result + (groupId?.hashCode() ?: 0)
         result = 31 * result + (artifactId?.hashCode() ?: 0)
-        result = 31 * result + (previousVersion?.hashCode() ?: 0)
-        result = 31 * result + (latestVersion?.hashCode() ?: 0)
+        result = 31 * result + (fromVersion?.hashCode() ?: 0)
+        result = 31 * result + (toVersion?.hashCode() ?: 0)
         return result
     }
 }
