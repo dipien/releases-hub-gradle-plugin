@@ -9,7 +9,7 @@ class Artifact {
     var toVersion: String? = null
     var sourceCodeUrl: String? = null
     var releaseNotesUrl: String? = null
-    var documentationLinks: List<String>? = null
+    var documentationUrl: String? = null
 
     constructor() { }
 
@@ -36,7 +36,7 @@ class Artifact {
     }
 
     override fun toString(): String {
-        return "$groupId:$artifactId:$fromVersion"
+        return "$groupId:$artifactId"
     }
 
     override fun equals(other: Any?): Boolean {
