@@ -7,5 +7,4 @@ object ArtifactsService {
     fun getArtifactsToUpgrade(artifacts: List<Artifact>): List<Artifact> {
         return AppService().getArtifactsToUpgrade(artifacts)
     }
-
 }

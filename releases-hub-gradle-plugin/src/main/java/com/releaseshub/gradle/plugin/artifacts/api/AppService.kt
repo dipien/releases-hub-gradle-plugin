@@ -24,6 +24,6 @@ class AppService : AbstractApiService() {
     }
 
     override fun isHttpMockEnabled(): Boolean {
-       return false
+        return false
     }
 }
