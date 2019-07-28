@@ -16,4 +16,7 @@ dependencies {
 
 releasesHub {
 	dependenciesFilesPaths = ["dependencies.gradle", "build_dependencies.gradle"]
+	pullRequestEnabled = false
+	gitHubRepositoryOwner = ""
+	gitHubRepositoryName = ""
 }

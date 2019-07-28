@@ -24,6 +24,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 			listDependenciesTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
 			listDependenciesTask.includes = extension.includes
 			listDependenciesTask.excludes = extension.excludes
+			listDependenciesTask.logLevel = extension.logLevel
 		}
 
 		val listDependenciesToUpgradeTask = project.tasks.create("listDependenciesToUpgrade", ListDependenciesToUpgradeTask::class.java)
@@ -31,6 +32,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 			listDependenciesToUpgradeTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
 			listDependenciesToUpgradeTask.includes = extension.includes
 			listDependenciesToUpgradeTask.excludes = extension.excludes
+			listDependenciesToUpgradeTask.logLevel = extension.logLevel
 		}
 
 		val upgradeDependenciesTask = project.tasks.create("upgradeDependencies", UpgradeDependenciesTask::class.java)
@@ -38,6 +40,16 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 			upgradeDependenciesTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
 			upgradeDependenciesTask.includes = extension.includes
 			upgradeDependenciesTask.excludes = extension.excludes
+			upgradeDependenciesTask.headBranch = extension.headBranch
+			upgradeDependenciesTask.baseBranch = extension.baseBranch
+			upgradeDependenciesTask.commitMessage = extension.commitMessage
+			upgradeDependenciesTask.pullRequestTitle = extension.pullRequestTitle
+			upgradeDependenciesTask.pullRequestEnabled = extension.pullRequestEnabled
+			upgradeDependenciesTask.gitHubUserName = extension.gitHubUserName
+			upgradeDependenciesTask.gitHubUserEmail = extension.gitHubUserEmail
+			upgradeDependenciesTask.gitHubRepositoryOwner = extension.gitHubRepositoryOwner
+			upgradeDependenciesTask.gitHubRepositoryName = extension.gitHubRepositoryName
+			upgradeDependenciesTask.logLevel = extension.logLevel
 		}
 	}
 }

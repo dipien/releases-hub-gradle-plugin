@@ -16,14 +16,14 @@ open class ListDependenciesTask : AbstractTask() {
 
 	override fun onExecute() {
 		dependenciesFilesPaths.forEach {
-			println(it)
+			log(it)
 			project.rootProject.file(it).forEachLine { line ->
 				val artifact = DependenciesParser.extractArtifact(line)
 				if (artifact != null && artifact.match(includes, excludes)) {
-					println(" - $artifact")
+					log(" - $artifact")
 				}
 			}
-			println()
+			log("")
 		}
 	}
 
