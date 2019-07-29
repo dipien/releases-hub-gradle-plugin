@@ -21,6 +21,144 @@ Add the following configuration to your `build.gradle`, replacing X.Y.Z by the [
     
     apply plugin: "com.releaseshub.gradle.plugin"
 
+All the plugin configuration properties can be added using any of the following ways:
+
+* Using the **releasesHub** extension on the build.gradle. For example:
+
+      releasesHub {
+          gitHubWriteToken = "123"
+      }
+
+* As a command line parameter. For example:
+
+      ./gradlew listDependencies -PgitHubWriteToken=123
+
+* As a property on a gradle.properties file
+
+      gitHubWriteToken = "123"
+
+* As an extra property on the build.gradle
+
+      ext.gitHubWriteToken = "123"
+
+* As a System Environment property
+
+#### Common Properties
+
+###### Dependencies files paths
+
+The paths to the files where the dependencies are defined. If the path is absolute, it is used as is. 
+Otherwise, the path is interpreted relative to the root project directory. 
+The default value is ["dependencies.gradle", "build_dependencies.gradle"]`. This property is required
+    
+    dependenciesFilesPaths = ["dependencies.gradle", "build_dependencies.gradle"]
+    
+###### Includes
+
+The dependencies to include. 
+You can define a `groupId` to match all the artifacts for that group id, or `groupId:artifactId` to match a particular artifact.
+By default all the dependencies found on `dependenciesFilesPaths` are included.
+
+    includes = ["com.groupid1", "com.groupid2:artifact1"]
+    
+###### Excludes
+
+The dependencies to exclude. 
+You can define a `groupId` to match all the artifacts for that group id, or `groupId:artifactId` to match a particular artifact.
+By default there aren't excluded dependencies.
+
+    excludes = ["com.groupid1", "com.groupid2:artifact1"]
+
+## Usage
+
+#### List dependencies
+
+Print all the dependencies that will be analyzed to upgrade.
+
+    ./gradlew listDependencies
+    
+    
+#### List dependencies to upgrade
+
+Print all the dependencies that are upgradeable.
+
+    ./gradlew listDependenciesToUpgrade
+    
+#### List dependencies to upgrade
+
+This task execute the following steps if you have at least one dependency to upgrade:
+
+* Creates the `headBranch` (if not exists)
+* Merge from the `baseBranch` to the `headBranch`
+* Upgrade all the dependencies on the `dependenciesFilesPaths`
+* Commit all the modified files
+* Push the previous commit to the `headBranch`
+* Create a pull request from the `headBranch` to the `baseBranch`
+
+    ./gradlew upgradeDependencies
+  
+###### Head Branch
+
+The branch where the commit will be pushed. Also, the head branch of the pull request to create. Required String (only if `pullRequestEnabled` is `true`).
+
+    headBranch = "branch_name"
+
+###### Base Branch
+
+The pull request base branch. Optional String. The default value is `master`.
+
+    baseBranch = "master"
+
+###### GitHub User Name
+
+The GitHub user name. Optional String.
+
+    gitHubUserName = "user"
+    
+###### GitHub User Email
+
+The GitHub user email. Optional String.
+
+    gitHubUserEmail = "email@mail.com"
+
+###### Commit Message
+
+The commit message. Required String (only if `pullRequestEnabled` is `true`). The default value is `Upgraded dependencies`
+
+    commitMessage = "Upgraded dependencies"
+
+###### Pull Request Title
+
+The pull request title. Optional String. The default value is the commitMessage property value.
+
+    pullRequestTitle = "Upgraded dependencies"
+
+###### Pull Request Enabled
+
+Whether a pull request with all the upgrades should be created or not. The default value is `false`
+
+    pullRequestEnabled = false
+
+###### GitHub Repository Owner
+
+The GitHub repository owner where the pull request will be created. Required String (only if `pullRequestEnabled` is `true`).
+
+    gitHubRepositoryOwner = "repo_owner"
+
+###### GitHub Repository Name
+
+The GitHub repository name where the pull request will be created. Required String (only if `pullRequestEnabled` is `true`).
+
+    gitHubRepositoryName = "repo_name"
+
+###### GitHub Write Token
+
+The GitHub write token needed to access the GitHub API to create the pull request. 
+We strongly recommend to use the gitHubWriteToken gradle or system property instead of the gitHubWriteToken extension, to avoid exposing it on the git repository.
+Required String (only if `pullRequestEnabled` is `true`).
+
+    gitHubWriteToken = "123"
+
 ## Donations
 Help us to continue with this project:
 

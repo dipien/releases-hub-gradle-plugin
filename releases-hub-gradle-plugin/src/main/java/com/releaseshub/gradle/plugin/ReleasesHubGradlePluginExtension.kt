@@ -28,14 +28,14 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var logLevel = LogLevel.LIFECYCLE
 
     init {
-        dependenciesFilesPaths = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::dependenciesFilesPaths.name, listOf())
+        dependenciesFilesPaths = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::dependenciesFilesPaths.name, listOf("dependencies.gradle", "build_dependencies.gradle"))
         includes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
         excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
 
         headBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranch.name, "dependencies_upgrade")
         baseBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::baseBranch.name, "master")
         commitMessage = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::commitMessage.name, "Upgraded dependencies")
-        pullRequestTitle = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::pullRequestTitle.name, "Upgraded dependencies")
+        pullRequestTitle = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::pullRequestTitle.name, commitMessage)
         pullRequestEnabled = propertyResolver.getBooleanProp(ReleasesHubGradlePluginExtension::pullRequestEnabled.name, false) ?: false
 
         gitHubUserName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubUserName.name)
