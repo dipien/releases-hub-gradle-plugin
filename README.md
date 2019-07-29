@@ -117,13 +117,13 @@ The pull request base branch. Optional String. The default value is `master`.
 
 ###### GitHub User Name
 
-The GitHub user name. Optional String.
+The GitHub user name used by the commit command. Optional String.
 
     gitHubUserName = "user"
     
 ###### GitHub User Email
 
-The GitHub user email. Optional String.
+The GitHub user email used by the commit command. Optional String.
 
     gitHubUserEmail = "email@mail.com"
 
@@ -135,7 +135,7 @@ The commit message. Required String (only if `pullRequestEnabled` is `true`). Th
 
 ###### Pull Request Title
 
-The pull request title. Optional String. The default value is the commitMessage property value.
+The pull request title. Optional String. The default value is the `commitMessage` property value.
 
     pullRequestTitle = "Upgraded dependencies"
 
@@ -143,7 +143,7 @@ The pull request title. Optional String. The default value is the commitMessage 
 
 Whether a pull request with all the upgrades should be created or not. The default value is `false`
 
-    pullRequestEnabled = false
+    pullRequestEnabled = true
 
 ###### GitHub Repository Owner
 
@@ -160,7 +160,7 @@ The GitHub repository name where the pull request will be created. Required Stri
 ###### GitHub Write Token
 
 The GitHub write token needed to access the GitHub API to create the pull request. 
-We strongly recommend to use the gitHubWriteToken gradle or system property instead of the gitHubWriteToken extension, to avoid exposing it on the git repository.
+We strongly recommend to not use the `releasesHub` extension for this property, to avoid exposing it on the git repository.
 Required String (only if `pullRequestEnabled` is `true`).
 
     gitHubWriteToken = "123"
