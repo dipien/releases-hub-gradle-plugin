@@ -34,17 +34,17 @@ releasesHub {
 ```
 
 * As a command line parameter. For example:
-
-      ./gradlew listDependencies -PgitHubWriteToken=123
-
+```
+./gradlew listDependencies -PgitHubWriteToken=123
+```
 * As a property on a `gradle.properties` file. For example:
-
-      gitHubWriteToken = "123"
-
+```
+gitHubWriteToken = "123"
+```
 * As an extra property on the build.gradlee. For example:
-
-      ext.gitHubWriteToken = "123"
-
+```
+ext.gitHubWriteToken = "123"
+```
 * As a System Environment property
 
 #### Common Properties
