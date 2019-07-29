@@ -25,7 +25,7 @@ apply plugin: "com.releaseshub.gradle.plugin"
 
 All the plugin configuration properties can be added using any of the following ways:
 
-* Using the **releasesHub** extension on the build.gradle. For example:
+* Using the `releasesHub` extension on the build.gradle. For example:
 
 ```groovy
 releasesHub {
@@ -37,7 +37,7 @@ releasesHub {
 
       ./gradlew listDependencies -PgitHubWriteToken=123
 
-* As a property on a gradle.properties filee. For example:
+* As a property on a `gradle.properties` file. For example:
 
       gitHubWriteToken = "123"
 
@@ -88,9 +88,9 @@ Print all the dependencies that are upgradeable.
 
     ./gradlew listDependenciesToUpgrade
     
-#### List dependencies to upgrade
+#### Upgrade dependencies
 
-This task execute the following steps if you have at least one dependency to upgrade:
+This task execute the following steps if the project have at least one dependency to upgrade:
 
 * Creates the `headBranch` (if not exists)
 * Merge from the `baseBranch` to the `headBranch`
@@ -99,7 +99,9 @@ This task execute the following steps if you have at least one dependency to upg
 * Push the previous commit to the `headBranch`
 * Create a pull request from the `headBranch` to the `baseBranch`
 
-    ./gradlew upgradeDependencies
+```
+./gradlew upgradeDependencies
+```
   
 ###### Head Branch
 
