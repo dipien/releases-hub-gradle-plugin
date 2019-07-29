@@ -1,5 +1,6 @@
 package com.releaseshub.gradle.plugin.common
 
+import com.jdroid.java.utils.StringUtils
 import com.jdroid.java.utils.TypeUtils
 import org.gradle.api.Project
 
@@ -57,6 +58,16 @@ class PropertyResolver(private val project: Project) {
             defaultValue
         } else {
             java.lang.Double.parseDouble(value.toString())
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun getStringListProp(propertyName: String, defaultValue: List<String>? = null): List<String>? {
+        val value = getProp(propertyName)
+        return if (value == null) {
+            defaultValue
+        } else {
+            value as? List<String> ?: StringUtils.splitWithCommaSeparator(value.toString())
         }
     }
 }

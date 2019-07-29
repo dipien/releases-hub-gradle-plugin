@@ -12,19 +12,20 @@ import java.io.IOException
 
 open class UpgradeDependenciesTask : AbstractTask() {
 
-    lateinit var dependenciesFilesPaths: List<String>
+    var dependenciesFilesPaths: List<String>? = null
     lateinit var includes: List<String>
     lateinit var excludes: List<String>
-    lateinit var baseBranch: String
-    lateinit var headBranch: String
-    lateinit var commitMessage: String
-    lateinit var pullRequestTitle: String
+
+    var baseBranch: String? = null
+    var headBranch: String? = null
+    var commitMessage: String? = null
+    var pullRequestTitle: String? = null
     var pullRequestEnabled: Boolean = false
 
     var gitHubUserName: String? = null
     var gitHubUserEmail: String? = null
-    lateinit var gitHubRepositoryOwner: String
-    lateinit var gitHubRepositoryName: String
+    var gitHubRepositoryOwner: String? = null
+    var gitHubRepositoryName: String? = null
     var gitHubWriteToken: String? = null
 
     init {
@@ -37,18 +38,22 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     override fun onExecute() {
 
-        if (pullRequestEnabled) {
-            require(this::gitHubRepositoryOwner.isInitialized) { "gitHubRepositoryOwner extension property is required" }
-            require(this::gitHubRepositoryName.isInitialized) { "gitHubRepositoryName extension property is required" }
+        getExtension().validateDependenciesFilesPaths()
 
-            gitHubWriteToken = propertyResolver.getStringProp("gitHubWriteToken")
-            require(gitHubWriteToken != null) { "gitHubWriteToken property is required" }
+        if (pullRequestEnabled) {
+            getExtension().validateBaseBranch()
+            getExtension().validateHeadBranch()
+            getExtension().validateCommitMessage()
+            getExtension().validatePullRequestTitle()
+            getExtension().validateGitHubRepositoryOwner()
+            getExtension().validateGitHubRepositoryName()
+            getExtension().validateGitHubWriteToken()
         }
 
         val artifacts = mutableSetOf<Artifact>()
         val filesMap = mutableMapOf<String, List<String>>()
 
-        dependenciesFilesPaths.forEach {
+        dependenciesFilesPaths!!.forEach {
             val lines = project.rootProject.file(it).readLines()
             filesMap[it] = lines
 

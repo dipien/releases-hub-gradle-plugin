@@ -20,7 +20,7 @@ class AppService : AbstractApiService() {
     }
 
     override fun getAbstractMockHttpServiceInstance(vararg urlSegments: Any?): AbstractMockHttpService {
-        return null!!
+        throw IllegalAccessException()
     }
 
     override fun isHttpMockEnabled(): Boolean {
