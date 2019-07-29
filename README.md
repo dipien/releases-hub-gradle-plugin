@@ -1,5 +1,5 @@
 # Releases Hub Gradle Plugin
-Gradle Plugin to automatically upgrade the projects dependencies and send a pull request with the changes
+Gradle Plugin to automatically upgrade the project dependencies and send a pull request with the changes
 
 ## Continuous Integration
 |Branch|Status|Workflows|Insights|
@@ -8,18 +8,20 @@ Gradle Plugin to automatically upgrade the projects dependencies and send a pull
 
 ## Setup
 
-Add the following configuration to your `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/maxirosson/jdroid-googleplay-publisher/releases/latest)
+Add the following configuration to your `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/maxirosson/releases-hub-gradle-plugin/releases/latest)
 
-    buildscript {
-      repositories {
+```groovy
+buildscript {
+    repositories {
         jcenter()
-      }
-      dependencies {
-        classpath("com.jdroidtools:releases-hub-gradle-plugin:X.Y.Z")
-      }
     }
+    dependencies {
+        classpath("com.jdroidtools:releases-hub-gradle-plugin:X.Y.Z")
+    }
+}
     
-    apply plugin: "com.releaseshub.gradle.plugin"
+apply plugin: "com.releaseshub.gradle.plugin"
+```
 
 All the plugin configuration properties can be added using any of the following ways:
 
