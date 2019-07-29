@@ -75,6 +75,44 @@ By default there aren't excluded dependencies.
 
 ## Usage
 
+We suggest to define your dependencies on two gradle files:
+
+##### dependencies.gradle
+
+```groovy
+def libs = [:]
+libs.kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41"
+rootProject.ext['libs'] = libs
+```
+
+##### build_dependencies.gradle
+
+```groovy
+def libs = [:]
+libs.kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
+rootProject.ext["libs"] = libs
+```
+
+Then, ono your `build.gradle`
+
+```groovy
+apply plugin: "kotlin"
+apply from: "$rootDir/dependencies.gradle"
+
+buildscript {
+	apply from: "$rootDir/build_dependencies.gradle"
+	dependencies {
+		classpath(libs.kotlin_plugin)
+	}
+}
+
+dependencies {
+	compile(libs.kotlin)
+}
+```
+
+### Tasks
+
 #### List dependencies
 
 Print all the dependencies that will be analyzed to upgrade.
@@ -102,7 +140,9 @@ This task execute the following steps if the project have at least one dependenc
 ```
 ./gradlew upgradeDependencies
 ```
-  
+
+##### Properties
+
 ###### Head Branch
 
 The branch where the commit will be pushed. Also, the head branch of the pull request to create. Required String (only if `pullRequestEnabled` is `true`).
