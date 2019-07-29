@@ -75,7 +75,7 @@ By default there aren't excluded dependencies.
 
 ## Usage
 
-We suggest to define your dependencies on two gradle files:
+We suggest to define your dependencies on `dependencies.gradle` and `build_dependencies.gradle` files. For example:
 
 ##### dependencies.gradle
 
@@ -93,7 +93,7 @@ libs.kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
 rootProject.ext["libs"] = libs
 ```
 
-Then, ono your `build.gradle`
+##### build.gradle
 
 ```groovy
 apply plugin: "kotlin"
