@@ -27,19 +27,21 @@ All the plugin configuration properties can be added using any of the following 
 
 * Using the **releasesHub** extension on the build.gradle. For example:
 
-      releasesHub {
-          gitHubWriteToken = "123"
-      }
+```groovy
+releasesHub {
+    gitHubWriteToken = "123"
+}
+```
 
 * As a command line parameter. For example:
 
       ./gradlew listDependencies -PgitHubWriteToken=123
 
-* As a property on a gradle.properties file
+* As a property on a gradle.properties filee. For example:
 
       gitHubWriteToken = "123"
 
-* As an extra property on the build.gradle
+* As an extra property on the build.gradlee. For example:
 
       ext.gitHubWriteToken = "123"
 
@@ -51,7 +53,7 @@ All the plugin configuration properties can be added using any of the following 
 
 The paths to the files where the dependencies are defined. If the path is absolute, it is used as is. 
 Otherwise, the path is interpreted relative to the root project directory. 
-The default value is ["dependencies.gradle", "build_dependencies.gradle"]`. This property is required
+The default value is `["dependencies.gradle", "build_dependencies.gradle"]`. This property is required
     
     dependenciesFilesPaths = ["dependencies.gradle", "build_dependencies.gradle"]
     
