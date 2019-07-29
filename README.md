@@ -100,14 +100,14 @@ apply plugin: "kotlin"
 apply from: "$rootDir/dependencies.gradle"
 
 buildscript {
-	apply from: "$rootDir/build_dependencies.gradle"
-	dependencies {
-		classpath(libs.kotlin_plugin)
-	}
+    apply from: "$rootDir/build_dependencies.gradle"
+    dependencies {
+        classpath(libs.kotlin_plugin)
+    }
 }
 
 dependencies {
-	compile(libs.kotlin)
+    compile(libs.kotlin)
 }
 ```
 
