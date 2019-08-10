@@ -73,7 +73,17 @@ jobs:
       - store_artifacts:
           path: ./build/reports/tests/test
           destination: tests
-          
+
+  publish:
+    <<: *jdk_config
+    steps:
+      - checkout
+      - *restore_cache
+
+      - run:
+          name: Uploading to Nexus Sonatype
+          command: ./gradlew publish -PLOCAL_UPLOAD=false --stacktrace
+
 workflows:
   version: 2
   commit:
@@ -83,3 +93,6 @@ workflows:
       - test:
           requires:
             - build
+      - publish:
+          requires:
+            - test
