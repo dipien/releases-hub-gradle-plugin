@@ -22,7 +22,7 @@ dependencies {
 gradlePlugin {
 	plugins {
 		publisherPlugin {
-			id = "com.releaseshub.gradle.plugin"
+			id = "com.jdroidtools.releaseshub.gradle.plugin"
 			implementationClass = "com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin"
 		}
 	}

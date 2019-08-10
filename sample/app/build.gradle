@@ -1,5 +1,5 @@
 apply plugin: "kotlin"
-apply plugin: "com.releaseshub.gradle.plugin"
+apply plugin: "com.jdroidtools.releaseshub.gradle.plugin"
 apply from: "$rootDir/dependencies.gradle"
 
 buildscript {
