@@ -1,5 +1,6 @@
 package com.releaseshub.gradle.plugin
 
+import com.releaseshub.gradle.plugin.artifacts.api.AppServer
 import com.releaseshub.gradle.plugin.common.PropertyResolver
 
 import org.gradle.api.Project
@@ -8,6 +9,8 @@ import org.gradle.api.logging.LogLevel
 open class ReleasesHubGradlePluginExtension(project: Project) {
 
     private val propertyResolver: PropertyResolver = PropertyResolver(project)
+
+    var serverName: String?
 
     var dependenciesFilesPaths: List<String>?
     var includes: List<String>
@@ -28,6 +31,8 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var logLevel = LogLevel.LIFECYCLE
 
     init {
+        serverName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::serverName.name, AppServer.PROD.getServerName())
+
         dependenciesFilesPaths = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::dependenciesFilesPaths.name, listOf("dependencies.gradle", "build_dependencies.gradle"))
         includes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
         excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
@@ -44,6 +49,10 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         gitHubRepositoryOwner = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubRepositoryOwner.name)
         gitHubRepositoryName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubRepositoryName.name)
         gitHubWriteToken = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubWriteToken.name)
+    }
+
+    fun validateServerName() {
+        requireNotNull(serverName.isNullOrEmpty()) { "The 'serverName' property is required" }
     }
 
     fun validateDependenciesFilesPaths() {

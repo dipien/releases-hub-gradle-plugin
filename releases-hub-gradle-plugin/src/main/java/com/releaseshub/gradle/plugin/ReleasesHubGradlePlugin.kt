@@ -28,6 +28,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 
         val listDependenciesToUpgradeTask = project.tasks.create("listDependenciesToUpgrade", ListDependenciesToUpgradeTask::class.java)
         project.afterEvaluate {
+            listDependenciesToUpgradeTask.serverName = extension.serverName
             listDependenciesToUpgradeTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
             listDependenciesToUpgradeTask.includes = extension.includes
             listDependenciesToUpgradeTask.excludes = extension.excludes
@@ -36,6 +37,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 
         val upgradeDependenciesTask = project.tasks.create("upgradeDependencies", UpgradeDependenciesTask::class.java)
         project.afterEvaluate {
+            upgradeDependenciesTask.serverName = extension.serverName
             upgradeDependenciesTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
             upgradeDependenciesTask.includes = extension.includes
             upgradeDependenciesTask.excludes = extension.excludes

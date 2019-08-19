@@ -16,12 +16,6 @@ enum class AppServer(
             return "api.releaseshub.com"
         }
     },
-    UAT(null, false, false) {
-        // TODO vN Configure UAT server
-        override fun getDomain(): String? {
-            return ""
-        }
-    },
     DEV("/app/api", false, false) {
         override fun getDomain(): String? {
             return "localhost:8080"

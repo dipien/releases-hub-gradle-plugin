@@ -7,7 +7,7 @@ import com.jdroid.java.http.mock.AbstractMockHttpService
 import com.jdroid.java.http.parser.json.GsonParser
 import com.releaseshub.gradle.plugin.artifacts.Artifact
 
-class AppService : AbstractApiService() {
+class AppService(private val server: Server) : AbstractApiService() {
 
     fun getArtifactsToUpgrade(artifacts: List<Artifact>): List<Artifact> {
         val httpService = newPostService("artifactsToUpgrade")
@@ -16,7 +16,7 @@ class AppService : AbstractApiService() {
     }
 
     override fun getServer(): Server {
-        return AppServer.DEV
+        return server
     }
 
     override fun getAbstractMockHttpServiceInstance(vararg urlSegments: Any?): AbstractMockHttpService {

@@ -1,10 +1,11 @@
 package com.releaseshub.gradle.plugin.artifacts
 
+import com.jdroid.java.http.Server
 import com.releaseshub.gradle.plugin.artifacts.api.AppService
 
-object ArtifactsService {
+class ArtifactsService(private val server: Server) {
 
     fun getArtifactsToUpgrade(artifacts: List<Artifact>): List<Artifact> {
-        return AppService().getArtifactsToUpgrade(artifacts)
+        return AppService(server).getArtifactsToUpgrade(artifacts)
     }
 }
