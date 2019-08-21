@@ -2,7 +2,8 @@ package com.releaseshub.gradle.plugin.common
 
 import com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin
 import com.releaseshub.gradle.plugin.ReleasesHubGradlePluginExtension
-
+import com.releaseshub.gradle.plugin.artifacts.api.AppServer
+import com.releaseshub.gradle.plugin.artifacts.api.AppService
 import org.gradle.api.DefaultTask
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.TaskAction
@@ -12,6 +13,9 @@ abstract class AbstractTask : DefaultTask() {
     var logLevel: LogLevel? = null
     protected lateinit var propertyResolver: PropertyResolver
     protected lateinit var commandExecutor: CommandExecutor
+
+    var serverName: String? = null
+    var userToken: String? = null
 
     @TaskAction
     fun doExecute() {
@@ -26,6 +30,10 @@ abstract class AbstractTask : DefaultTask() {
 
     protected fun log(message: String) {
         logger.log(logLevel, message)
+    }
+
+    protected fun createArtifactsService(): AppService {
+        return AppService(AppServer.valueOf(serverName!!), project.version.toString(), userToken!!)
     }
 
     protected abstract fun onExecute()

@@ -1,6 +1,5 @@
 package com.releaseshub.gradle.plugin.artifacts.api
 
-import com.jdroid.java.http.BasicHttpResponseValidator
 import com.jdroid.java.http.HttpServiceProcessor
 import com.jdroid.java.http.Server
 
@@ -48,7 +47,7 @@ enum class AppServer(
     }
 
     override fun getHttpServiceProcessors(): List<HttpServiceProcessor> {
-        return listOf(HeadersAppender(), BasicHttpResponseValidator())
+        return listOf()
     }
 
     override fun instance(name: String): Server {

@@ -5,15 +5,11 @@ import com.jdroid.github.client.GitHubClient
 import com.jdroid.github.service.IssueService
 import com.jdroid.github.service.PullRequestService
 import com.releaseshub.gradle.plugin.artifacts.Artifact
-import com.releaseshub.gradle.plugin.artifacts.ArtifactsService
-import com.releaseshub.gradle.plugin.artifacts.api.AppServer
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import java.io.File
 import java.io.IOException
 
 open class UpgradeDependenciesTask : AbstractTask() {
-
-    var serverName: String? = null
 
     var dependenciesFilesPaths: List<String>? = null
     lateinit var includes: List<String>
@@ -42,6 +38,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
     override fun onExecute() {
 
         getExtension().validateServerName()
+        getExtension().validateUserToken()
         getExtension().validateDependenciesFilesPaths()
 
         if (pullRequestEnabled) {
@@ -69,7 +66,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             }
         }
 
-        val artifactsToUpgrade = ArtifactsService(AppServer.valueOf(serverName!!)).getArtifactsToUpgrade(artifacts.toList())
+        val artifactsToUpgrade = createArtifactsService().getArtifactsToUpgrade(artifacts.toList())
         if (artifactsToUpgrade.isNotEmpty()) {
 
             if (pullRequestEnabled) {

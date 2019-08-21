@@ -1,6 +1,7 @@
 package com.releaseshub.gradle.plugin
 
 import com.releaseshub.gradle.plugin.artifacts.api.AppServer
+import com.releaseshub.gradle.plugin.artifacts.api.HeadersAppender
 import com.releaseshub.gradle.plugin.common.PropertyResolver
 
 import org.gradle.api.Project
@@ -11,6 +12,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     private val propertyResolver: PropertyResolver = PropertyResolver(project)
 
     var serverName: String?
+    var userToken: String?
 
     var dependenciesFilesPaths: List<String>?
     var includes: List<String>
@@ -32,6 +34,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
 
     init {
         serverName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::serverName.name, AppServer.PROD.getServerName())
+        userToken = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
         dependenciesFilesPaths = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::dependenciesFilesPaths.name, listOf("dependencies.gradle", "build_dependencies.gradle"))
         includes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
@@ -53,6 +56,10 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
 
     fun validateServerName() {
         requireNotNull(serverName.isNullOrEmpty()) { "The 'serverName' property is required" }
+    }
+
+    fun validateUserToken() {
+        requireNotNull(userToken.isNullOrEmpty()) { "The 'userToken' property is required" }
     }
 
     fun validateDependenciesFilesPaths() {
