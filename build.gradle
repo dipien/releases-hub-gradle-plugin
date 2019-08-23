@@ -5,10 +5,10 @@ apply plugin: 'com.jdroidtools.component.builder'
 buildscript {
 	repositories {
 		jcenter()
-		String localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
+		def localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
 		boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
 		if (isLocalMavenRepoEnabled) {
-			String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
+			def localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
 			if (localMavenRepo != null) {
 				maven { url localMavenRepo }
 			}
@@ -18,10 +18,9 @@ buildscript {
 		gradlePluginPortal()
 	}
 
-	apply from: "build_dependencies.gradle"
 	dependencies {
-		classpath libs.jdroid_component_builder
-		classpath libs.jdroid_gradle_root_plugin
+		classpath BuildLibs.jdroid_component_builder
+		classpath BuildLibs.jdroid_gradle_root_plugin
 	}
 }
 
@@ -29,10 +28,10 @@ subprojects {
 	buildscript {
 		repositories {
 			jcenter()
-			String localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
+			def localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
 			boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
 			if (isLocalMavenRepoEnabled) {
-				String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
+				def localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
 				if (localMavenRepo != null) {
 					maven { url localMavenRepo }
 				}
@@ -45,10 +44,10 @@ subprojects {
 
 	repositories {
 		jcenter()
-		String localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
+		def localMavenRepoEnabled = project.hasProperty('LOCAL_MAVEN_REPO_ENABLED') ? project.ext.get('LOCAL_MAVEN_REPO_ENABLED') : System.getenv('LOCAL_MAVEN_REPO_EMABLED')
 		boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
 		if (isLocalMavenRepoEnabled) {
-			String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
+			def localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
 			if (localMavenRepo != null) {
 				maven { url localMavenRepo }
 			}

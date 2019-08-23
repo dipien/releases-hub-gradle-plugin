@@ -2,21 +2,19 @@ ext.PROJECT_NAME = "Releases Hub Gradle Plugin"
 ext.ARTIFACT_ID = "releases-hub-gradle-plugin"
 
 apply plugin: "com.jdroidtools.gradle.plugin"
-apply from: "$rootDir/dependencies.gradle"
 
 buildscript {
-	apply from: "$rootDir/build_dependencies.gradle"
 	dependencies {
-		classpath libs.jdroid_gradle_project_plugin
+		classpath BuildLibs.jdroid_gradle_project_plugin
 	}
 }
 
 dependencies {
-	compile(libs.jdroid_java_core)
-	compile(libs.jdroid_java_http_okhttp)
-	compile(libs.jdroid_java_github)
+	compile(Libs.jdroid_java_core)
+	compile(Libs.jdroid_java_http_okhttp)
+	compile(Libs.jdroid_java_github)
 
-	testCompile("junit:junit:4.12")
+	testCompile(Libs.junit)
 }
 
 gradlePlugin {
