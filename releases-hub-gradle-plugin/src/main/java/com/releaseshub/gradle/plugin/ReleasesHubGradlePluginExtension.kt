@@ -14,7 +14,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var serverName: String?
     var userToken: String?
 
-    var dependenciesFilesPaths: List<String>?
+    var dependenciesClassNames: List<String>?
     var includes: List<String>
     var excludes: List<String>
 
@@ -36,7 +36,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         serverName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::serverName.name, AppServer.PROD.getServerName())
         userToken = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
-        dependenciesFilesPaths = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::dependenciesFilesPaths.name, listOf("dependencies.gradle", "build_dependencies.gradle"))
+        dependenciesClassNames = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
         includes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
         excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
 
@@ -62,8 +62,8 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         requireNotNull(userToken.isNullOrEmpty()) { "The 'userToken' property is required" }
     }
 
-    fun validateDependenciesFilesPaths() {
-        require(!dependenciesFilesPaths.isNullOrEmpty()) { "The 'dependenciesFilesPaths' property is required" }
+    fun validateDependenciesClassNames() {
+        require(!dependenciesClassNames.isNullOrEmpty()) { "The 'dependenciesClassNames' property is required" }
     }
 
     fun validateHeadBranch() {

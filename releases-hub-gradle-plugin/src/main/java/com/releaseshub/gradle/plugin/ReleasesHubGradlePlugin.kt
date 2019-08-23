@@ -20,7 +20,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 
         val listDependenciesTask = project.tasks.create("listDependencies", ListDependenciesTask::class.java)
         project.afterEvaluate {
-            listDependenciesTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
+            listDependenciesTask.dependenciesClassNames = extension.dependenciesClassNames
             listDependenciesTask.includes = extension.includes
             listDependenciesTask.excludes = extension.excludes
             listDependenciesTask.logLevel = extension.logLevel
@@ -30,7 +30,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         project.afterEvaluate {
             listDependenciesToUpgradeTask.serverName = extension.serverName
             listDependenciesToUpgradeTask.userToken = extension.userToken
-            listDependenciesToUpgradeTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
+            listDependenciesToUpgradeTask.dependenciesClassNames = extension.dependenciesClassNames
             listDependenciesToUpgradeTask.includes = extension.includes
             listDependenciesToUpgradeTask.excludes = extension.excludes
             listDependenciesToUpgradeTask.logLevel = extension.logLevel
@@ -40,7 +40,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         project.afterEvaluate {
             upgradeDependenciesTask.serverName = extension.serverName
             upgradeDependenciesTask.userToken = extension.userToken
-            upgradeDependenciesTask.dependenciesFilesPaths = extension.dependenciesFilesPaths
+            upgradeDependenciesTask.dependenciesClassNames = extension.dependenciesClassNames
             upgradeDependenciesTask.includes = extension.includes
             upgradeDependenciesTask.excludes = extension.excludes
             upgradeDependenciesTask.headBranch = extension.headBranch

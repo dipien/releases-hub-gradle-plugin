@@ -11,10 +11,6 @@ import java.io.IOException
 
 open class UpgradeDependenciesTask : AbstractTask() {
 
-    var dependenciesFilesPaths: List<String>? = null
-    lateinit var includes: List<String>
-    lateinit var excludes: List<String>
-
     var baseBranch: String? = null
     var headBranch: String? = null
     var commitMessage: String? = null
@@ -39,7 +35,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
         getExtension().validateServerName()
         getExtension().validateUserToken()
-        getExtension().validateDependenciesFilesPaths()
+        getExtension().validateDependenciesClassNames()
 
         if (pullRequestEnabled) {
             getExtension().validateBaseBranch()
@@ -54,9 +50,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
         val artifacts = mutableSetOf<Artifact>()
         val filesMap = mutableMapOf<String, List<String>>()
 
-        dependenciesFilesPaths!!.forEach {
-            val lines = project.rootProject.file(it).readLines()
-            filesMap[it] = lines
+        dependenciesClassNames!!.forEach {
+            val lines = project.rootProject.file(DEPENDENCIES_BASE_PATH + it).readLines()
+            filesMap[DEPENDENCIES_BASE_PATH + it] = lines
 
             lines.forEach { line ->
                 val artifact = DependenciesParser.extractArtifact(line)

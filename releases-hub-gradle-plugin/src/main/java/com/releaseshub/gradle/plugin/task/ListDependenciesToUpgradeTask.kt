@@ -5,10 +5,6 @@ import com.releaseshub.gradle.plugin.common.AbstractTask
 
 open class ListDependenciesToUpgradeTask : AbstractTask() {
 
-    var dependenciesFilesPaths: List<String>? = null
-    lateinit var includes: List<String>
-    lateinit var excludes: List<String>
-
     init {
         description = "List all dependencies to upgrade"
     }
@@ -17,11 +13,11 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 
         getExtension().validateServerName()
         getExtension().validateUserToken()
-        getExtension().validateDependenciesFilesPaths()
+        getExtension().validateDependenciesClassNames()
 
         val artifacts = mutableListOf<Artifact>()
-        dependenciesFilesPaths!!.forEach {
-            project.rootProject.file(it).forEachLine { line ->
+        dependenciesClassNames!!.forEach {
+            project.rootProject.file(DEPENDENCIES_BASE_PATH + it).forEachLine { line ->
                 val artifact = DependenciesParser.extractArtifact(line)
                 if (artifact != null && artifact.match(includes, excludes)) {
                     artifacts.add(artifact)

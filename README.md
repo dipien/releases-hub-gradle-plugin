@@ -49,19 +49,17 @@ ext.gitHubWriteToken = "123"
 
 #### Common Properties
 
-###### Dependencies files paths
+###### Dependencies class names
 
-The paths to the files where the dependencies are defined. If the path is absolute, it is used as is. 
-Otherwise, the path is interpreted relative to the root project directory. 
-The default value is `["dependencies.gradle", "build_dependencies.gradle"]`. This property is required
+The class names where the dependencies are defined. The default value is `["Libs.kt", "BuildLibs.kt"]`. This property is required
     
-    dependenciesFilesPaths = ["dependencies.gradle", "build_dependencies.gradle"]
+    dependenciesClassNames = ["Libs.kt", "BuildLibs.kt"]
     
 ###### Includes
 
 The dependencies to include. 
 You can define a `groupId` to match all the artifacts for that group id, or `groupId:artifactId` to match a particular artifact.
-By default all the dependencies found on `dependenciesFilesPaths` are included.
+By default all the dependencies found on `dependenciesClassNames` are included.
 
     includes = ["com.groupid1", "com.groupid2:artifact1"]
     
@@ -75,39 +73,38 @@ By default there aren't excluded dependencies.
 
 ## Usage
 
-We suggest to define your dependencies on `dependencies.gradle` and `build_dependencies.gradle` files. For example:
+We suggest to define your dependencies on `/buildSrc/src/main/kotlin/Libs.kt` and `/buildSrc/src/main/kotlin/BuildLibs.kt` classes. For example:
 
-##### dependencies.gradle
+##### Libs.kt
 
-```groovy
-def libs = [:]
-libs.kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41"
-rootProject.ext['libs'] = libs
+```kotlin
+object Libs {
+    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40"
+}
 ```
 
-##### build_dependencies.gradle
+##### BuildLibs.kt
 
-```groovy
-def libs = [:]
-libs.kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
-rootProject.ext["libs"] = libs
+```kotlin
+object BuildLibs {
+    const val kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
+}
 ```
 
 ##### build.gradle
 
 ```groovy
 apply plugin: "kotlin"
-apply from: "$rootDir/dependencies.gradle"
+apply plugin: "com.jdroidtools.releaseshub.gradle.plugin"
 
 buildscript {
-    apply from: "$rootDir/build_dependencies.gradle"
     dependencies {
-        classpath(libs.kotlin_plugin)
+        classpath(BuildLibs.kotlin_plugin)
     }
 }
 
 dependencies {
-    compile(libs.kotlin)
+    compile(Libs.kotlin)
 }
 ```
 
@@ -132,7 +129,7 @@ This task execute the following steps if the project have at least one dependenc
 
 * Creates the `headBranch` (if not exists)
 * Merge from the `baseBranch` to the `headBranch`
-* Upgrade all the dependencies on the `dependenciesFilesPaths`
+* Upgrade all the dependencies on the `dependenciesClassNames`
 * Commit all the modified files
 * Push the previous commit to the `headBranch`
 * Create a pull request from the `headBranch` to the `baseBranch`
