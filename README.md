@@ -1,5 +1,5 @@
 # Releases Hub Gradle Plugin
-Gradle Plugin to automatically upgrade the project dependencies and send a pull request with the changes
+Gradle Plugin to automatically upgrade the project dependencies and send a GiHhub pull request with the changes
 
 ## Continuous Integration
 |Branch|Status|Workflows|Insights|
@@ -132,7 +132,7 @@ This task execute the following steps if the project have at least one dependenc
 * Upgrade all the dependencies on the `dependenciesClassNames`
 * Commit all the modified files
 * Push the previous commit to the `headBranch`
-* Create a pull request from the `headBranch` to the `baseBranch`
+* Create a GitHub pull request from the `headBranch` to the `baseBranch`
 
 ```
 ./gradlew upgradeDependencies
