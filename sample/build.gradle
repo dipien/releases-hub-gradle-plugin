@@ -1,28 +1,41 @@
+import com.sample.dependencies.BuildLibs
+
 buildscript {
 	repositories {
-		mavenCentral()
 		jcenter()
+		String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
+		if (localMavenRepo != null) {
+			maven { url localMavenRepo }
+		}
+		maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+	}
+
+	buildscript {
+		dependencies {
+			classpath(BuildLibs.releases_hub_gradle_plugin)
+		}
 	}
 }
 
 allprojects {
 	repositories {
-		mavenCentral()
 		jcenter()
 	}
 
 	buildscript {
 		repositories {
 			google()
-			mavenCentral()
 			jcenter()
-			String localMavenRepo = project.hasProperty('LOCAL_MAVEN_REPO') ? project.ext.get('LOCAL_MAVEN_REPO') : System.getenv('LOCAL_MAVEN_REPO')
-			if (localMavenRepo != null) {
-				maven { url localMavenRepo }
-			}
-			maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 		}
 	}
 
 }
 
+apply plugin: "com.jdroidtools.releaseshub.gradle.plugin"
+
+releasesHub {
+	dependenciesClassNames = ["com/sample/dependencies/Libs.kt", "com/sample/dependencies/BuildLibs.kt"]
+	pullRequestEnabled = false
+	gitHubRepositoryOwner = ""
+	gitHubRepositoryName = ""
+}

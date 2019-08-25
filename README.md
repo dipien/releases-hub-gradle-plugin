@@ -8,7 +8,7 @@ Gradle Plugin to automatically upgrade the project dependencies and send a GiHhu
 
 ## Setup
 
-Add the following configuration to your `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/maxirosson/releases-hub-gradle-plugin/releases/latest)
+Add the following configuration to your root `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/maxirosson/releases-hub-gradle-plugin/releases/latest)
 
 ```groovy
 buildscript {

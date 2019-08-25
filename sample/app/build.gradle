@@ -2,22 +2,13 @@ import com.sample.dependencies.BuildLibs
 import com.sample.dependencies.Libs
 
 apply plugin: "kotlin"
-apply plugin: "com.jdroidtools.releaseshub.gradle.plugin"
 
 buildscript {
 	dependencies {
 		classpath(BuildLibs.kotlin_plugin)
-		classpath(BuildLibs.releases_hub_gradle_plugin)
 	}
 }
 
 dependencies {
 	compile(Libs.kotlin)
-}
-
-releasesHub {
-	dependenciesClassNames = ["com/sample/dependencies/Libs.kt", "com/sample/dependencies/BuildLibs.kt"]
-	pullRequestEnabled = false
-	gitHubRepositoryOwner = ""
-	gitHubRepositoryName = ""
 }
