@@ -62,7 +62,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             }
         }
 
-        val artifactsToUpgrade = createArtifactsService().getArtifactsToUpgrade(artifacts.toList())
+        val artifactsToUpgrade = createArtifactsService().getArtifactsToUpgrade(artifacts.toList(), getRepositories())
         if (artifactsToUpgrade.isNotEmpty()) {
 
             if (pullRequestEnabled) {
@@ -94,25 +94,25 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     private fun prepareGitBranch() {
         gitHubUserName?.let {
-            commandExecutor.execute("git config user.name $gitHubUserName")
+            gitHelper.configUserName(it)
         }
         gitHubUserEmail?.let {
-            commandExecutor.execute("git config user.email $gitHubUserEmail")
+            gitHelper.configUserEmail(it)
         }
 
-        commandExecutor.execute("git checkout $baseBranch")
-        commandExecutor.execute("git pull")
+        gitHelper.checkout(baseBranch!!)
+        gitHelper.pull()
 
         // Local headBranch cleanup
         commandExecutor.execute("git branch -D $headBranch", project.rootProject.projectDir, true, true)
-        commandExecutor.execute("git fetch origin --prune")
+        gitHelper.prune()
         val execResult = commandExecutor.execute("git checkout $headBranch", project.rootProject.projectDir, true, true)
         if (!execResult.isSuccessful()) {
-            commandExecutor.execute("git checkout -b $headBranch")
+            gitHelper.createBranch(headBranch!!)
         }
 
         // Try to merge from baseBranch to headBranch
-        commandExecutor.execute("git merge $baseBranch")
+        gitHelper.merge(baseBranch!!)
     }
 
     private fun createPullRequestBody(upgradeResults: List<UpgradeResult>, baseBody: String? = null): String {
@@ -149,7 +149,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
     }
 
     private fun createPullRequest(upgradeResults: List<UpgradeResult>) {
-        commandExecutor.execute("git add -A")
+        gitHelper.addAll()
 
         val execResult = commandExecutor.execute("git commit -m \"$commitMessage\"", project.rootProject.projectDir, true, true)
         when {

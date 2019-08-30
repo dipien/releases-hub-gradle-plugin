@@ -25,7 +25,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             }
         }
 
-        createArtifactsService().getArtifactsToUpgrade(artifacts).forEach {
+        createArtifactsService().getArtifactsToUpgrade(artifacts, getRepositories()).forEach {
             log(" - $it ${it.fromVersion} -> ${it.toVersion}")
         }
     }
