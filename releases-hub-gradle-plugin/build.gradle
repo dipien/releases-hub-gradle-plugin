@@ -1,5 +1,6 @@
 ext.PROJECT_NAME = "Releases Hub Gradle Plugin"
 ext.ARTIFACT_ID = "releases-hub-gradle-plugin"
+group = "com.releaseshub"
 
 apply plugin: "com.jdroidtools.gradle.plugin"
 
@@ -20,8 +21,59 @@ dependencies {
 gradlePlugin {
 	plugins {
 		publisherPlugin {
-			id = "com.jdroidtools.releaseshub.gradle.plugin"
+			id = "com.releaseshub.gradle.plugin"
 			implementationClass = "com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin"
 		}
 	}
+}
+
+jdroid {
+	mavenPom = new Action<org.gradle.api.publish.maven.MavenPom>() {
+		@Override
+		public void execute(org.gradle.api.publish.maven.MavenPom mavenPom) {
+			mavenPom.getName().set("releases-hub-gradle-plugin");
+			mavenPom.getDescription().set("Gradle Plugin to automatically upgrade the project dependencies and send a GitHub pull request with the changes");
+
+			mavenPom.getUrl().set("https://releaseshub.com");
+			mavenPom.getInceptionYear().set("2019");
+			mavenPom.organization(new Action<MavenPomOrganization>() {
+				@Override
+				public void execute(MavenPomOrganization mavenPomOrganization) {
+					mavenPomOrganization.getName().set("Releases Hub");
+					mavenPomOrganization.getUrl().set("https://releaseshub.com");
+				}
+
+			});
+			mavenPom.licenses(new Action<MavenPomLicenseSpec>() {
+				@Override
+				public void execute(MavenPomLicenseSpec mavenPomLicenseSpec) {
+					mavenPomLicenseSpec.license(new Action<MavenPomLicense>() {
+						@Override
+						public void execute(MavenPomLicense mavenPomLicense) {
+							mavenPomLicense.getName().set("The Apache License, Version 2.0");
+							mavenPomLicense.getUrl().set("http://www.apache.org/licenses/LICENSE-2.0.txt");
+							mavenPomLicense.getDistribution().set("repo");
+						}
+
+					});
+				}
+
+			});
+			mavenPom.developers(new Action<MavenPomDeveloperSpec>() {
+				@Override
+				public void execute(MavenPomDeveloperSpec mavenPomDeveloperSpec) {
+					mavenPomDeveloperSpec.developer(new Action<MavenPomDeveloper>() {
+						@Override
+						public void execute(MavenPomDeveloper mavenPomDeveloper) {
+							mavenPomDeveloper.getName().set("Maxi Rosson");
+							mavenPomDeveloper.getEmail().set("maxi@releaseshub.com");
+						}
+
+					});
+				}
+
+			});
+		}
+
+	};
 }

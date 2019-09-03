@@ -1,10 +1,10 @@
 # Releases Hub Gradle Plugin
-Gradle Plugin to automatically upgrade the project dependencies and send a GiHhub pull request with the changes
+Gradle Plugin to automatically upgrade the project dependencies and send a GitHub pull request with the changes
 
 ## Continuous Integration
 |Branch|Status|Workflows|Insights|
 | ------------- | ------------- | ------------- | ------------- |
-|master|[![CircleCI](https://circleci.com/gh/maxirosson/releases-hub-gradle-plugin/tree/master.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/maxirosson/releases-hub-gradle-plugin/tree/master)|[Workflows](https://circleci.com/gh/maxirosson/workflows/jdroid-googleplay-publisher/tree/master)|[Insights](https://circleci.com/build-insights/gh/maxirosson/jdroid-googleplay-publisher/master)|
+|master|[![CircleCI](https://circleci.com/gh/maxirosson/releases-hub-gradle-plugin/tree/master.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/maxirosson/releases-hub-gradle-plugin/tree/master)|[Workflows](https://circleci.com/gh/maxirosson/workflows/releases-hub-gradle-plugin/tree/master)|[Insights](https://circleci.com/build-insights/gh/maxirosson/releases-hub-gradle-plugin/master)|
 
 ## Setup
 
@@ -16,7 +16,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("com.jdroidtools:releases-hub-gradle-plugin:X.Y.Z")
+        classpath("com.releaseshub:releases-hub-gradle-plugin:X.Y.Z")
     }
 }
     
@@ -95,7 +95,7 @@ object BuildLibs {
 
 ```groovy
 apply plugin: "kotlin"
-apply plugin: "com.jdroidtools.releaseshub.gradle.plugin"
+apply plugin: "com.releaseshub.gradle.plugin"
 
 buildscript {
     dependencies {
