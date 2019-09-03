@@ -1,4 +1,6 @@
 version = '0.1.0'
+ext.GITHUB_REPOSITORY_OWNER = "maxirosson"
+ext.GITHUB_REPOSITORY_NAME = "releases-hub-gradle-plugin"
 
 apply plugin: 'com.jdroidtools.root'
 apply plugin: 'com.jdroidtools.component.builder'
