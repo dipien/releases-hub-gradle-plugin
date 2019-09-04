@@ -28,7 +28,7 @@ gradlePlugin {
 }
 
 jdroid {
-	mavenPom = new Action<org.gradle.api.publish.maven.MavenPom>() {
+	publishingPom = new Action<org.gradle.api.publish.maven.MavenPom>() {
 		@Override
 		public void execute(org.gradle.api.publish.maven.MavenPom mavenPom) {
 			mavenPom.getName().set("releases-hub-gradle-plugin");

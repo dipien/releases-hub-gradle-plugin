@@ -61,7 +61,7 @@ jobs:
       - checkout
       - *restore_cache
 
-      - run: ./gradlew test --stacktrace
+      - run: ./gradlew test --refresh-dependencies --stacktrace
       - run:
           name: Save test results 
           command: |
@@ -82,7 +82,7 @@ jobs:
 
       - run:
           name: Uploading to Nexus Sonatype
-          command: ./gradlew publish -PLOCAL_UPLOAD=false --stacktrace
+          command: ./gradlew publish -PLOCAL_UPLOAD=false --refresh-dependencies --stacktrace
 
 workflows:
   version: 2
