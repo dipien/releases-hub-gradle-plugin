@@ -61,7 +61,7 @@ jobs:
       - checkout
       - *restore_cache
 
-      - run: ./gradlew test --stacktrace
+      - run: ./gradlew test --refresh-dependencies --stacktrace
       - run:
           name: Save test results 
           command: |
