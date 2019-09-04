@@ -6,6 +6,7 @@ object Libs {
     // https://github.com/maxirosson/jdroid-java-http/releases
     const val jdroid_java_http_okhttp = "com.jdroidtools:jdroid-java-http-okhttp:3.0.0"
 
+    // https://github.com/maxirosson/jdroid-java-github/releases
     const val jdroid_java_github = "com.jdroidtools:jdroid-java-github:1.0.0"
 
     const val junit = "junit:junit:4.12"
