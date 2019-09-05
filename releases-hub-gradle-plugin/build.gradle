@@ -73,6 +73,25 @@ jdroid {
 				}
 
 			});
+
+			mavenPom.scm(new Action<MavenPomScm>() {
+				@Override
+				public void execute(MavenPomScm mavenPomScm) {
+					mavenPomScm.getConnection().set("scm:git:" + jdroid.getRepositorySshUrl());
+					mavenPomScm.getDeveloperConnection().set("scm:git:" + jdroid.getRepositorySshUrl());
+					mavenPomScm.getUrl().set(jdroid.getRepositorySshUrl());
+				}
+
+			});
+			mavenPom.issueManagement(new Action<MavenPomIssueManagement>() {
+				@Override
+				public void execute(MavenPomIssueManagement mavenPomIssueManagement) {
+					mavenPomIssueManagement.getSystem().set("GitHub");
+					mavenPomIssueManagement.getUrl().set(jdroid.getRepositoryUrl() + "/issues");
+				}
+
+			});
+
 		}
 
 	};
