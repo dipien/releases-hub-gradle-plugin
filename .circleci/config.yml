@@ -84,6 +84,14 @@ jobs:
           name: Uploading to Nexus Sonatype
           command: ./gradlew publish -PLOCAL_UPLOAD=false --refresh-dependencies --stacktrace
 
+  upgradeDependencies:
+    <<: *jdk_config
+    steps:
+      - checkout
+      - run:
+          name: Upgrade Dependencies
+          command: ./gradlew upgradeDependencies -PpullRequestEnabled=true --stacktrace
+
 workflows:
   version: 2
   commit:
@@ -96,3 +104,13 @@ workflows:
       - publish:
           requires:
             - test
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 0"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - upgradeDependencies

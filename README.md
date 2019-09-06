@@ -5,6 +5,7 @@ Gradle Plugin to automatically upgrade the project dependencies and send a GitHu
 |Branch|Status|Workflows|Insights|
 | ------------- | ------------- | ------------- | ------------- |
 |master|[![CircleCI](https://circleci.com/gh/maxirosson/releases-hub-gradle-plugin/tree/master.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/maxirosson/releases-hub-gradle-plugin/tree/master)|[Workflows](https://circleci.com/gh/maxirosson/workflows/releases-hub-gradle-plugin/tree/master)|[Insights](https://circleci.com/build-insights/gh/maxirosson/releases-hub-gradle-plugin/master)|
+|production|[![CircleCI](https://circleci.com/gh/maxirosson/releases-hub-gradle-plugin/tree/production.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/maxirosson/releases-hub-gradle-plugin/tree/production)|[Workflows](https://circleci.com/gh/maxirosson/workflows/releases-hub-gradle-plugin/tree/production)|[Insights](https://circleci.com/build-insights/gh/maxirosson/releases-hub-gradle-plugin/production)|
 
 ## Setup
 
@@ -201,8 +202,3 @@ We strongly recommend to not use the `releasesHub` extension for this property, 
 Required String (only if `pullRequestEnabled` is `true`).
 
     gitHubWriteToken = "123"
-
-## Donations
-Help us to continue with this project:
-
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2UEBTRTSCYA9L)

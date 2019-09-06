@@ -1,4 +1,5 @@
 version = '0.2.0'
+
 ext.GITHUB_REPOSITORY_OWNER = "maxirosson"
 ext.GITHUB_REPOSITORY_NAME = "releases-hub-gradle-plugin"
 
@@ -8,6 +9,7 @@ ext.SOURCES_PUBLICATION_ENABLED = true
 ext.SIGNING_PUBLICATION_ENABLED = true
 
 apply plugin: 'com.jdroidtools.root'
+
 buildscript {
 	repositories {
 		jcenter()
