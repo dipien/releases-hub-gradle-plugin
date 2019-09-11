@@ -1,11 +1,11 @@
 # Change Log
 
-## [v0.1.0](https://github.com/maxirosson/releases-hub-gradle-plugin/tree/v0.1.0) (2019-09-03)
+## [v0.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v0.1.0) (2019-09-03)
 **Implemented enhancements:**
 
-- New upgradeDependencies task [\#7](https://github.com/maxirosson/releases-hub-gradle-plugin/issues/7)
-- New listDependenciesToUpgrade task [\#6](https://github.com/maxirosson/releases-hub-gradle-plugin/issues/6)
-- New listDependencies task [\#5](https://github.com/maxirosson/releases-hub-gradle-plugin/issues/5)
+- New upgradeDependencies task [\#7](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/7)
+- New listDependenciesToUpgrade task [\#6](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/6)
+- New listDependencies task [\#5](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/5)
 
 
 
