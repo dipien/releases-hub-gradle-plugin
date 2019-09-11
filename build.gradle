@@ -1,6 +1,6 @@
 version = '0.2.0'
 
-ext.GITHUB_REPOSITORY_OWNER = "maxirosson"
+ext.GITHUB_REPOSITORY_OWNER = "releaseshub"
 ext.GITHUB_REPOSITORY_NAME = "releases-hub-gradle-plugin"
 
 ext.PUBLICATION_CONFIGURATION_ENABLED = true
