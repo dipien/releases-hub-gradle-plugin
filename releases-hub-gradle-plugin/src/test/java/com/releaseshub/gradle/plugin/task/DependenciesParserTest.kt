@@ -35,7 +35,7 @@ class DependenciesParserTest {
     fun upgradeCommentTest() {
         val artifactsToUpgrade = mutableListOf<Artifact>()
         val line = "// this is a comment"
-        val upgradeResult = UpgradeResult(false, null, null, line)
+        val upgradeResult = UpgradeResult(false, null, line)
         Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(line, artifactsToUpgrade))
 
         val artifact = Artifact()
@@ -50,7 +50,7 @@ class DependenciesParserTest {
     fun notUpgradeTest() {
         val artifactsToUpgrade = mutableListOf<Artifact>()
         val line = """libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:2.0.0""""
-        val upgradeResult = UpgradeResult(false, null, null, line)
+        val upgradeResult = UpgradeResult(false, null, line)
         Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(line, artifactsToUpgrade))
 
         val artifact = Artifact()
@@ -67,11 +67,12 @@ class DependenciesParserTest {
         val artifact = Artifact()
         artifact.groupId = "com.jdroidtools"
         artifact.artifactId = "jdroid-java-core"
+        artifact.fromVersion = "2.0.0"
         artifact.toVersion = "3.0.0"
         artifactsToUpgrade.add(artifact)
         val oldLine = """libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:2.0.0""""
         val newLine = """libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:3.0.0""""
-        val upgradeResult = UpgradeResult(true, "2.0.0", artifact, newLine)
+        val upgradeResult = UpgradeResult(true, artifact, newLine)
         Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(oldLine, artifactsToUpgrade))
     }
 }

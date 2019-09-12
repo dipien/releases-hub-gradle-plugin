@@ -1,6 +1,5 @@
-package com.releaseshub.gradle.plugin.task
+package com.releaseshub.gradle.plugin.artifacts
 
-import com.releaseshub.gradle.plugin.artifacts.Artifact
 import org.junit.Assert
 import org.junit.Test
 

@@ -21,12 +21,11 @@ object DependenciesParser {
                 it.groupId == matchResult.groupValues[1] && it.artifactId == matchResult.groupValues[2]
             }
             if (artifact != null) {
-                val oldVersion = matchResult.groupValues[3]
-                val newLine = line.replaceFirst(oldVersion, artifact.toVersion!!)
-                return UpgradeResult(true, oldVersion, artifact, newLine)
+                val newLine = line.replaceFirst(artifact.fromVersion!!, artifact.toVersion!!)
+                return UpgradeResult(true, artifact, newLine)
             }
         }
-        return UpgradeResult(false, null, null, line)
+        return UpgradeResult(false, null, line)
     }
 
     private fun getMatchResult(line: String): MatchResult? {
