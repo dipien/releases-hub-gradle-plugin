@@ -130,11 +130,11 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 try {
                     var pullRequest = pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch)
                     if (pullRequest == null) {
-                        val pullRequestBody = PullRequestBodyGenerator.createPullRequestBody(upgradeResults)
+                        val pullRequestBody = PullRequestGenerator.createBody(upgradeResults)
                         pullRequest = pullRequestService.createPullRequest(repositoryIdProvider, pullRequestTitle, pullRequestBody, headBranch, baseBranch)
                         log("The pull request #" + pullRequest!!.number + " was successfully created.")
                     } else {
-                        val pullRequestBody = PullRequestBodyGenerator.createPullRequestBody(upgradeResults, pullRequest.body)
+                        val pullRequestBody = PullRequestGenerator.createBody(upgradeResults, pullRequest.body)
                         pullRequestService.editPullRequest(repositoryIdProvider, pullRequest.number, pullRequest.title, pullRequestBody, IssueService.STATE_OPEN, baseBranch)
                         log("The pull request #" + pullRequest.number + " already exists, editing it")
                     }
