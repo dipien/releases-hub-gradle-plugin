@@ -134,9 +134,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
                         pullRequest = pullRequestService.createPullRequest(repositoryIdProvider, pullRequestTitle, pullRequestBody, headBranch, baseBranch)
                         log("The pull request #" + pullRequest!!.number + " was successfully created.")
                     } else {
-                        val pullRequestBody = PullRequestGenerator.createBody(upgradeResults, pullRequest.body)
-                        pullRequestService.editPullRequest(repositoryIdProvider, pullRequest.number, pullRequest.title, pullRequestBody, IssueService.STATE_OPEN, baseBranch)
-                        log("The pull request #" + pullRequest.number + " already exists, editing it")
+                        val pullRequestComment = PullRequestGenerator.createComment(upgradeResults)
+                        val issueService = IssueService(client)
+                        issueService.createComment(repositoryIdProvider, pullRequest.number, pullRequestComment)
+                        log("The pull request #" + pullRequest.number + " already exists, adding a comment")
                     }
                 } catch (e: IOException) {
                     throw RuntimeException(e)
