@@ -80,7 +80,7 @@ We suggest to define your dependencies on `/buildSrc/src/main/kotlin/Libs.kt` an
 
 ```kotlin
 object Libs {
-    const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40"
+    const val KOTLIN = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40"
 }
 ```
 
@@ -88,7 +88,7 @@ object Libs {
 
 ```kotlin
 object BuildLibs {
-    const val kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
+    const val KOTLIN_PLUGIN = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
 }
 ```
 
@@ -100,12 +100,12 @@ apply plugin: "com.releaseshub.gradle.plugin"
 
 buildscript {
     dependencies {
-        classpath(BuildLibs.kotlin_plugin)
+        classpath(BuildLibs.KOTLIN_PLUGIN)
     }
 }
 
 dependencies {
-    compile(Libs.kotlin)
+    compile(Libs.KOTLIN)
 }
 ```
 
