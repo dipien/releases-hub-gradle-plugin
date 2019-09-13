@@ -1,6 +1,13 @@
 # Change Log
 
-## [v0.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v0.1.0) (2019-09-03)
+## [v0.2.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v0.2.0) (2019-09-13)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v0.1.0...v0.2.0)
+
+**Fixed bugs:**
+
+- Duplicated PR descriptions [\#9](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/9)
+
+## [v0.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v0.1.0) (2019-09-04)
 **Implemented enhancements:**
 
 - New upgradeDependencies task [\#7](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/7)
