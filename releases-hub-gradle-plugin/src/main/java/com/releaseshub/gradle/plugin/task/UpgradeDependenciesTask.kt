@@ -41,6 +41,8 @@ open class UpgradeDependenciesTask : AbstractTask() {
             getExtension().validateGitHubRepositoryOwner()
             getExtension().validateGitHubRepositoryName()
             getExtension().validateGitHubWriteToken()
+
+            prepareGitBranch()
         }
 
         val artifacts = mutableSetOf<Artifact>()
@@ -60,11 +62,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
         val artifactsToUpgrade = createArtifactsService().getArtifactsToUpgrade(artifacts.toList(), getRepositories())
         if (artifactsToUpgrade.isNotEmpty()) {
-
-            if (pullRequestEnabled) {
-                prepareGitBranch()
-            }
-
             val upgradeResults = mutableListOf<UpgradeResult>()
             filesMap.entries.forEach {
                 File(it.key).bufferedWriter().use { out ->
@@ -90,6 +87,8 @@ open class UpgradeDependenciesTask : AbstractTask() {
             if (pullRequestEnabled) {
                 createPullRequest(upgradeResults)
             }
+        } else {
+            log("No dependencies upgraded")
         }
     }
 
@@ -113,6 +112,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         }
 
         // Try to merge from baseBranch to headBranch
+        // TODO If there is a conflict, it will fail. Add an error message here telling that the dev need to merge and resolve the conflicts
         gitHelper.merge(baseBranch!!)
     }
 
