@@ -79,9 +79,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
             }
 
             if (upgradeResults.isNullOrEmpty()) {
-                log("No dependencies to upgrade")
+                log("No dependencies upgraded")
             } else {
-                log("Dependencies to upgrade:")
+                log("Dependencies upgraded:")
                 upgradeResults.forEach {
                     log(" - ${it.artifact} ${it.artifact?.fromVersion} -> ${it.artifact?.toVersion}")
                 }
