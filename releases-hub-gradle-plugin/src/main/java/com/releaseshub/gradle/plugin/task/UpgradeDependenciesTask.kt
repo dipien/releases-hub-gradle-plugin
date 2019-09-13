@@ -78,8 +78,13 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 }
             }
 
-            upgradeResults.forEach {
-                log(" - ${it.artifact} ${it.artifact?.fromVersion} -> ${it.artifact?.toVersion}")
+            if (upgradeResults.isNullOrEmpty()) {
+                log("No dependencies to upgrade")
+            } else {
+                log("Dependencies to upgrade:")
+                upgradeResults.forEach {
+                    log(" - ${it.artifact} ${it.artifact?.fromVersion} -> ${it.artifact?.toVersion}")
+                }
             }
 
             if (pullRequestEnabled) {

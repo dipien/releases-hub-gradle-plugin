@@ -25,8 +25,15 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             }
         }
 
-        createArtifactsService().getArtifactsToUpgrade(artifacts, getRepositories()).forEach {
-            log(" - $it ${it.fromVersion} -> ${it.toVersion}")
+        val artifactsToUpgrade = createArtifactsService().getArtifactsToUpgrade(artifacts, getRepositories())
+
+        if (artifactsToUpgrade.isNullOrEmpty()) {
+            log("No dependencies to upgrade")
+        } else {
+            log("Dependencies to upgrade:")
+            artifactsToUpgrade.forEach {
+                log(" - $it ${it.fromVersion} -> ${it.toVersion}")
+            }
         }
     }
 }
