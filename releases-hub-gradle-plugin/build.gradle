@@ -6,16 +6,16 @@ apply plugin: "com.jdroidtools.gradle.plugin"
 
 buildscript {
 	dependencies {
-		classpath BuildLibs.jdroid_gradle_project_plugin
+		classpath BuildLibs.JDROID_GRADLE_PROJECT_PLUGIN
 	}
 }
 
 dependencies {
-	compile(Libs.jdroid_java_core)
-	compile(Libs.jdroid_java_http_okhttp)
-	compile(Libs.jdroid_java_github)
+	compile(Libs.JDROID_JAVA_CORE)
+	compile(Libs.JDROID_JAVA_HTTP_OKHTTP)
+	compile(Libs.JDROID_JAVA_GITHUB)
 
-	testCompile(Libs.junit)
+	testCompile(Libs.JUNIT)
 }
 
 gradlePlugin {

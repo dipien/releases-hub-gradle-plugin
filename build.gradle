@@ -27,7 +27,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath BuildLibs.jdroid_gradle_root_plugin
+		classpath BuildLibs.JDROID_GRADLE_ROOT_PLUGIN
 	}
 }
 
