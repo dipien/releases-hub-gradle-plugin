@@ -12,7 +12,7 @@ buildscript {
 
 	buildscript {
 		dependencies {
-			classpath(BuildLibs.releases_hub_gradle_plugin)
+			classpath(BuildLibs.RELEASES_HUB_GRADLE_PLUGIN)
 		}
 	}
 }

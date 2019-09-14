@@ -5,10 +5,10 @@ apply plugin: "kotlin"
 
 buildscript {
 	dependencies {
-		classpath(BuildLibs.kotlin_plugin)
+		classpath(BuildLibs.KOTLIN_PLUGIN)
 	}
 }
 
 dependencies {
-	compile(Libs.kotlin)
+	compile(Libs.KOTLIN)
 }
