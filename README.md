@@ -26,6 +26,8 @@ buildscript {
 apply plugin: "com.releaseshub.gradle.plugin"
 ```
 
+#### How to configure the properties
+
 All the plugin configuration properties can be added using any of the following ways:
 
 * Using the `releasesHub` extension on the build.gradle. For example:
