@@ -94,7 +94,7 @@ object BuildLibs {
 }
 ```
 
-##### build.gradle
+##### Root build.gradle
 
 ```groovy
 apply plugin: "kotlin"
@@ -110,6 +110,8 @@ dependencies {
     compile(Libs.KOTLIN)
 }
 ```
+
+See the [sample](/sample) for more details.
 
 ### Tasks
 
