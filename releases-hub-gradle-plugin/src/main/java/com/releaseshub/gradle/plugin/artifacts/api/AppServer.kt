@@ -9,8 +9,7 @@ enum class AppServer(
     private val isProduction: Boolean
 ) : Server {
 
-    // TODO Change supportSsl to true once it is fixed on prod
-    PROD(null, false, true) {
+    PROD(null, true, true) {
         override fun getDomain(): String? {
             return "api.releaseshub.com"
         }
