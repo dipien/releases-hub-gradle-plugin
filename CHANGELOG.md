@@ -1,5 +1,13 @@
 # Change Log
 
+## [v1.0.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.0.0) (2019-09-15)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v0.2.0...v1.0.0)
+
+**Implemented enhancements:**
+
+- Support dependenciesBasePath property [\#15](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/15)
+- Use https on server requests [\#8](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/8)
+
 ## [v0.2.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v0.2.0) (2019-09-13)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v0.1.0...v0.2.0)
 
