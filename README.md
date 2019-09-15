@@ -1,6 +1,8 @@
 # Releases Hub Gradle Plugin
 Gradle Plugin to automatically upgrade the project dependencies and send a GitHub pull request with the changes
 
+![](wiki/pull_request.png)
+
 ## Continuous Integration
 |Branch|Status|Workflows|Insights|
 | ------------- | ------------- | ------------- | ------------- |
