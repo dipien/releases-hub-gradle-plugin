@@ -14,7 +14,7 @@ open class ListDependenciesTask : AbstractTask() {
 
         dependenciesClassNames!!.forEach {
             log(it)
-            project.rootProject.file(DEPENDENCIES_BASE_PATH + it).forEachLine { line ->
+            project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
                 val artifact = DependenciesParser.extractArtifact(line)
                 if (artifact != null && artifact.match(includes, excludes)) {
                     log(" - $artifact:${artifact.fromVersion}")

@@ -8,19 +8,15 @@ import com.releaseshub.gradle.plugin.artifacts.api.AppService
 import org.gradle.api.DefaultTask
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.TaskAction
-import java.io.File
 
 abstract class AbstractTask : DefaultTask() {
-
-    companion object {
-        val DEPENDENCIES_BASE_PATH = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
-    }
 
     var logLevel: LogLevel? = null
     protected lateinit var propertyResolver: PropertyResolver
     protected lateinit var commandExecutor: CommandExecutor
     protected lateinit var gitHelper: GitHelper
 
+    var dependenciesBasePath: String? = null
     var dependenciesClassNames: List<String>? = null
     lateinit var includes: List<String>
     lateinit var excludes: List<String>

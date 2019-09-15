@@ -52,6 +52,12 @@ ext.gitHubWriteToken = "123"
 
 #### Common Properties
 
+###### Dependencies base path
+
+The base path for the class names where the dependencies are defined. The default value is `buildSrc/src/main/kotlin/`. This property is required
+    
+    dependenciesBasePath = "buildSrc/src/main/kotlin/"
+    
 ###### Dependencies class names
 
 The class names where the dependencies are defined. The default value is `["Libs.kt", "BuildLibs.kt"]`. This property is required

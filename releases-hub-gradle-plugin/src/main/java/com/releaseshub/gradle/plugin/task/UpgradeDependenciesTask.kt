@@ -49,8 +49,8 @@ open class UpgradeDependenciesTask : AbstractTask() {
         val filesMap = mutableMapOf<String, List<String>>()
 
         dependenciesClassNames!!.forEach {
-            val lines = project.rootProject.file(DEPENDENCIES_BASE_PATH + it).readLines()
-            filesMap[DEPENDENCIES_BASE_PATH + it] = lines
+            val lines = project.rootProject.file(dependenciesBasePath + it).readLines()
+            filesMap[dependenciesBasePath + it] = lines
 
             lines.forEach { line ->
                 val artifact = DependenciesParser.extractArtifact(line)

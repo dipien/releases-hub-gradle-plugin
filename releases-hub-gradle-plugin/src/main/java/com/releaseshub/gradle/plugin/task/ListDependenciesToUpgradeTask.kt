@@ -17,7 +17,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 
         val artifacts = mutableListOf<Artifact>()
         dependenciesClassNames!!.forEach {
-            project.rootProject.file(DEPENDENCIES_BASE_PATH + it).forEachLine { line ->
+            project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
                 val artifact = DependenciesParser.extractArtifact(line)
                 if (artifact != null && artifact.match(includes, excludes)) {
                     artifacts.add(artifact)

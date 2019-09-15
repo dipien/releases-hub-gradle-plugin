@@ -1,5 +1,6 @@
 package com.releaseshub.gradle.plugin
 
+import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.task.ListDependenciesTask
 import com.releaseshub.gradle.plugin.task.ListDependenciesToUpgradeTask
 import com.releaseshub.gradle.plugin.task.UpgradeDependenciesTask
@@ -20,29 +21,17 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 
         val listDependenciesTask = project.tasks.create("listDependencies", ListDependenciesTask::class.java)
         project.afterEvaluate {
-            listDependenciesTask.dependenciesClassNames = extension.dependenciesClassNames
-            listDependenciesTask.includes = extension.includes
-            listDependenciesTask.excludes = extension.excludes
-            listDependenciesTask.logLevel = extension.logLevel
+            initTask(listDependenciesTask)
         }
 
         val listDependenciesToUpgradeTask = project.tasks.create("listDependenciesToUpgrade", ListDependenciesToUpgradeTask::class.java)
         project.afterEvaluate {
-            listDependenciesToUpgradeTask.serverName = extension.serverName
-            listDependenciesToUpgradeTask.userToken = extension.userToken
-            listDependenciesToUpgradeTask.dependenciesClassNames = extension.dependenciesClassNames
-            listDependenciesToUpgradeTask.includes = extension.includes
-            listDependenciesToUpgradeTask.excludes = extension.excludes
-            listDependenciesToUpgradeTask.logLevel = extension.logLevel
+            initTask(listDependenciesToUpgradeTask)
         }
 
         val upgradeDependenciesTask = project.tasks.create("upgradeDependencies", UpgradeDependenciesTask::class.java)
         project.afterEvaluate {
-            upgradeDependenciesTask.serverName = extension.serverName
-            upgradeDependenciesTask.userToken = extension.userToken
-            upgradeDependenciesTask.dependenciesClassNames = extension.dependenciesClassNames
-            upgradeDependenciesTask.includes = extension.includes
-            upgradeDependenciesTask.excludes = extension.excludes
+            initTask(upgradeDependenciesTask)
             upgradeDependenciesTask.headBranch = extension.headBranch
             upgradeDependenciesTask.baseBranch = extension.baseBranch
             upgradeDependenciesTask.commitMessage = extension.commitMessage
@@ -53,7 +42,16 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
             upgradeDependenciesTask.gitHubRepositoryOwner = extension.gitHubRepositoryOwner
             upgradeDependenciesTask.gitHubRepositoryName = extension.gitHubRepositoryName
             upgradeDependenciesTask.gitHubWriteToken = extension.gitHubWriteToken
-            upgradeDependenciesTask.logLevel = extension.logLevel
         }
+    }
+
+    private fun initTask(task: AbstractTask) {
+        task.serverName = extension.serverName
+        task.userToken = extension.userToken
+        task.dependenciesBasePath = extension.dependenciesBasePath
+        task.dependenciesClassNames = extension.dependenciesClassNames
+        task.includes = extension.includes
+        task.excludes = extension.excludes
+        task.logLevel = extension.logLevel
     }
 }
