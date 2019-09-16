@@ -41,7 +41,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         dependenciesBasePath = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
         dependenciesClassNames = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
         includes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
-        excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
+        excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::excludes.name, listOf()) ?: listOf()
 
         headBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranch.name, "dependencies_upgrade")
         baseBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::baseBranch.name, "master")

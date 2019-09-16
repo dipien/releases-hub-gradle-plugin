@@ -7,7 +7,7 @@ Gradle Plugin to automatically upgrade the project dependencies and send a GitHu
 |Branch|Status|Workflows|Insights|
 | ------------- | ------------- | ------------- | ------------- |
 |master|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/master.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/master)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/master)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/master)|
-|production|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/production.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/production)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/production)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/production)|
+|stable|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/stable.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/stable)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/stable)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/stable)|
 
 ## Setup
 
@@ -214,3 +214,8 @@ We strongly recommend to not use the `releasesHub` extension for this property, 
 Required String (only if `pullRequestEnabled` is `true`).
 
     gitHubWriteToken = "123"
+
+### Privacy Policy
+
+The `listDependenciesToUpgrade` & `upgradeDependencies` tasks send to **Releases Hub** servers the **groupId**, **artifactId** and **version** of the project dependencies, in order to process and fetch the artifacts updates. 
+That information is sent using **SSL** and it is NOT stored on the servers. The dependencies excluded through the plugin configuration are not send to the servers.
