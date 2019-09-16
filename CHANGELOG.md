@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.0.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.0.1) (2019-09-16)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.0...v1.0.1)
+
+**Fixed bugs:**
+
+- excludes property is using includes command line property [\#18](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/18)
+
 ## [v1.0.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.0.0) (2019-09-15)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v0.2.0...v1.0.0)
 
