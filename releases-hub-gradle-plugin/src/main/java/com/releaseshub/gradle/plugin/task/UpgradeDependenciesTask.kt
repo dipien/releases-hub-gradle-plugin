@@ -4,7 +4,7 @@ import com.jdroid.github.RepositoryId
 import com.jdroid.github.client.GitHubClient
 import com.jdroid.github.service.IssueService
 import com.jdroid.github.service.PullRequestService
-import com.releaseshub.gradle.plugin.artifacts.Artifact
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import java.io.File
 import java.io.IOException
@@ -45,7 +45,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             prepareGitBranch()
         }
 
-        val artifacts = mutableSetOf<Artifact>()
+        val artifacts = mutableSetOf<ArtifactUpgrade>()
         val filesMap = mutableMapOf<String, List<String>>()
 
         dependenciesClassNames!!.forEach {
@@ -80,7 +80,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             } else {
                 log("Dependencies upgraded:")
                 upgradeResults.forEach {
-                    log(" - ${it.artifact} ${it.artifact?.fromVersion} -> ${it.artifact?.toVersion}")
+                    log(" - ${it.artifactUpgrade} ${it.artifactUpgrade?.fromVersion} -> ${it.artifactUpgrade?.toVersion}")
                 }
             }
 

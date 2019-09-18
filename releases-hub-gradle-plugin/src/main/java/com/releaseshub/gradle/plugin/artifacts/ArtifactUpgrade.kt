@@ -1,6 +1,6 @@
 package com.releaseshub.gradle.plugin.artifacts
 
-class Artifact {
+class ArtifactUpgrade {
 
     var name: String? = null
     var groupId: String? = null
@@ -43,7 +43,7 @@ class Artifact {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Artifact
+        other as ArtifactUpgrade
 
         if (groupId != other.groupId) return false
         if (artifactId != other.artifactId) return false

@@ -1,5 +1,5 @@
 package com.releaseshub.gradle.plugin.task
 
-import com.releaseshub.gradle.plugin.artifacts.Artifact
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 
-data class UpgradeResult(val upgraded: Boolean, val artifact: Artifact?, val line: String)
+data class UpgradeResult(val upgraded: Boolean, val artifactUpgrade: ArtifactUpgrade?, val line: String)

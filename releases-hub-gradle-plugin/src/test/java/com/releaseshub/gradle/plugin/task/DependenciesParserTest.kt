@@ -1,6 +1,6 @@
 package com.releaseshub.gradle.plugin.task
 
-import com.releaseshub.gradle.plugin.artifacts.Artifact
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import org.junit.Assert
 import org.junit.Test
 
@@ -27,18 +27,18 @@ class DependenciesParserTest {
 
     @Test
     fun extractWithVersionTest() {
-        val artifact = Artifact("com.jdroidtools", "jdroid-java-core", "2.0.0")
+        val artifact = ArtifactUpgrade("com.jdroidtools", "jdroid-java-core", "2.0.0")
         Assert.assertEquals(artifact, DependenciesParser.extractArtifact("""libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:2.0.0""""))
     }
 
     @Test
     fun upgradeCommentTest() {
-        val artifactsToUpgrade = mutableListOf<Artifact>()
+        val artifactsToUpgrade = mutableListOf<ArtifactUpgrade>()
         val line = "// this is a comment"
         val upgradeResult = UpgradeResult(false, null, line)
         Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(line, artifactsToUpgrade))
 
-        val artifact = Artifact()
+        val artifact = ArtifactUpgrade()
         artifact.groupId = "a"
         artifact.artifactId = "b"
         artifact.toVersion = "1.0.0"
@@ -48,12 +48,12 @@ class DependenciesParserTest {
 
     @Test
     fun notUpgradeTest() {
-        val artifactsToUpgrade = mutableListOf<Artifact>()
+        val artifactsToUpgrade = mutableListOf<ArtifactUpgrade>()
         val line = """libs.jdroid_java_core = "com.jdroidtools:jdroid-java-core:2.0.0""""
         val upgradeResult = UpgradeResult(false, null, line)
         Assert.assertEquals(upgradeResult, DependenciesParser.upgradeDependency(line, artifactsToUpgrade))
 
-        val artifact = Artifact()
+        val artifact = ArtifactUpgrade()
         artifact.groupId = "a"
         artifact.artifactId = "b"
         artifact.toVersion = "1.0.0"
@@ -63,8 +63,8 @@ class DependenciesParserTest {
 
     @Test
     fun upgradeTest() {
-        val artifactsToUpgrade = mutableListOf<Artifact>()
-        val artifact = Artifact()
+        val artifactsToUpgrade = mutableListOf<ArtifactUpgrade>()
+        val artifact = ArtifactUpgrade()
         artifact.groupId = "com.jdroidtools"
         artifact.artifactId = "jdroid-java-core"
         artifact.fromVersion = "2.0.0"
