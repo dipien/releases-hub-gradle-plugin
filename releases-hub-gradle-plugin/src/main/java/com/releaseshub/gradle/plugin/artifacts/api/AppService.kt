@@ -14,6 +14,7 @@ class AppService(private val server: Server, private val appVersion: String, pri
 
     fun getArtifactsToUpgrade(artifactsToCheck: List<ArtifactUpgrade>): List<ArtifactUpgrade> {
         val httpService = newPostService("artifacts", "upgrade")
+        httpService.addQueryParameter("returnNotUpgraded", true)
         val body = ArtifactUpgradeBody()
         body.artifactsToCheck = artifactsToCheck
         autoMarshall(httpService, body)
