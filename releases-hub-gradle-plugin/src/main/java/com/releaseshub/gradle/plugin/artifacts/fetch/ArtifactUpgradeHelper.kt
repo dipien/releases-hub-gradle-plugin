@@ -1,12 +1,10 @@
 package com.releaseshub.gradle.plugin.artifacts.fetch
 
 import com.jdroid.java.http.exception.HttpResponseException
-import com.jdroid.java.utils.LoggerUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import com.releaseshub.gradle.plugin.common.LoggerHelper
 
 object ArtifactUpgradeHelper {
-
-    private val LOGGER = LoggerUtils.getLogger(ArtifactUpgradeHelper::class.java)
 
     fun getArtifactsToUpgrade(artifactsToCheck: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>): List<ArtifactUpgrade> {
         val artifactsToUpgrade = mutableListOf<ArtifactUpgrade>()
@@ -52,7 +50,7 @@ object ArtifactUpgradeHelper {
         }
 
         if (releases.isEmpty()) {
-            LOGGER.warn("Artifact $artifact not found on any repository")
+            LoggerHelper.logger.warn("Artifact $artifact not found on any repository")
             return null
         }
         return artifact
@@ -67,7 +65,7 @@ object ArtifactUpgradeHelper {
                 releases.add(release)
             }
         } catch (e: HttpResponseException) {
-            LOGGER.info("Error when fetching fetch for $artifact on repository ${repository.name}")
+            LoggerHelper.logger.info("Error when fetching fetch for $artifact on repository ${repository.name}")
         }
         return releases
     }

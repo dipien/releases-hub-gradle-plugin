@@ -6,13 +6,8 @@ import com.jdroid.java.http.HttpServiceProcessor
 import com.jdroid.java.http.Server
 import com.jdroid.java.http.api.AbstractApiService
 import com.jdroid.java.http.mock.AbstractMockHttpService
-import com.jdroid.java.utils.LoggerUtils
 
 class MavenRepositoryService(private val serverName: String, private val serverUrl: String) : AbstractApiService() {
-
-    companion object {
-        private val LOGGER = LoggerUtils.getLogger(MavenRepositoryService::class.java)
-    }
 
     fun getVersions(artifact: Artifact): List<String> {
         val httpService = newGetService()
@@ -20,7 +15,6 @@ class MavenRepositoryService(private val serverName: String, private val serverU
         httpService.addUrlSegment(artifact.groupId!!.replace(".", "/"))
         httpService.addUrlSegment(artifact.artifactId)
         httpService.addUrlSegment("maven-metadata.xml")
-        LOGGER.info(httpService.url)
         return httpService.execute(MavenMetadataParser())
     }
 

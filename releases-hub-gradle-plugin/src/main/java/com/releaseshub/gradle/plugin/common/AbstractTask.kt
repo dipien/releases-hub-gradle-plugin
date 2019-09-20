@@ -26,6 +26,10 @@ abstract class AbstractTask : DefaultTask() {
 
     @TaskAction
     fun doExecute() {
+
+        LoggerHelper.logger = logger
+        LoggerHelper.logLevel = logLevel!!
+
         propertyResolver = PropertyResolver(project)
         commandExecutor = CommandExecutor(project, logLevel)
         gitHelper = GitHelper(commandExecutor)
@@ -37,7 +41,7 @@ abstract class AbstractTask : DefaultTask() {
     }
 
     protected fun log(message: String) {
-        logger.log(logLevel, message)
+        LoggerHelper.log(message)
     }
 
     protected fun createArtifactsService(): ArtifactsService {
