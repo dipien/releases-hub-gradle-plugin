@@ -9,15 +9,13 @@ import com.jdroid.java.http.mock.AbstractMockHttpService
 import com.jdroid.java.http.parser.json.GsonParser
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeBody
-import com.releaseshub.gradle.plugin.artifacts.MavenArtifactRepository
 
 class AppService(private val server: Server, private val appVersion: String, private val userToken: String) : AbstractApiService() {
 
-    fun getArtifactsToUpgrade(artifactUpgrades: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>): List<ArtifactUpgrade> {
+    fun getArtifactsToUpgrade(artifactsToCheck: List<ArtifactUpgrade>): List<ArtifactUpgrade> {
         val httpService = newPostService("artifacts", "upgrade")
         val body = ArtifactUpgradeBody()
-        body.artifactsToCheck = artifactUpgrades
-        body.repositories = repositories
+        body.artifactsToCheck = artifactsToCheck
         autoMarshall(httpService, body)
         return httpService.execute(GsonParser(object : TypeToken<Collection<ArtifactUpgrade>>() {}.type))
     }

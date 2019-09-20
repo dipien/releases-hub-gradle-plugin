@@ -47,8 +47,6 @@ class ArtifactUpgrade {
 
         if (groupId != other.groupId) return false
         if (artifactId != other.artifactId) return false
-        if (fromVersion != other.fromVersion) return false
-        if (toVersion != other.toVersion) return false
 
         return true
     }
@@ -57,8 +55,6 @@ class ArtifactUpgrade {
         var result = super.hashCode()
         result = 31 * result + (groupId?.hashCode() ?: 0)
         result = 31 * result + (artifactId?.hashCode() ?: 0)
-        result = 31 * result + (fromVersion?.hashCode() ?: 0)
-        result = 31 * result + (toVersion?.hashCode() ?: 0)
         return result
     }
 }
