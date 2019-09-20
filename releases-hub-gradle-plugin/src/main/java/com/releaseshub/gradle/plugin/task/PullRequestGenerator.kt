@@ -15,20 +15,20 @@ object PullRequestGenerator {
 
     private fun addCommonText(builder: StringBuilder, upgradeResults: List<UpgradeResult>) {
         upgradeResults.forEach {
-            builder.appendln("#### ${it.artifact} `${it.artifact?.fromVersion}` -> `${it.artifact?.toVersion}`")
+            builder.appendln("#### ${it.artifactUpgrade} `${it.artifactUpgrade?.fromVersion}` -> `${it.artifactUpgrade?.toVersion}`")
             var atLeastOneItem = false
-            if (it.artifact?.releaseNotesUrl != null) {
-                builder.append("* [Releases notes](${it.artifact.releaseNotesUrl})")
+            if (it.artifactUpgrade?.releaseNotesUrl != null) {
+                builder.append("* [Releases notes](${it.artifactUpgrade.releaseNotesUrl})")
                 atLeastOneItem = true
             }
-            if (it.artifact?.sourceCodeUrl != null) {
+            if (it.artifactUpgrade?.sourceCodeUrl != null) {
                 builder.append(if (atLeastOneItem) " | " else "* ")
-                builder.append("[Source code](${it.artifact.sourceCodeUrl})")
+                builder.append("[Source code](${it.artifactUpgrade.sourceCodeUrl})")
                 atLeastOneItem = true
             }
-            if (it.artifact?.documentationUrl != null) {
+            if (it.artifactUpgrade?.documentationUrl != null) {
                 builder.append(if (atLeastOneItem) " | " else "* ")
-                builder.append("[Documentation](${it.artifact.documentationUrl})")
+                builder.append("[Documentation](${it.artifactUpgrade.documentationUrl})")
                 atLeastOneItem = true
             }
             if (atLeastOneItem) {

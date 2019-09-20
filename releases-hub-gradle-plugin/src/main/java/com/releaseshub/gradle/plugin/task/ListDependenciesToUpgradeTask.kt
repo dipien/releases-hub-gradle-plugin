@@ -1,6 +1,6 @@
 package com.releaseshub.gradle.plugin.task
 
-import com.releaseshub.gradle.plugin.artifacts.Artifact
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.common.AbstractTask
 
 open class ListDependenciesToUpgradeTask : AbstractTask() {
@@ -15,7 +15,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
         getExtension().validateUserToken()
         getExtension().validateDependenciesClassNames()
 
-        val artifacts = mutableListOf<Artifact>()
+        val artifacts = mutableListOf<ArtifactUpgrade>()
         dependenciesClassNames!!.forEach {
             project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
                 val artifact = DependenciesParser.extractArtifact(line)

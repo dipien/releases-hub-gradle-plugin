@@ -2,9 +2,10 @@ package com.releaseshub.gradle.plugin.common
 
 import com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin
 import com.releaseshub.gradle.plugin.ReleasesHubGradlePluginExtension
-import com.releaseshub.gradle.plugin.artifacts.MavenArtifactRepository
+import com.releaseshub.gradle.plugin.artifacts.ArtifactsService
 import com.releaseshub.gradle.plugin.artifacts.api.AppServer
 import com.releaseshub.gradle.plugin.artifacts.api.AppService
+import com.releaseshub.gradle.plugin.artifacts.fetch.MavenArtifactRepository
 import org.gradle.api.DefaultTask
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.TaskAction
@@ -25,6 +26,10 @@ abstract class AbstractTask : DefaultTask() {
 
     @TaskAction
     fun doExecute() {
+
+        LoggerHelper.logger = logger
+        LoggerHelper.logLevel = logLevel!!
+
         propertyResolver = PropertyResolver(project)
         commandExecutor = CommandExecutor(project, logLevel)
         gitHelper = GitHelper(commandExecutor)
@@ -36,11 +41,11 @@ abstract class AbstractTask : DefaultTask() {
     }
 
     protected fun log(message: String) {
-        logger.log(logLevel, message)
+        LoggerHelper.log(message)
     }
 
-    protected fun createArtifactsService(): AppService {
-        return AppService(AppServer.valueOf(serverName!!), project.version.toString(), userToken!!)
+    protected fun createArtifactsService(): ArtifactsService {
+        return ArtifactsService(AppService(AppServer.valueOf(serverName!!), project.version.toString(), userToken!!))
     }
 
     protected fun getRepositories(): List<MavenArtifactRepository> {

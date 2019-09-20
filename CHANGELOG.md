@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.0.2](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.0.2) (2019-09-20)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.1...v1.0.2)
+
+**Fixed bugs:**
+
+- Resolve upgrades on plugin \(instead of server\) to avoid timeouts [\#19](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/19)
+
 ## [v1.0.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.0.1) (2019-09-16)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.0...v1.0.1)
 
