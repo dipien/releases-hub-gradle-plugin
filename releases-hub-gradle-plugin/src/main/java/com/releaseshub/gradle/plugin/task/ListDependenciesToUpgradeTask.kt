@@ -31,8 +31,25 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             log("No dependencies to upgrade")
         } else {
             log("Dependencies to upgrade:")
+            log("")
             artifactsToUpgrade.forEach {
-                log(" - $it ${it.fromVersion} -> ${it.toVersion}")
+                log("* $it ${it.fromVersion} -> ${it.toVersion}")
+                var atLeastOneItem = false
+                if (it.releaseNotesUrl != null) {
+                    log("  - Releases notes: ${it.releaseNotesUrl}")
+                    atLeastOneItem = true
+                }
+                if (it.sourceCodeUrl != null) {
+                    log("  - Source code: ${it.sourceCodeUrl}")
+                    atLeastOneItem = true
+                }
+                if (it.documentationUrl != null) {
+                    log("  - Documentation: ${it.documentationUrl}")
+                    atLeastOneItem = true
+                }
+                if (atLeastOneItem) {
+                    log("")
+                }
             }
         }
     }
