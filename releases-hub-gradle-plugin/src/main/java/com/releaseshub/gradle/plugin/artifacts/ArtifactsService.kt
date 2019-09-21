@@ -13,6 +13,6 @@ class ArtifactsService(private val apiService: AppService) {
         artifactsToCheckLocally.removeAll(artifactsUpgrades)
 
         artifactsUpgrades.addAll(ArtifactUpgradeHelper.getArtifactsToUpgrade(artifactsToCheckLocally, repositories))
-        return artifactsUpgrades.filter { it.fromVersion != it.toVersion }
+        return artifactsUpgrades.filter { it.fromVersion != it.toVersion }.sortedBy { it.toString() }
     }
 }
