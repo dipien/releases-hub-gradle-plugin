@@ -1,6 +1,7 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 
 open class ListDependenciesToUpgradeTask : AbstractTask() {
@@ -31,21 +32,29 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
         }
 
         if (excludedArtifacts.isNotEmpty()) {
-            log("Excluded dependencies:")
-            log("")
+            log("Dependencies excluded:")
             excludedArtifacts.forEach {
                 log(" * $it ${it.fromVersion}")
             }
             log("")
         }
 
-        val artifactsToUpgrade = createArtifactsService().getArtifactsToUpgrade(artifacts, getRepositories())
+        val artifactsUpgrades = createArtifactsService().getArtifactsUpgrades(artifacts, getRepositories())
 
+        val notFoundArtifacts = artifactsUpgrades.filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.NOT_FOUND }
+        if (notFoundArtifacts.isNotEmpty()) {
+            log("Dependencies not found:")
+            notFoundArtifacts.forEach {
+                log(" * $it ${it.fromVersion}")
+            }
+            log("")
+        }
+
+        val artifactsToUpgrade = artifactsUpgrades.filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
         if (artifactsToUpgrade.isNullOrEmpty()) {
             log("No dependencies to upgrade")
         } else {
             log("Dependencies to upgrade:")
-            log("")
             artifactsToUpgrade.forEach {
                 log(" * $it ${it.fromVersion} -> ${it.toVersion}")
                 if (it.releaseNotesUrl != null) {

@@ -5,6 +5,7 @@ import com.jdroid.github.client.GitHubClient
 import com.jdroid.github.service.IssueService
 import com.jdroid.github.service.PullRequestService
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import java.io.File
 import java.io.IOException
@@ -60,7 +61,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             }
         }
 
-        val artifactsToUpgrade = createArtifactsService().getArtifactsToUpgrade(artifacts.toList(), getRepositories())
+        val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(artifacts.toList(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
         if (artifactsToUpgrade.isNotEmpty()) {
             val upgradeResults = mutableListOf<UpgradeResult>()
             filesMap.entries.forEach {

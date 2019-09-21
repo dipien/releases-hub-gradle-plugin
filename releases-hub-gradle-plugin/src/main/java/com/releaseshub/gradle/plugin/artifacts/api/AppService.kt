@@ -9,6 +9,7 @@ import com.jdroid.java.http.mock.AbstractMockHttpService
 import com.jdroid.java.http.parser.json.GsonParser
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeBody
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 
 class AppService(private val server: Server, private val appVersion: String, private val userToken: String) : AbstractApiService() {
 
@@ -18,7 +19,17 @@ class AppService(private val server: Server, private val appVersion: String, pri
         val body = ArtifactUpgradeBody()
         body.artifactsToCheck = artifactsToCheck
         autoMarshall(httpService, body)
-        return httpService.execute(GsonParser(object : TypeToken<Collection<ArtifactUpgrade>>() {}.type))
+        val artifactsToUpgrade: List<ArtifactUpgrade> = httpService.execute(GsonParser(object : TypeToken<Collection<ArtifactUpgrade>>() {}.type))
+
+        // TODO Do this on server side?
+        artifactsToUpgrade.onEach {
+            if (it.fromVersion != it.toVersion) {
+                it.artifactUpgradeStatus = ArtifactUpgradeStatus.PENDING_UPGRADE
+            } else {
+                it.artifactUpgradeStatus = ArtifactUpgradeStatus.ALREADY_UPGRADED
+            }
+        }
+        return artifactsToUpgrade
     }
 
     override fun getServer(): Server {

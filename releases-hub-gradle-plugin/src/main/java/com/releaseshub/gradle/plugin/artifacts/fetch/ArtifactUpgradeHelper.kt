@@ -2,37 +2,38 @@ package com.releaseshub.gradle.plugin.artifacts.fetch
 
 import com.jdroid.java.http.exception.HttpResponseException
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.LoggerHelper
 
 object ArtifactUpgradeHelper {
 
-    fun getArtifactsToUpgrade(artifactsToCheck: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>): List<ArtifactUpgrade> {
+    fun getArtifactsUpgrades(artifactsToCheck: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>): List<ArtifactUpgrade> {
         val artifactsToUpgrade = mutableListOf<ArtifactUpgrade>()
         artifactsToCheck.forEach { artifactToCheck ->
-            val artifactUpgrade = getArtifactUpgradeOrNull(artifactToCheck, repositories)
-            if (artifactUpgrade != null) {
-                artifactsToUpgrade.add(artifactUpgrade)
-            }
+            artifactsToUpgrade.add(getArtifactUpgrade(artifactToCheck, repositories))
         }
         return artifactsToUpgrade
     }
 
-    private fun getArtifactUpgradeOrNull(artifactToCheck: ArtifactUpgrade, repositories: List<MavenArtifactRepository>): ArtifactUpgrade? {
+    private fun getArtifactUpgrade(artifactToCheck: ArtifactUpgrade, repositories: List<MavenArtifactRepository>): ArtifactUpgrade {
         val artifact = getArtifact(artifactToCheck, repositories)
-        if (artifact != null) {
+        if (!artifact.releases.isNullOrEmpty()) {
             val release = getReleaseToUpgrade(artifactToCheck, artifact)
             if (release != null) {
                 artifactToCheck.toVersion = release.version!!
+                artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.PENDING_UPGRADE
                 return artifactToCheck
             } else {
-                return null
+                artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.ALREADY_UPGRADED
+                return artifactToCheck
             }
         } else {
-            return null
+            artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.NOT_FOUND
+            return artifactToCheck
         }
     }
 
-    private fun getArtifact(artifactToCheck: ArtifactUpgrade, repositories: List<MavenArtifactRepository>): Artifact? {
+    private fun getArtifact(artifactToCheck: ArtifactUpgrade, repositories: List<MavenArtifactRepository>): Artifact {
         val artifact = Artifact()
         artifact.groupId = artifactToCheck.groupId
         artifact.artifactId = artifactToCheck.artifactId
@@ -47,11 +48,6 @@ object ArtifactUpgradeHelper {
                     return@loop
                 }
             }
-        }
-
-        if (releases.isEmpty()) {
-            LoggerHelper.logger.warn("Artifact $artifact not found on any repository")
-            return null
         }
         return artifact
     }
