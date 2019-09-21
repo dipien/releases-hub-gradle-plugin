@@ -16,13 +16,27 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
         getExtension().validateDependenciesClassNames()
 
         val artifacts = mutableListOf<ArtifactUpgrade>()
+        val excludedArtifacts = mutableListOf<ArtifactUpgrade>()
         dependenciesClassNames!!.forEach {
             project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
                 val artifact = DependenciesParser.extractArtifact(line)
-                if (artifact != null && artifact.match(includes, excludes)) {
-                    artifacts.add(artifact)
+                if (artifact != null) {
+                    if (artifact.match(includes, excludes)) {
+                        artifacts.add(artifact)
+                    } else {
+                        excludedArtifacts.add(artifact)
+                    }
                 }
             }
+        }
+
+        if (excludedArtifacts.isNotEmpty()) {
+            log("Excluded dependencies:")
+            log("")
+            excludedArtifacts.forEach {
+                log(" * $it ${it.fromVersion}")
+            }
+            log("")
         }
 
         val artifactsToUpgrade = createArtifactsService().getArtifactsToUpgrade(artifacts, getRepositories())

@@ -35,6 +35,7 @@ apply plugin: "com.releaseshub.gradle.plugin"
 
 releasesHub {
 	dependenciesClassNames = ["com/sample/dependencies/Libs.kt", "com/sample/dependencies/BuildLibs.kt"]
+	excludes = ["ccc", "ddd"]
 	pullRequestEnabled = false
 	gitHubRepositoryOwner = ""
 	gitHubRepositoryName = ""
