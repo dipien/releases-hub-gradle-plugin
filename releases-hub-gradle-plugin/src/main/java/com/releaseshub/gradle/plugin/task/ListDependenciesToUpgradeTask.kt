@@ -33,7 +33,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 
         if (excludedArtifacts.isNotEmpty()) {
             log("Dependencies excluded:")
-            excludedArtifacts.forEach {
+            excludedArtifacts.sortedBy { it.toString() }.forEach {
                 log(" * $it ${it.fromVersion}")
             }
             log("")
