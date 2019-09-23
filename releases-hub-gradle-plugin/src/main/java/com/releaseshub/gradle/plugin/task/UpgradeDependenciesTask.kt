@@ -62,7 +62,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
             artifactsToUpgrade.groupBy { it.groupId }.forEach { (groupId, artifactsToUpgradeByGroup) ->
 
-                val headBranch = headBranchPrefix + groupId
+                val headBranch = headBranchPrefix + groupId!!.replace(".", "_", true)
 
                 if (pullRequestEnabled) {
                     prepareGitBranch(headBranch)
@@ -71,7 +71,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 val upgradeResults = upgradeDependencies(filesMap, artifactsToUpgradeByGroup)
 
                 if (pullRequestEnabled) {
-                    createPullRequest(upgradeResults, headBranch, groupId!!)
+                    createPullRequest(upgradeResults, headBranch, groupId)
                 }
             }
 

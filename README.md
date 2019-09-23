@@ -163,7 +163,7 @@ Whether a pull request with all the upgrades should be created or not. The defau
 
 ###### Head Branch Prefix
 
-The branch's prefix where the commit will be pushed. Also, the head branch's prefix of the pull request to create. Required String (only if `pullRequestEnabled` is `true`).
+The branch's prefix where the commit will be pushed. Also, the head branch's prefix of the pull request to create. Required String (only if `pullRequestEnabled` is `true`). The default value is `dependencies_upgrade/`.
 
     headBranchPrefix = "branch_name_"
 
