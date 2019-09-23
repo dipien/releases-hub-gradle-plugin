@@ -20,10 +20,19 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var includes: List<String>
     var excludes: List<String>
 
-    var headBranch: String?
     var baseBranch: String?
-    var commitMessage: String?
-    var pullRequestTitle: String?
+
+    @Deprecated(message = "Use headBranchPrefix instead. To be removed on v2.0.0")
+    var headBranch: String? = null
+
+    var headBranchPrefix: String?
+
+    @Deprecated(message = "Not used anymore, because we create a commit per update. To be removed on v2.0.0")
+    var commitMessage: String? = null
+
+    @Deprecated(message = "Not used anymore, because we create a pull request per group id. To be removed on v2.0.0")
+    var pullRequestTitle: String? = null
+
     var pullRequestEnabled: Boolean
 
     var gitHubUserName: String?
@@ -43,10 +52,8 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         includes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
         excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::excludes.name, listOf()) ?: listOf()
 
-        headBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranch.name, "dependencies_upgrade")
         baseBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::baseBranch.name, "master")
-        commitMessage = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::commitMessage.name, "Upgraded dependencies")
-        pullRequestTitle = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::pullRequestTitle.name, commitMessage)
+        headBranchPrefix = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranchPrefix.name, "dependencies_upgrade_")
         pullRequestEnabled = propertyResolver.getBooleanProp(ReleasesHubGradlePluginExtension::pullRequestEnabled.name, false) ?: false
 
         gitHubUserName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubUserName.name)
@@ -69,20 +76,12 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         require(!dependenciesClassNames.isNullOrEmpty()) { "The 'dependenciesClassNames' property is required" }
     }
 
-    fun validateHeadBranch() {
-        requireNotNull(headBranch) { "The 'headBranch' property is required" }
-    }
-
     fun validateBaseBranch() {
         requireNotNull(baseBranch) { "The 'baseBranch' property is required" }
     }
 
-    fun validateCommitMessage() {
-        requireNotNull(commitMessage) { "The 'commitMessage' property is required" }
-    }
-
-    fun validatePullRequestTitle() {
-        requireNotNull(pullRequestTitle) { "The 'pullRequestTitle' property is required" }
+    fun validateHeadBranchPrefix() {
+        requireNotNull(headBranchPrefix) { "The 'headBranchPrefix' property is required" }
     }
 
     fun validateGitHubRepositoryOwner() {

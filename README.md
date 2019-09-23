@@ -138,13 +138,15 @@ Print all the dependencies that are upgradeable.
     
 #### Upgrade dependencies
 
-This task execute the following steps if the project have at least one dependency to upgrade:
+This task creates a Github Pull Request for each groupId that have at least one dependency to upgrade. 
 
-* Creates the `headBranch` (if not exists)
+The following steps are executed for each `groupId`: 
+
+* Creates the `headBranch` (`headBranchPrefix` + `groupId`)  (if not exists)
 * Merge from the `baseBranch` to the `headBranch`
-* Upgrade all the dependencies on the `dependenciesClassNames`
-* Commit all the modified files
-* Push the previous commit to the `headBranch`
+* Upgrade all the dependencies defined on the `dependenciesClassNames` for the `groupId`
+* Create a commit for each dependency upgraded
+* Push the previous commits to the `headBranch`
 * Create a GitHub pull request from the `headBranch` to the `baseBranch`
 
 ```
@@ -153,11 +155,17 @@ This task execute the following steps if the project have at least one dependenc
 
 ##### Properties
 
-###### Head Branch
+###### Pull Request Enabled
 
-The branch where the commit will be pushed. Also, the head branch of the pull request to create. Required String (only if `pullRequestEnabled` is `true`).
+Whether a pull request with all the upgrades should be created or not. The default value is `false`
 
-    headBranch = "branch_name"
+    pullRequestEnabled = true
+
+###### Head Branch Prefix
+
+The branch's prefix where the commit will be pushed. Also, the head branch's prefix of the pull request to create. Required String (only if `pullRequestEnabled` is `true`).
+
+    headBranchPrefix = "branch_name_"
 
 ###### Base Branch
 
@@ -176,24 +184,6 @@ The GitHub user name used by the commit command. Optional String.
 The GitHub user email used by the commit command. Optional String.
 
     gitHubUserEmail = "email@mail.com"
-
-###### Commit Message
-
-The commit message. Required String (only if `pullRequestEnabled` is `true`). The default value is `Upgraded dependencies`
-
-    commitMessage = "Upgraded dependencies"
-
-###### Pull Request Title
-
-The pull request title. Optional String. The default value is the `commitMessage` property value.
-
-    pullRequestTitle = "Upgraded dependencies"
-
-###### Pull Request Enabled
-
-Whether a pull request with all the upgrades should be created or not. The default value is `false`
-
-    pullRequestEnabled = true
 
 ###### GitHub Repository Owner
 

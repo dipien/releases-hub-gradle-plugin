@@ -32,10 +32,8 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         val upgradeDependenciesTask = project.tasks.create("upgradeDependencies", UpgradeDependenciesTask::class.java)
         project.afterEvaluate {
             initTask(upgradeDependenciesTask)
-            upgradeDependenciesTask.headBranch = extension.headBranch
             upgradeDependenciesTask.baseBranch = extension.baseBranch
-            upgradeDependenciesTask.commitMessage = extension.commitMessage
-            upgradeDependenciesTask.pullRequestTitle = extension.pullRequestTitle
+            upgradeDependenciesTask.headBranchPrefix = extension.headBranchPrefix
             upgradeDependenciesTask.pullRequestEnabled = extension.pullRequestEnabled
             upgradeDependenciesTask.gitHubUserName = extension.gitHubUserName
             upgradeDependenciesTask.gitHubUserEmail = extension.gitHubUserEmail

@@ -33,4 +33,12 @@ class GitHelper(var commandExecutor: CommandExecutor) {
     fun merge(branch: String) {
         commandExecutor.execute("git merge $branch")
     }
+
+    fun commit(message: String) {
+        commandExecutor.execute("git commit -m \"$message\"")
+    }
+
+    fun push(headBranch: String) {
+        commandExecutor.execute("git push origin HEAD:$headBranch")
+    }
 }
