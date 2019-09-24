@@ -14,15 +14,12 @@ object DependenciesParser {
         return null
     }
 
-    fun upgradeDependency(line: String, artifactsToUpgrade: List<ArtifactUpgrade>): UpgradeResult {
+    fun upgradeDependency(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult {
         val matchResult = getMatchResult(line)
         if (matchResult != null) {
-            val artifact = artifactsToUpgrade.find {
-                it.groupId == matchResult.groupValues[1] && it.artifactId == matchResult.groupValues[2]
-            }
-            if (artifact != null) {
-                val newLine = line.replaceFirst(artifact.fromVersion!!, artifact.toVersion!!)
-                return UpgradeResult(true, artifact, newLine)
+            if (artifactToUpgrade.groupId == matchResult.groupValues[1] && artifactToUpgrade.artifactId == matchResult.groupValues[2]) {
+                val newLine = line.replaceFirst(artifactToUpgrade.fromVersion!!, artifactToUpgrade.toVersion!!)
+                return UpgradeResult(true, artifactToUpgrade, newLine)
             }
         }
         return UpgradeResult(false, null, line)

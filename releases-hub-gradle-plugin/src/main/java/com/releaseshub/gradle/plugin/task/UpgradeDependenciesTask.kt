@@ -60,6 +60,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
             log("Dependencies upgraded:")
 
+            if (pullRequestEnabled) {
+                configureGit()
+            }
+
             artifactsToUpgrade.groupBy { it.groupId }.forEach { (groupId, artifactsToUpgradeByGroup) ->
 
                 val headBranch = headBranchPrefix + groupId!!.replace(".", "_", true)
@@ -74,20 +78,21 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     createPullRequest(upgradeResults, headBranch, groupId)
                 }
             }
-
         } else {
             log("No dependencies upgraded")
         }
     }
 
-    private fun prepareGitBranch(headBranch: String) {
+    private fun configureGit() {
         gitHubUserName?.let {
             gitHelper.configUserName(it)
         }
         gitHubUserEmail?.let {
             gitHelper.configUserEmail(it)
         }
+    }
 
+    private fun prepareGitBranch(headBranch: String) {
         gitHelper.checkout(baseBranch!!)
         gitHelper.pull()
 
@@ -106,25 +111,30 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     private fun upgradeDependencies(filesMap: MutableMap<String, List<String>>, artifactsToUpgrade: List<ArtifactUpgrade>): List<UpgradeResult> {
         val upgradeResults = mutableListOf<UpgradeResult>()
-        filesMap.entries.forEach {
-            val updatedLines = mutableListOf<String>()
-            File(it.key).bufferedWriter().use { out ->
-                it.value.forEach { line ->
-                    val upgradeResult = DependenciesParser.upgradeDependency(line, artifactsToUpgrade)
-                    if (upgradeResult.upgraded) {
-                        upgradeResults.add(upgradeResult)
-                        log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
-                    }
-                    out.write(upgradeResult.line + "\n")
-                    updatedLines.add(upgradeResult.line)
-                    if (pullRequestEnabled && upgradeResult.upgraded) {
-                        commit(upgradeResult)
+        val localFilesMap: MutableMap<String, List<String>> = filesMap.toMutableMap()
+        artifactsToUpgrade.forEach { artifactToUpgrade ->
+            var upgradedUpgradeResult: UpgradeResult? = null
+            localFilesMap.entries.forEach { entry ->
+                val updatedLines = mutableListOf<String>()
+                File(entry.key).bufferedWriter().use { out ->
+                    entry.value.forEach { line ->
+                        val upgradeResult = DependenciesParser.upgradeDependency(line, artifactToUpgrade)
+                        if (upgradeResult.upgraded) {
+                            upgradeResults.add(upgradeResult)
+                            log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+                            upgradedUpgradeResult = upgradeResult
+                        }
+                        out.write(upgradeResult.line + "\n")
+                        updatedLines.add(upgradeResult.line)
                     }
                 }
+                localFilesMap[entry.key] = updatedLines
             }
-            filesMap.put(it.key, updatedLines)
+            if (pullRequestEnabled && upgradedUpgradeResult != null) {
+                commit(upgradedUpgradeResult!!)
+            }
+            log("")
         }
-        log("")
         return upgradeResults
     }
 

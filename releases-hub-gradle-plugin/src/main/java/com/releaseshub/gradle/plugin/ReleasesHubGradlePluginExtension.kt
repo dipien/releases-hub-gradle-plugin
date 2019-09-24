@@ -53,7 +53,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::excludes.name, listOf()) ?: listOf()
 
         baseBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::baseBranch.name, "master")
-        headBranchPrefix = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranchPrefix.name, "dependencies_upgrade/")
+        headBranchPrefix = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranchPrefix.name, "dependencies/")
         pullRequestEnabled = propertyResolver.getBooleanProp(ReleasesHubGradlePluginExtension::pullRequestEnabled.name, false) ?: false
 
         gitHubUserName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubUserName.name)
