@@ -34,6 +34,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var pullRequestTitle: String? = null
 
     var pullRequestEnabled: Boolean
+    var pullRequestsMax: Int
 
     var gitHubUserName: String?
     var gitHubUserEmail: String?
@@ -55,6 +56,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         baseBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::baseBranch.name, "master")
         headBranchPrefix = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranchPrefix.name, "dependencies/")
         pullRequestEnabled = propertyResolver.getBooleanProp(ReleasesHubGradlePluginExtension::pullRequestEnabled.name, false) ?: false
+        pullRequestsMax = propertyResolver.getIntegerProp(ReleasesHubGradlePluginExtension::pullRequestsMax.name, 5) ?: 5
 
         gitHubUserName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubUserName.name)
         gitHubUserEmail = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubUserEmail.name)

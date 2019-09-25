@@ -161,6 +161,13 @@ Whether a pull request with all the upgrades should be created or not. The defau
 
     pullRequestEnabled = true
 
+###### Pull Requests Max
+
+The maximum amount of pull requests to create during the task execution. 
+This is useful to avoid creating too much pull requests when you still have many dependencies to upgrade. The default value is `5`
+
+    pullRequestsMax = 10
+
 ###### Head Branch Prefix
 
 The branch's prefix where the commit will be pushed. Also, the head branch's prefix of the pull request to create. Required String (only if `pullRequestEnabled` is `true`). The default value is `dependencies/`.

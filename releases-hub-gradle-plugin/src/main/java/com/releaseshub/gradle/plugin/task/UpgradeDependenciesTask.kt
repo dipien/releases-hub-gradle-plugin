@@ -15,6 +15,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
     var baseBranch: String? = null
     var headBranchPrefix: String? = null
     var pullRequestEnabled: Boolean = false
+    var pullRequestsMax: Int? = null
     var gitHubUserName: String? = null
     var gitHubUserEmail: String? = null
     var gitHubRepositoryOwner: String? = null
@@ -58,13 +59,19 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
         if (artifactsToUpgrade.isNotEmpty()) {
 
-            log("Dependencies upgraded:")
+            var groupsToUpgrade = artifactsToUpgrade.groupBy { it.groupId }.entries.toList()
 
             if (pullRequestEnabled) {
                 configureGit()
+                val totalSize = groupsToUpgrade.size
+                groupsToUpgrade = groupsToUpgrade.take(pullRequestsMax!!)
+                log("Creating ${groupsToUpgrade.size} of $totalSize possible pull requests. Increment the \"pullRequestsMax\" property if you want more pull requests created by task execution.")
+                log("")
             }
 
-            artifactsToUpgrade.groupBy { it.groupId }.forEach { (groupId, artifactsToUpgradeByGroup) ->
+            log("Dependencies upgraded:")
+
+            groupsToUpgrade.forEach { (groupId, artifactsToUpgradeByGroup) ->
 
                 val headBranch = headBranchPrefix + groupId!!.replace(".", "_", true)
 
