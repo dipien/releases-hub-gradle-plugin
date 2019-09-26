@@ -1,5 +1,17 @@
 # Releases Hub Gradle Plugin
-Gradle Plugin to automatically upgrade the project dependencies and send a GitHub pull request with the changes
+Gradle Plugin to automatically upgrade your java gradle project dependencies and send a GitHub pull request with the changes
+
+## How it works
+
+1. Apply and configure the plugin according to your needs
+2. Invoke it on your CI tool (daily, weekly, monthly, as you wish)
+3. If any of your dependencies are out-of-date, the plugin opens pull requests to update them.
+4. You verify that your CI checks pass, scan the included release notes, perform manual tests, and merge the PR.
+
+## Features
+* Automatic PRs include release notes, documentation and source code links whenever available.
+* You can configure which dependencies include and exclude, where to find them, how many pull requests create and more
+* Support any java based project with gradle integration
 
 ![](wiki/pull_request.png)
 
@@ -7,7 +19,7 @@ Gradle Plugin to automatically upgrade the project dependencies and send a GitHu
 |Branch|Status|Workflows|Insights|
 | ------------- | ------------- | ------------- | ------------- |
 |master|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/master.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/master)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/master)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/master)|
-|stable|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/stable.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/stable)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/stable)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/stable)|
+|production|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/production.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/production)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/production)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/production)|
 
 ## Setup
 
@@ -170,7 +182,7 @@ This is useful to avoid creating too much pull requests when you still have many
 
 ###### Head Branch Prefix
 
-The branch's prefix where the commit will be pushed. Also, the head branch's prefix of the pull request to create. Required String (only if `pullRequestEnabled` is `true`). The default value is `dependencies/`.
+The branch's prefix where the commit will be pushed. Also, the head branch's prefix of the pull request to create. Required String (only if `pullRequestEnabled` is `true`). The default value is `releases_hub/`.
 
     headBranchPrefix = "branch_name_"
 

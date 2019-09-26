@@ -54,7 +54,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::excludes.name, listOf()) ?: listOf()
 
         baseBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::baseBranch.name, "master")
-        headBranchPrefix = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranchPrefix.name, "dependencies/")
+        headBranchPrefix = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranchPrefix.name, "releases_hub/")
         pullRequestEnabled = propertyResolver.getBooleanProp(ReleasesHubGradlePluginExtension::pullRequestEnabled.name, false) ?: false
         pullRequestsMax = propertyResolver.getIntegerProp(ReleasesHubGradlePluginExtension::pullRequestsMax.name, 5) ?: 5
 
