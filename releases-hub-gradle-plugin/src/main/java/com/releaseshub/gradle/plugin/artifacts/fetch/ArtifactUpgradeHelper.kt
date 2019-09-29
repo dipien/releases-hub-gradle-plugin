@@ -67,22 +67,24 @@ object ArtifactUpgradeHelper {
     }
 
     private fun getReleaseToUpgrade(artifactToCheck: ArtifactUpgrade, artifact: Artifact): Release? {
-        val fromVersion = Version(artifactToCheck.fromVersion!!)
-        val fromStableVersion = Version(fromVersion.baseVersion)
-        if (artifact.getStableRelease()?.version!! > fromStableVersion.toString()) {
-            return artifact.getStableRelease()
-        } else if (!fromVersion.isStable() && artifact.getStableRelease()?.version!! == fromStableVersion.toString()) {
-            return artifact.getStableRelease()
+        val stableRelease = artifact.getStableRelease()
+        if (stableRelease != null) {
+            val fromVersion = Version(artifactToCheck.fromVersion!!)
+            val fromStableVersion = Version(fromVersion.baseVersion)
+            if (stableRelease.version!! > fromStableVersion.toString()) {
+                return stableRelease
+            } else if (!fromVersion.isStable() && stableRelease.version!! == fromStableVersion.toString()) {
+                return stableRelease
+            }
+
+            // TODO Add support for non stable versions upgrades
+            // if (!fromVersion.isStable()) {
+            //     val release = artifact.getReleaseWithSameBaseVersion(fromVersion)
+            //     if (release != null && release.lifeCycle!! > fromVersion.releaseLifeCycle) {
+            //         return release
+            //     }
+            // }
         }
-
-        // TODO Add support for non stable versions upgrades
-        // if (!fromVersion.isStable()) {
-        //     val release = artifact.getReleaseWithSameBaseVersion(fromVersion)
-        //     if (release != null && release.lifeCycle!! > fromVersion.releaseLifeCycle) {
-        //         return release
-        //     }
-        // }
-
         return null
     }
 }
