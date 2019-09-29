@@ -26,6 +26,10 @@ class GitHelper(var commandExecutor: CommandExecutor) {
         commandExecutor.execute("git add -A")
     }
 
+    fun status() {
+        commandExecutor.execute("git status")
+    }
+
     fun prune() {
         commandExecutor.execute("git fetch origin --prune")
     }

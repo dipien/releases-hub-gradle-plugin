@@ -40,22 +40,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
             getExtension().validateGitHubWriteToken()
         }
 
-        val artifacts = mutableSetOf<ArtifactUpgrade>()
-        val filesMap = mutableMapOf<String, List<String>>()
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
 
-        dependenciesClassNames!!.forEach {
-            val lines = project.rootProject.file(dependenciesBasePath + it).readLines()
-            filesMap[dependenciesBasePath + it] = lines
-
-            lines.forEach { line ->
-                val artifact = DependenciesParser.extractArtifact(line)
-                if (artifact != null && artifact.match(includes, excludes)) {
-                    artifacts.add(artifact)
-                }
-            }
-        }
-
-        val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(artifacts.toList(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
+        val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.artifacts.toList(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
 
         if (artifactsToUpgrade.isNotEmpty()) {
 
@@ -72,17 +59,31 @@ open class UpgradeDependenciesTask : AbstractTask() {
             log("Dependencies upgraded:")
 
             groupsToUpgrade.forEach { (groupId, artifactsToUpgradeByGroup) ->
-
                 val headBranch = headBranchPrefix + groupId!!.replace(".", "_", true)
 
+                var branchCreated = true
                 if (pullRequestEnabled) {
-                    prepareGitBranch(headBranch)
+                    branchCreated = prepareGitBranch(headBranch)
                 }
 
-                val upgradeResults = upgradeDependencies(filesMap, artifactsToUpgradeByGroup)
+                var dependenciesMap = dependenciesParserResult.dependenciesMap
+                if (!branchCreated) {
+                    dependenciesMap = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesMap
 
-                if (pullRequestEnabled) {
-                    createPullRequest(upgradeResults, headBranch, groupId)
+                }
+                val upgradeResults = upgradeDependencies(dependenciesMap, artifactsToUpgradeByGroup)
+                if (upgradeResults.isNotEmpty()) {
+                    if (pullRequestEnabled) {
+                        createPullRequest(upgradeResults, headBranch, groupId)
+                    }
+                } else {
+                    if (pullRequestEnabled && !branchCreated) {
+                        val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", project.rootProject.projectDir, true, true)
+                        if (execResult.isSuccessful()) {
+                            log("Merge pushed to $headBranch branch.")
+                        }
+                    }
+                    log("No dependencies upgraded for groupId $groupId")
                 }
             }
         } else {
@@ -99,7 +100,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         }
     }
 
-    private fun prepareGitBranch(headBranch: String) {
+    private fun prepareGitBranch(headBranch: String): Boolean {
         gitHelper.checkout(baseBranch!!)
         gitHelper.pull()
 
@@ -109,20 +110,20 @@ open class UpgradeDependenciesTask : AbstractTask() {
         val execResult = commandExecutor.execute("git checkout $headBranch", project.rootProject.projectDir, true, true)
         if (!execResult.isSuccessful()) {
             gitHelper.createBranch(headBranch)
+            return true
+        } else {
+            // Try to merge from baseBranch to headBranch
+            // TODO If there is a conflict, it will fail. Add an error message here telling that the dev need to merge and resolve the conflicts
+            gitHelper.merge(baseBranch!!)
+            return false
         }
-
-        // Try to merge from baseBranch to headBranch
-        // TODO If there is a conflict, it will fail. Add an error message here telling that the dev need to merge and resolve the conflicts
-        gitHelper.merge(baseBranch!!)
     }
 
-    private fun upgradeDependencies(filesMap: MutableMap<String, List<String>>, artifactsToUpgrade: List<ArtifactUpgrade>): List<UpgradeResult> {
+    private fun upgradeDependencies(dependenciesMap: MutableMap<String, List<String>>, artifactsToUpgrade: List<ArtifactUpgrade>): List<UpgradeResult> {
         val upgradeResults = mutableListOf<UpgradeResult>()
-        val localFilesMap: MutableMap<String, List<String>> = filesMap.toMutableMap()
         artifactsToUpgrade.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
-            localFilesMap.entries.forEach { entry ->
-                val updatedLines = mutableListOf<String>()
+            dependenciesMap.entries.forEach { entry ->
                 File(entry.key).bufferedWriter().use { out ->
                     entry.value.forEach { line ->
                         val upgradeResult = DependenciesParser.upgradeDependency(line, artifactToUpgrade)
@@ -132,11 +133,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
                             upgradedUpgradeResult = upgradeResult
                         }
                         out.write(upgradeResult.line + "\n")
-                        updatedLines.add(upgradeResult.line)
                     }
                 }
-                localFilesMap[entry.key] = updatedLines
             }
+
             if (pullRequestEnabled && upgradedUpgradeResult != null) {
                 commit(upgradedUpgradeResult!!)
             }
