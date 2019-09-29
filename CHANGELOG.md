@@ -1,5 +1,21 @@
 # Change Log
 
+## [v1.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.1.0) (2019-09-20)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.2...v1.1.0)
+
+**Implemented enhancements:**
+
+- Create one commit per dependency upgraded [\#30](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/30)
+- New validateDependencies task [\#28](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/28)
+- Sort alphabetically the listDependenciesToUpgrade results [\#24](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/24)
+- Include releases notes, documentation & source code on listDependenciesToUpgrade task [\#20](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/20)
+- Create one PR per groupId instead of one per dependency [\#14](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/14)
+- Log not resolved and excluded dependencies on listDependenciesToUpgrade task [\#12](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/12)
+
+**Fixed bugs:**
+
+- Fix crash for dependencies without stable releases [\#29](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/29)
+
 ## [v1.0.2](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.0.2) (2019-09-20)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.1...v1.0.2)
 
