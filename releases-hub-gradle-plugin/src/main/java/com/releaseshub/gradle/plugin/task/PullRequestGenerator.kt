@@ -9,6 +9,8 @@ object PullRequestGenerator {
         builder.appendln("## Dependencies upgrades")
         addCommonText(builder, upgradeResults)
         builder.appendln()
+        builder.append("---")
+        builder.appendln()
         builder.append(PULL_REQUEST_FOOTER)
         return builder.toString()
     }

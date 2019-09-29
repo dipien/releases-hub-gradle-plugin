@@ -4,6 +4,7 @@ import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.task.ListDependenciesTask
 import com.releaseshub.gradle.plugin.task.ListDependenciesToUpgradeTask
 import com.releaseshub.gradle.plugin.task.UpgradeDependenciesTask
+import com.releaseshub.gradle.plugin.task.ValidateDependenciesTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -19,6 +20,11 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         extension = project.extensions.create(EXTENSION_NAME, ReleasesHubGradlePluginExtension::class.java, project)
 
+        val validateDependenciesTask = project.tasks.create("validateDependencies", ValidateDependenciesTask::class.java)
+        project.afterEvaluate {
+            initTask(validateDependenciesTask)
+        }
+
         val listDependenciesTask = project.tasks.create("listDependencies", ListDependenciesTask::class.java)
         project.afterEvaluate {
             initTask(listDependenciesTask)
@@ -32,11 +38,10 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         val upgradeDependenciesTask = project.tasks.create("upgradeDependencies", UpgradeDependenciesTask::class.java)
         project.afterEvaluate {
             initTask(upgradeDependenciesTask)
-            upgradeDependenciesTask.headBranch = extension.headBranch
             upgradeDependenciesTask.baseBranch = extension.baseBranch
-            upgradeDependenciesTask.commitMessage = extension.commitMessage
-            upgradeDependenciesTask.pullRequestTitle = extension.pullRequestTitle
+            upgradeDependenciesTask.headBranchPrefix = extension.headBranchPrefix
             upgradeDependenciesTask.pullRequestEnabled = extension.pullRequestEnabled
+            upgradeDependenciesTask.pullRequestsMax = extension.pullRequestsMax
             upgradeDependenciesTask.gitHubUserName = extension.gitHubUserName
             upgradeDependenciesTask.gitHubUserEmail = extension.gitHubUserEmail
             upgradeDependenciesTask.gitHubRepositoryOwner = extension.gitHubRepositoryOwner

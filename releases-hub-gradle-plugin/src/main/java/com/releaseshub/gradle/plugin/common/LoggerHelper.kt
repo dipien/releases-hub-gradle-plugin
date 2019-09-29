@@ -11,5 +11,4 @@ object LoggerHelper {
     fun log(message: String) {
         logger.log(logLevel, message)
     }
-
 }

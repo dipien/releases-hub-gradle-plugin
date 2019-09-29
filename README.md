@@ -1,5 +1,17 @@
 # Releases Hub Gradle Plugin
-Gradle Plugin to automatically upgrade the project dependencies and send a GitHub pull request with the changes
+Gradle Plugin to automatically upgrade your java gradle project dependencies and send a GitHub pull request with the changes
+
+## How it works
+
+1. Apply and configure the plugin according to your needs
+2. Invoke it on your CI tool (daily, weekly, monthly, as you wish)
+3. If any of your dependencies are out-of-date, the plugin opens pull requests to update them.
+4. You verify that your CI checks pass, scan the included release notes, perform manual tests, and merge the PR.
+
+## Features
+* Automatic PRs include release notes, documentation and source code links whenever available.
+* You can configure which dependencies include and exclude, where to find them, how many pull requests create and more
+* Support any java based project with gradle integration
 
 ![](wiki/pull_request.png)
 
@@ -7,7 +19,7 @@ Gradle Plugin to automatically upgrade the project dependencies and send a GitHu
 |Branch|Status|Workflows|Insights|
 | ------------- | ------------- | ------------- | ------------- |
 |master|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/master.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/master)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/master)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/master)|
-|stable|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/stable.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/stable)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/stable)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/stable)|
+|production|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/production.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/production)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/production)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/production)|
 
 ## Setup
 
@@ -123,6 +135,18 @@ See the [sample](/sample) for more details.
 
 ### Tasks
 
+#### Validate dependencies
+
+Validate all the dependencies.
+The following validations are executed:
+
+* All the dependencies defined on each `dependenciesClassNames` are sorted alphabetically by `groupId:artifactId`
+* There are not duplicated dependencies defined on each `dependenciesClassNames`
+
+```
+./gradlew validateDependencies
+```
+
 #### List dependencies
 
 Print all the dependencies that will be analyzed to upgrade.
@@ -138,13 +162,15 @@ Print all the dependencies that are upgradeable.
     
 #### Upgrade dependencies
 
-This task execute the following steps if the project have at least one dependency to upgrade:
+This task creates a Github Pull Request for each groupId that have at least one dependency to upgrade. 
 
-* Creates the `headBranch` (if not exists)
+The following steps are executed for each `groupId`: 
+
+* Creates the `headBranch` (`headBranchPrefix` + `groupId`)  (if not exists)
 * Merge from the `baseBranch` to the `headBranch`
-* Upgrade all the dependencies on the `dependenciesClassNames`
-* Commit all the modified files
-* Push the previous commit to the `headBranch`
+* Upgrade all the dependencies defined on the `dependenciesClassNames` for the `groupId`
+* Create a commit for each dependency upgraded
+* Push the previous commits to the `headBranch`
 * Create a GitHub pull request from the `headBranch` to the `baseBranch`
 
 ```
@@ -153,11 +179,24 @@ This task execute the following steps if the project have at least one dependenc
 
 ##### Properties
 
-###### Head Branch
+###### Pull Request Enabled
 
-The branch where the commit will be pushed. Also, the head branch of the pull request to create. Required String (only if `pullRequestEnabled` is `true`).
+Whether a pull request with all the upgrades should be created or not. The default value is `false`
 
-    headBranch = "branch_name"
+    pullRequestEnabled = true
+
+###### Pull Requests Max
+
+The maximum amount of pull requests to create during the task execution. 
+This is useful to avoid creating too much pull requests when you still have many dependencies to upgrade. The default value is `5`
+
+    pullRequestsMax = 10
+
+###### Head Branch Prefix
+
+The branch's prefix where the commit will be pushed. Also, the head branch's prefix of the pull request to create. Required String (only if `pullRequestEnabled` is `true`). The default value is `releases_hub/`.
+
+    headBranchPrefix = "branch_name_"
 
 ###### Base Branch
 
@@ -176,24 +215,6 @@ The GitHub user name used by the commit command. Optional String.
 The GitHub user email used by the commit command. Optional String.
 
     gitHubUserEmail = "email@mail.com"
-
-###### Commit Message
-
-The commit message. Required String (only if `pullRequestEnabled` is `true`). The default value is `Upgraded dependencies`
-
-    commitMessage = "Upgraded dependencies"
-
-###### Pull Request Title
-
-The pull request title. Optional String. The default value is the `commitMessage` property value.
-
-    pullRequestTitle = "Upgraded dependencies"
-
-###### Pull Request Enabled
-
-Whether a pull request with all the upgrades should be created or not. The default value is `false`
-
-    pullRequestEnabled = true
 
 ###### GitHub Repository Owner
 
