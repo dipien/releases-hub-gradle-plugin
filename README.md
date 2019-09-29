@@ -135,6 +135,18 @@ See the [sample](/sample) for more details.
 
 ### Tasks
 
+#### Validate dependencies
+
+Validate all the dependencies.
+The following validations are executed:
+
+* All the dependencies defined on each `dependenciesClassNames` are sorted alphabetically by `groupId:artifactId`
+* There are not duplicated dependencies defined on each `dependenciesClassNames`
+
+```
+./gradlew validateDependencies
+```
+
 #### List dependencies
 
 Print all the dependencies that will be analyzed to upgrade.

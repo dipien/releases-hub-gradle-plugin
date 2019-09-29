@@ -4,6 +4,7 @@ import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.task.ListDependenciesTask
 import com.releaseshub.gradle.plugin.task.ListDependenciesToUpgradeTask
 import com.releaseshub.gradle.plugin.task.UpgradeDependenciesTask
+import com.releaseshub.gradle.plugin.task.ValidateDependenciesTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -18,6 +19,11 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         extension = project.extensions.create(EXTENSION_NAME, ReleasesHubGradlePluginExtension::class.java, project)
+
+        val validateDependenciesTask = project.tasks.create("validateDependencies", ValidateDependenciesTask::class.java)
+        project.afterEvaluate {
+            initTask(validateDependenciesTask)
+        }
 
         val listDependenciesTask = project.tasks.create("listDependencies", ListDependenciesTask::class.java)
         project.afterEvaluate {
