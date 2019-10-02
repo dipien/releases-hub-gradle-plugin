@@ -11,12 +11,17 @@ object DependenciesParser {
         val dependenciesParserResult = DependenciesParserResult()
         dependenciesClassNames.forEach {
             val lines = project.rootProject.file(dependenciesBasePath + it).readLines()
-            dependenciesParserResult.dependenciesMap[dependenciesBasePath + it] = lines
+            dependenciesParserResult.dependenciesLinesMap[dependenciesBasePath + it] = lines
 
             lines.forEach { line ->
                 val artifact = extractArtifact(line)
-                if (artifact != null && artifact.match(includes, excludes)) {
-                    dependenciesParserResult.artifacts.add(artifact)
+                if (artifact != null) {
+                    if (artifact.match(includes, excludes)) {
+                        dependenciesParserResult.artifactsMap.putIfAbsent(dependenciesBasePath + it, mutableListOf())
+                        dependenciesParserResult.artifactsMap[dependenciesBasePath + it]!!.add(artifact)
+                    } else {
+                        dependenciesParserResult.excludedArtifacts.add(artifact)
+                    }
                 }
             }
         }

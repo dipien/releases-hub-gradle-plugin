@@ -1,6 +1,5 @@
 package com.releaseshub.gradle.plugin.task
 
-import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 
@@ -16,30 +15,17 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
         getExtension().validateUserToken()
         getExtension().validateDependenciesClassNames()
 
-        val artifacts = mutableListOf<ArtifactUpgrade>()
-        val excludedArtifacts = mutableListOf<ArtifactUpgrade>()
-        dependenciesClassNames!!.forEach {
-            project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
-                val artifact = DependenciesParser.extractArtifact(line)
-                if (artifact != null) {
-                    if (artifact.match(includes, excludes)) {
-                        artifacts.add(artifact)
-                    } else {
-                        excludedArtifacts.add(artifact)
-                    }
-                }
-            }
-        }
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
 
-        if (excludedArtifacts.isNotEmpty()) {
+        if (dependenciesParserResult.excludedArtifacts.isNotEmpty()) {
             log("Dependencies excluded:")
-            excludedArtifacts.sortedBy { it.toString() }.forEach {
+            dependenciesParserResult.excludedArtifacts.sortedBy { it.toString() }.forEach {
                 log(" * $it ${it.fromVersion}")
             }
             log("")
         }
 
-        val artifactsUpgrades = createArtifactsService().getArtifactsUpgrades(artifacts, getRepositories())
+        val artifactsUpgrades = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories())
 
         val notFoundArtifacts = artifactsUpgrades.filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.NOT_FOUND }
         if (notFoundArtifacts.isNotEmpty()) {

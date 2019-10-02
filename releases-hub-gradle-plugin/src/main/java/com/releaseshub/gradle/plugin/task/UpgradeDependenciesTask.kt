@@ -42,7 +42,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
         val dependenciesParserResult = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
 
-        val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.artifacts.toList(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
+        val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
 
         if (artifactsToUpgrade.isNotEmpty()) {
 
@@ -66,9 +66,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     branchCreated = prepareGitBranch(headBranch)
                 }
 
-                var dependenciesMap = dependenciesParserResult.dependenciesMap
+                var dependenciesMap = dependenciesParserResult.dependenciesLinesMap
                 if (!branchCreated) {
-                    dependenciesMap = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesMap
+                    dependenciesMap = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
 
                 }
                 val upgradeResults = upgradeDependencies(dependenciesMap, artifactsToUpgradeByGroup)

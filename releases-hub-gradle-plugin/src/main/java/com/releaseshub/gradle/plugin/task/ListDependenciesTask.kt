@@ -12,13 +12,11 @@ open class ListDependenciesTask : AbstractTask() {
 
         getExtension().validateDependenciesClassNames()
 
-        dependenciesClassNames!!.forEach {
-            log(it)
-            project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
-                val artifact = DependenciesParser.extractArtifact(line)
-                if (artifact != null && artifact.match(includes, excludes)) {
-                    log(" - $artifact:${artifact.fromVersion}")
-                }
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
+        dependenciesParserResult.artifactsMap.forEach { (file, artifacts) ->
+            log(file)
+            artifacts.forEach { artifact ->
+                log(" - $artifact:${artifact.fromVersion}")
             }
             log("")
         }
