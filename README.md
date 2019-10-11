@@ -37,13 +37,11 @@ apply plugin: "com.releaseshub.gradle.plugin"
 All the plugin configuration properties can be added using any of the following ways:
 
 * Using the `releasesHub` extension on the build.gradle. For example:
-
 ```groovy
 releasesHub {
     gitHubWriteToken = "123"
 }
 ```
-
 * As a command line parameter. For example:
 ```
 ./gradlew listDependencies -PgitHubWriteToken=123
