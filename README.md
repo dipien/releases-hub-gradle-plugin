@@ -15,12 +15,6 @@ Gradle Plugin to automatically upgrade your java gradle project dependencies and
 
 ![](wiki/pull_request.png)
 
-## Continuous Integration
-|Branch|Status|Workflows|Insights|
-| ------------- | ------------- | ------------- | ------------- |
-|master|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/master.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/master)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/master)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/master)|
-|production|[![CircleCI](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/production.svg?style=svg&circle-token=80e1d7174b6216fa8403143541fd455672ba614c)](https://circleci.com/gh/releaseshub/releases-hub-gradle-plugin/tree/production)|[Workflows](https://circleci.com/gh/releaseshub/workflows/releases-hub-gradle-plugin/tree/production)|[Insights](https://circleci.com/build-insights/gh/releaseshub/releases-hub-gradle-plugin/production)|
-
 ## Setup
 
 Add the following configuration to your root `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/releaseshub/releases-hub-gradle-plugin/releases/latest)
