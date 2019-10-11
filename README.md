@@ -123,7 +123,7 @@ dependencies {
 }
 ```
 
-See the [sample](https://github.com/releaseshub/releases-hub-gradle-plugin/sample) for more details.
+See the [sample](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/master/sample) for more details.
 
 ### Tasks
 
