@@ -169,6 +169,5 @@ class DependenciesParserTest {
         Assert.assertNull(DependenciesParser.extractGradleArtifact("distributionBase=GRADLE_USER_HOME"))
         val artifact = ArtifactUpgrade(ArtifactUpgrade.GRADLE_ID, "5.5.1")
         Assert.assertEquals(artifact, DependenciesParser.extractGradleArtifact("distributionUrl=https\\://services.gradle.org/distributions/gradle-5.5.1-all.zip"))
-
     }
 }

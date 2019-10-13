@@ -13,5 +13,4 @@ class DependenciesParserResult {
         artifactsMap.values.forEach { artifacts.addAll(it) }
         return artifacts
     }
-
 }

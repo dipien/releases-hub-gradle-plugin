@@ -38,7 +38,7 @@ open class ValidateDependenciesTask : AbstractTask() {
 
         if (duplicatedDependenciesMap.isNotEmpty()) {
             fail = true
-            duplicatedDependenciesMap.entries.forEach{ (dependenciesPath, dependencies) ->
+            duplicatedDependenciesMap.entries.forEach { (dependenciesPath, dependencies) ->
                 log("The following dependencies are duplicated on $dependenciesPath")
                 dependencies.forEach {
                     log("- $it")

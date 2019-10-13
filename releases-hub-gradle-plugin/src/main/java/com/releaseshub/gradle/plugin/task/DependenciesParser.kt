@@ -33,14 +33,18 @@ object DependenciesParser {
         }
 
         // Gradle
-        File(project.rootProject.projectDir.absolutePath).walk().forEach {file ->
+        File(project.rootProject.projectDir.absolutePath).walk().forEach { file ->
             if (file.name == GRADLE_FILE_NAME) {
-                file.forEachLine {line ->
-                   val artifact = extractGradleArtifact(line)
+                file.forEachLine { line ->
+                    val artifact = extractGradleArtifact(line)
                     if (artifact != null) {
-                        val pathRelativeToRootProject = file.absolutePath.replaceFirst(project.rootProject.projectDir.absolutePath + "/", "")
-                        dependenciesParserResult.artifactsMap.putIfAbsent(pathRelativeToRootProject, mutableListOf())
-                        dependenciesParserResult.artifactsMap[pathRelativeToRootProject]!!.add(artifact)
+                        if (artifact.match(includes, excludes)) {
+                            val pathRelativeToRootProject = file.absolutePath.replaceFirst(project.rootProject.projectDir.absolutePath + "/", "")
+                            dependenciesParserResult.artifactsMap.putIfAbsent(pathRelativeToRootProject, mutableListOf())
+                            dependenciesParserResult.artifactsMap[pathRelativeToRootProject]!!.add(artifact)
+                        } else {
+                            dependenciesParserResult.excludedArtifacts.add(artifact)
+                        }
                     }
                 }
             }

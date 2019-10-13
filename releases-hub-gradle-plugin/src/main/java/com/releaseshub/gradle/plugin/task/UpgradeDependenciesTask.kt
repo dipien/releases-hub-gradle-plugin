@@ -60,7 +60,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
             groupsToUpgrade.forEach { (groupId, artifactsToUpgradeByGroup) ->
 
-                val group : String = if (artifactsToUpgradeByGroup.size == 1 || groupId == null) {
+                val group: String = if (artifactsToUpgradeByGroup.size == 1 || groupId == null) {
                     artifactsToUpgradeByGroup.first().toString()
                 } else {
                     groupId
@@ -76,7 +76,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 var dependenciesMap = dependenciesParserResult.dependenciesLinesMap
                 if (!branchCreated) {
                     dependenciesMap = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
-
                 }
                 val upgradeResults = upgradeDependencies(dependenciesMap, artifactsToUpgradeByGroup)
                 if (upgradeResults.isNotEmpty()) {
@@ -137,7 +136,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                File(project.rootProject.projectDir.absolutePath).walk().forEach {file ->
+                File(project.rootProject.projectDir.absolutePath).walk().forEach { file ->
                     if (file.name == DependenciesParser.GRADLE_FILE_NAME) {
                         val lines = file.readLines()
                         file.bufferedWriter().use { out ->
