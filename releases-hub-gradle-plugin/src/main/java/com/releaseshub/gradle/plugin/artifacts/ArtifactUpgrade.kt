@@ -55,7 +55,11 @@ class ArtifactUpgrade {
     }
 
     override fun toString(): String {
-        return if (groupId != null) "$groupId:$artifactId" else id!!
+        return when {
+            groupId != null -> "$groupId:$artifactId"
+            id == GRADLE_ID -> "gradle"
+            else -> id!!
+        }
     }
 
     override fun equals(other: Any?): Boolean {
