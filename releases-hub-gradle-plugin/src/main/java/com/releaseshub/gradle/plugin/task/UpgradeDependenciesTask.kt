@@ -59,7 +59,14 @@ open class UpgradeDependenciesTask : AbstractTask() {
             log("Dependencies upgraded:")
 
             groupsToUpgrade.forEach { (groupId, artifactsToUpgradeByGroup) ->
-                val headBranch = headBranchPrefix + groupId!!.replace(".", "_", true)
+
+                val group : String = if (artifactsToUpgradeByGroup.size == 1 || groupId == null) {
+                    artifactsToUpgradeByGroup.first().toString()
+                } else {
+                    groupId
+                }
+
+                val headBranch = headBranchPrefix + group.replace(".", "_", true)
 
                 var branchCreated = true
                 if (pullRequestEnabled) {
@@ -74,7 +81,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 val upgradeResults = upgradeDependencies(dependenciesMap, artifactsToUpgradeByGroup)
                 if (upgradeResults.isNotEmpty()) {
                     if (pullRequestEnabled) {
-                        createPullRequest(upgradeResults, headBranch, groupId)
+                        createPullRequest(upgradeResults, headBranch, groupId, group)
                     }
                 } else {
                     if (pullRequestEnabled && !branchCreated) {
@@ -83,7 +90,12 @@ open class UpgradeDependenciesTask : AbstractTask() {
                             log("Merge pushed to $headBranch branch.")
                         }
                     }
-                    log("No dependencies upgraded for groupId $groupId")
+                    val message: String = if (groupId != null) {
+                        "No dependencies upgraded for groupId $groupId"
+                    } else {
+                        "No dependencies upgraded $group"
+                    }
+                    log(message)
                 }
             }
         } else {
@@ -123,16 +135,36 @@ open class UpgradeDependenciesTask : AbstractTask() {
         val upgradeResults = mutableListOf<UpgradeResult>()
         artifactsToUpgrade.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
-            dependenciesMap.entries.forEach { entry ->
-                File(entry.key).bufferedWriter().use { out ->
-                    entry.value.forEach { line ->
-                        val upgradeResult = DependenciesParser.upgradeDependency(line, artifactToUpgrade)
-                        if (upgradeResult.upgraded) {
-                            upgradeResults.add(upgradeResult)
-                            log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
-                            upgradedUpgradeResult = upgradeResult
+
+            if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
+                File(project.rootProject.projectDir.absolutePath).walk().forEach {file ->
+                    if (file.name == DependenciesParser.GRADLE_FILE_NAME) {
+                        val lines = file.readLines()
+                        file.bufferedWriter().use { out ->
+                            lines.forEach { line ->
+                                val upgradeResult = DependenciesParser.upgradeGradle(line, artifactToUpgrade)
+                                if (upgradeResult.upgraded) {
+                                    upgradeResults.add(upgradeResult)
+                                    log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+                                    upgradedUpgradeResult = upgradeResult
+                                }
+                                out.write(upgradeResult.line + "\n")
+                            }
                         }
-                        out.write(upgradeResult.line + "\n")
+                    }
+                }
+            } else {
+                dependenciesMap.entries.forEach { entry ->
+                    File(entry.key).bufferedWriter().use { out ->
+                        entry.value.forEach { line ->
+                            val upgradeResult = DependenciesParser.upgradeDependency(line, artifactToUpgrade)
+                            if (upgradeResult.upgraded) {
+                                upgradeResults.add(upgradeResult)
+                                log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+                                upgradedUpgradeResult = upgradeResult
+                            }
+                            out.write(upgradeResult.line + "\n")
+                        }
                     }
                 }
             }
@@ -150,7 +182,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         gitHelper.commit("Upgraded ${upgradeResult.artifactUpgrade} from ${upgradeResult.artifactUpgrade!!.fromVersion} to ${upgradeResult.artifactUpgrade.toVersion}")
     }
 
-    private fun createPullRequest(upgradeResults: List<UpgradeResult>, headBranch: String, groupId: String) {
+    private fun createPullRequest(upgradeResults: List<UpgradeResult>, headBranch: String, groupId: String?, artifactId: String) {
         gitHelper.push(headBranch)
         log("The changes were pushed to $headBranch branch.")
 
@@ -165,7 +197,12 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var pullRequest = pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch)
             if (pullRequest == null) {
                 val pullRequestBody = PullRequestGenerator.createBody(upgradeResults)
-                pullRequest = pullRequestService.createPullRequest(repositoryIdProvider, "Upgraded dependencies for groupId $groupId", pullRequestBody, headBranch, baseBranch)
+                val title: String? = if (groupId != null) {
+                    "Upgraded dependencies for groupId $groupId"
+                } else {
+                    "Upgraded $artifactId from ${upgradeResults.first().artifactUpgrade!!.fromVersion} to ${upgradeResults.first().artifactUpgrade!!.toVersion}"
+                }
+                pullRequest = pullRequestService.createPullRequest(repositoryIdProvider, title, pullRequestBody, headBranch, baseBranch)
                 log("The pull request #" + pullRequest!!.number + " was successfully created.")
             } else {
                 val pullRequestComment = PullRequestGenerator.createComment(upgradeResults)
