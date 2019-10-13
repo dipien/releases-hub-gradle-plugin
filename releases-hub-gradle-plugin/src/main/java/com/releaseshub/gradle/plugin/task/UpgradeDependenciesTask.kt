@@ -3,7 +3,9 @@ package com.releaseshub.gradle.plugin.task
 import com.jdroid.github.RepositoryId
 import com.jdroid.github.client.GitHubClient
 import com.jdroid.github.service.IssueService
+import com.jdroid.github.service.LabelsService
 import com.jdroid.github.service.PullRequestService
+import com.jdroid.github.service.ReviewRequestsService
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
@@ -16,6 +18,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
     var headBranchPrefix: String? = null
     var pullRequestEnabled: Boolean = false
     var pullRequestsMax: Int? = null
+    var pullRequestLabels: List<String>? = null
+    var pullRequestReviewers: List<String>? = null
+    var pullRequestTeamReviewers: List<String>? = null
     var gitHubUserName: String? = null
     var gitHubUserEmail: String? = null
     var gitHubRepositoryOwner: String? = null
@@ -203,6 +208,19 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 }
                 pullRequest = pullRequestService.createPullRequest(repositoryIdProvider, title, pullRequestBody, headBranch, baseBranch)
                 log("The pull request #" + pullRequest!!.number + " was successfully created.")
+
+                if (!pullRequestReviewers.isNullOrEmpty() || !pullRequestTeamReviewers.isNullOrEmpty()) {
+                    val reviewRequestsService = ReviewRequestsService(client)
+                    reviewRequestsService.createReviewRequest(repositoryIdProvider, pullRequest.number, pullRequestReviewers, pullRequestTeamReviewers)
+                    log("Reviewers assigned to pull request #" + pullRequest.number)
+                }
+
+                if (!pullRequestLabels.isNullOrEmpty()) {
+                    val labelsService = LabelsService(client)
+                    labelsService.addLabelsToIssue(repositoryIdProvider, pullRequest.number, pullRequestLabels!!)
+                    log("Labels assigned to pull request #" + pullRequest.number)
+                }
+
             } else {
                 val pullRequestComment = PullRequestGenerator.createComment(upgradeResults)
                 val issueService = IssueService(client)

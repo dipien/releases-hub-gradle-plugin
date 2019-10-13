@@ -183,6 +183,24 @@ The maximum amount of pull requests to create during the task execution.
 This is useful to avoid creating too much pull requests when you still have many dependencies to upgrade. The default value is `5`
 
     pullRequestsMax = 10
+    
+###### Pull Request Labels
+
+The list of labels to assign when creating the pull request. 
+
+    pullRequestLabels = ["dependencies"]
+    
+###### Pull Request Reviewers
+
+The list of reviewers to assign when creating the pull request. 
+
+    pullRequestReviewers = ["octocat", "hubot", "other_user"]
+    
+###### Pull Request Team Reviewers
+
+The list of team reviewers to assign when creating the pull request. 
+
+    pullRequestTeamReviewers = ["justice-league"]
 
 ###### Head Branch Prefix
 

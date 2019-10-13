@@ -6,7 +6,7 @@ apply plugin: "com.jdroidtools.gradle.plugin"
 
 buildscript {
 	dependencies {
-		classpath BuildLibs.JDROID_GRADLE_PROJECT_PLUGIN
+		classpath(BuildLibs.JDROID_GRADLE_PROJECT_PLUGIN)
 	}
 }
 
