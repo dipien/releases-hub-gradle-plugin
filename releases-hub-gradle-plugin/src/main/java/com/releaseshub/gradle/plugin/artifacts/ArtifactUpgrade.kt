@@ -2,7 +2,12 @@ package com.releaseshub.gradle.plugin.artifacts
 
 class ArtifactUpgrade {
 
+    companion object {
+        const val GRADLE_ID = "gradle_gradle"
+    }
+
     var name: String? = null
+    var id: String? = null
     var groupId: String? = null
     var artifactId: String? = null
     var fromVersion: String? = null
@@ -15,8 +20,14 @@ class ArtifactUpgrade {
     constructor() { }
 
     constructor(groupId: String, artifactId: String, fromVersion: String) {
+        this.id = groupId + "_" + artifactId
         this.groupId = groupId
         this.artifactId = artifactId
+        this.fromVersion = fromVersion
+    }
+
+    constructor(id: String, fromVersion: String) {
+        this.id = id
         this.fromVersion = fromVersion
     }
 
@@ -30,14 +41,21 @@ class ArtifactUpgrade {
     }
 
     private fun match(expression: String): Boolean {
-        val split = expression.split(":")
-        val groupIdToMatch = split[0]
-        val artifactIdToMatch = if (split.size > 1) split[1] else null
-        return groupIdToMatch == groupId && (artifactIdToMatch == null || artifactIdToMatch == artifactId)
+        if (groupId != null) {
+            val split = expression.split(":")
+            val groupIdToMatch = split[0]
+            val artifactIdToMatch = if (split.size > 1) split[1] else null
+            return groupIdToMatch == groupId && (artifactIdToMatch == null || artifactIdToMatch == artifactId)
+        } else {
+            if (!expression.contains(":")) {
+                return expression == id
+            }
+            return false
+        }
     }
 
     override fun toString(): String {
-        return "$groupId:$artifactId"
+        return if (groupId != null) "$groupId:$artifactId" else id!!
     }
 
     override fun equals(other: Any?): Boolean {
@@ -45,17 +63,13 @@ class ArtifactUpgrade {
         if (javaClass != other?.javaClass) return false
 
         other as ArtifactUpgrade
-
-        if (groupId != other.groupId) return false
-        if (artifactId != other.artifactId) return false
-
+        if (id != other.id) return false
         return true
     }
 
     override fun hashCode(): Int {
         var result = super.hashCode()
-        result = 31 * result + (groupId?.hashCode() ?: 0)
-        result = 31 * result + (artifactId?.hashCode() ?: 0)
+        result = 31 * result + (id?.hashCode() ?: 0)
         return result
     }
 }

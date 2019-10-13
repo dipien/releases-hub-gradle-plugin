@@ -123,16 +123,36 @@ open class UpgradeDependenciesTask : AbstractTask() {
         val upgradeResults = mutableListOf<UpgradeResult>()
         artifactsToUpgrade.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
-            dependenciesMap.entries.forEach { entry ->
-                File(entry.key).bufferedWriter().use { out ->
-                    entry.value.forEach { line ->
-                        val upgradeResult = DependenciesParser.upgradeDependency(line, artifactToUpgrade)
-                        if (upgradeResult.upgraded) {
-                            upgradeResults.add(upgradeResult)
-                            log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
-                            upgradedUpgradeResult = upgradeResult
+
+            if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
+                File(project.rootProject.projectDir.absolutePath).walk().forEach {file ->
+                    if (file.name == DependenciesParser.GRADLE_FILE_NAME) {
+                        val lines = file.readLines()
+                        file.bufferedWriter().use { out ->
+                            lines.forEach { line ->
+                                val upgradeResult = DependenciesParser.upgradeGradle(line, artifactToUpgrade)
+                                if (upgradeResult.upgraded) {
+                                    upgradeResults.add(upgradeResult)
+                                    log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+                                    upgradedUpgradeResult = upgradeResult
+                                }
+                                out.write(upgradeResult.line + "\n")
+                            }
                         }
-                        out.write(upgradeResult.line + "\n")
+                    }
+                }
+            } else {
+                dependenciesMap.entries.forEach { entry ->
+                    File(entry.key).bufferedWriter().use { out ->
+                        entry.value.forEach { line ->
+                            val upgradeResult = DependenciesParser.upgradeDependency(line, artifactToUpgrade)
+                            if (upgradeResult.upgraded) {
+                                upgradeResults.add(upgradeResult)
+                                log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+                                upgradedUpgradeResult = upgradeResult
+                            }
+                            out.write(upgradeResult.line + "\n")
+                        }
                     }
                 }
             }
