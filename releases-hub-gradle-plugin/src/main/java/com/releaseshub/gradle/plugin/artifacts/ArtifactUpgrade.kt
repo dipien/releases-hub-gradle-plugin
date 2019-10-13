@@ -3,7 +3,7 @@ package com.releaseshub.gradle.plugin.artifacts
 class ArtifactUpgrade {
 
     companion object {
-        const val GRADLE_ID = "gradle_gradle"
+        const val GRADLE_ID = "gradle"
     }
 
     var name: String? = null
@@ -55,11 +55,7 @@ class ArtifactUpgrade {
     }
 
     override fun toString(): String {
-        return when {
-            groupId != null -> "$groupId:$artifactId"
-            id == GRADLE_ID -> "gradle"
-            else -> id!!
-        }
+        return if (groupId != null) "$groupId:$artifactId" else id!!
     }
 
     override fun equals(other: Any?): Boolean {
