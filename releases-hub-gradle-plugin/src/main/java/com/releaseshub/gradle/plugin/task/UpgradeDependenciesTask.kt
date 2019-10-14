@@ -65,11 +65,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
             groupsToUpgrade.forEach { (groupId, artifactsToUpgradeByGroup) ->
 
-                val group: String = if (artifactsToUpgradeByGroup.size == 1 || groupId == null) {
-                    artifactsToUpgradeByGroup.first().toString()
-                } else {
-                    groupId
-                }
+                val group: String = groupId ?: artifactsToUpgradeByGroup.first().toString()
 
                 val headBranch = headBranchPrefix + group.replace(".", "_", true)
 
@@ -94,12 +90,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
                             log("Merge pushed to $headBranch branch.")
                         }
                     }
-                    val message: String = if (groupId != null) {
-                        "No dependencies upgraded for groupId $groupId"
-                    } else {
-                        "No dependencies upgraded $group"
-                    }
-                    log(message)
                 }
             }
         } else {
@@ -186,7 +176,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         gitHelper.commit("Upgraded ${upgradeResult.artifactUpgrade} from ${upgradeResult.artifactUpgrade!!.fromVersion} to ${upgradeResult.artifactUpgrade.toVersion}")
     }
 
-    private fun createPullRequest(upgradeResults: List<UpgradeResult>, headBranch: String, groupId: String?, artifactId: String) {
+    private fun createPullRequest(upgradeResults: List<UpgradeResult>, headBranch: String, groupId: String?, group: String) {
         gitHelper.push(headBranch)
         log("The changes were pushed to $headBranch branch.")
 
@@ -201,10 +191,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var pullRequest = pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch)
             if (pullRequest == null) {
                 val pullRequestBody = PullRequestGenerator.createBody(upgradeResults)
-                val title: String? = if (groupId != null) {
+                val title: String? = if (groupId == group) {
                     "Upgraded dependencies for groupId $groupId"
                 } else {
-                    "Upgraded $artifactId from ${upgradeResults.first().artifactUpgrade!!.fromVersion} to ${upgradeResults.first().artifactUpgrade!!.toVersion}"
+                    "Upgraded $group from ${upgradeResults.first().artifactUpgrade!!.fromVersion} to ${upgradeResults.first().artifactUpgrade!!.toVersion}"
                 }
                 pullRequest = pullRequestService.createPullRequest(repositoryIdProvider, title, pullRequestBody, headBranch, baseBranch)
                 log("The pull request #" + pullRequest!!.number + " was successfully created.")

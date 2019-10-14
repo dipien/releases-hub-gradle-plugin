@@ -186,19 +186,19 @@ This is useful to avoid creating too much pull requests when you still have many
     
 ###### Pull Request Labels
 
-The list of labels to assign when creating the pull request. 
+The list of labels to assign when creating the pull request. Optional list.
 
     pullRequestLabels = ["dependencies"]
     
 ###### Pull Request Reviewers
 
-The list of reviewers to assign when creating the pull request. 
+The list of reviewers to assign when creating the pull request. Optional list.
 
     pullRequestReviewers = ["octocat", "hubot", "other_user"]
     
 ###### Pull Request Team Reviewers
 
-The list of team reviewers to assign when creating the pull request. 
+The list of team reviewers to assign when creating the pull request. Optional list.
 
     pullRequestTeamReviewers = ["justice-league"]
 
