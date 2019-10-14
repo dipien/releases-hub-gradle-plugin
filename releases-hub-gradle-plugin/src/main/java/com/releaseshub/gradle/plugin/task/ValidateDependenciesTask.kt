@@ -13,36 +13,44 @@ open class ValidateDependenciesTask : AbstractTask() {
         getExtension().validateDependenciesClassNames()
 
         var fail = false
-        val duplicatedDependenciesMap = hashMapOf<String, MutableList<String>>()
 
         dependenciesClassNames!!.forEach {
             val dependencies = mutableListOf<String>()
+            log(it)
+            var failOnFile = false
             project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
                 val artifact = DependenciesParser.extractArtifact(line)
                 if (artifact != null) {
                     if (dependencies.contains(artifact.toString())) {
-                        val list = duplicatedDependenciesMap.getOrDefault(dependenciesBasePath + it, mutableListOf())
-                        list.add(artifact.toString())
-                        duplicatedDependenciesMap[dependenciesBasePath + it] = list
+                        fail = true
+                        failOnFile = true
+                        log("- The dependency $artifact is duplicated")
                     } else {
                         dependencies.add(artifact.toString())
+                    }
+
+                    if (artifact.isSnapshotVersion()) {
+                        fail = true
+                        failOnFile = true
+                        log("- The dependency $artifact is an snapshot")
+                    }
+
+                    if (artifact.isDynamicVersion()) {
+                        fail = true
+                        failOnFile = true
+                        log("- The dependency $artifact is using a dynamic version")
                     }
                 }
             }
 
             if (dependencies.sortedWith(String.CASE_INSENSITIVE_ORDER) != dependencies) {
                 fail = true
-                log("The dependencies on $dependenciesBasePath$it are not alphabetically sorted")
+                failOnFile = true
+                log("- The dependencies are not alphabetically sorted")
             }
-        }
 
-        if (duplicatedDependenciesMap.isNotEmpty()) {
-            fail = true
-            duplicatedDependenciesMap.entries.forEach { (dependenciesPath, dependencies) ->
-                log("The following dependencies are duplicated on $dependenciesPath")
-                dependencies.forEach {
-                    log("- $it")
-                }
+            if (!failOnFile) {
+                log("- No errors found")
             }
         }
 

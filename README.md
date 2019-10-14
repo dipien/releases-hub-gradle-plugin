@@ -134,6 +134,7 @@ The following validations are executed:
 
 * All the dependencies defined on each `dependenciesClassNames` are sorted alphabetically by `groupId:artifactId`
 * There are not duplicated dependencies defined on each `dependenciesClassNames`
+* There are not dependencies with snapshot or dynamic versions assigned
 
 ```
 ./gradlew validateDependencies

@@ -82,4 +82,26 @@ class ArtifactUpgradeTest {
         Assert.assertFalse(artifact2.match(listOf("id2"), listOf("id1")))
         Assert.assertFalse(artifact2.match(listOf("id2"), listOf("id3")))
     }
+
+    @Test
+    fun isSnapshotTest() {
+        Assert.assertTrue(createArtifactUpgrade("1.0.0-SNAPSHOT").isSnapshotVersion())
+        Assert.assertFalse(createArtifactUpgrade("1.0.0").isSnapshotVersion())
+    }
+
+    @Test
+    fun isDynamicVersionTest() {
+        Assert.assertFalse(createArtifactUpgrade("1.0.0").isDynamicVersion())
+        Assert.assertTrue(createArtifactUpgrade("[1.0, 2.0)").isDynamicVersion())
+        Assert.assertTrue(createArtifactUpgrade("[1.0, 2.0[").isDynamicVersion())
+        Assert.assertTrue(createArtifactUpgrade("[1.0,)").isDynamicVersion())
+        Assert.assertTrue(createArtifactUpgrade("1.1+").isDynamicVersion())
+        Assert.assertTrue(createArtifactUpgrade("1.1.+").isDynamicVersion())
+        Assert.assertTrue(createArtifactUpgrade("latest.release").isDynamicVersion())
+        Assert.assertTrue(createArtifactUpgrade("+").isDynamicVersion())
+    }
+
+    private fun createArtifactUpgrade(fromVersion: String): ArtifactUpgrade {
+        return ArtifactUpgrade("group1", "artifact1", fromVersion)
+    }
 }

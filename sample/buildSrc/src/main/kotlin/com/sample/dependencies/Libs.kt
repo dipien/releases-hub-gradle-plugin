@@ -2,7 +2,10 @@ package com.sample.dependencies
 
 object Libs {
 	const val INVALID_DEPENDENCY = "aaa:bbb:1.0.0"
+	const val DUPLICATED_DEPENDENCY = "aaa:bbb:1.0.0"
 	const val EXCLUDED_DEPENDENCY_1 = "ccc:bbb:1.0.0"
+	const val SNAPSHOT_DEPENDENCY = "ddd:bbb:1.0.0-SNAPSHOT"
+	const val DYNAMIC_DEPENDENCY = "eee:bbb:1.0.+"
 	const val FIREBASE_JOB_DISPATCHER = "com.firebase:firebase-jobdispatcher:0.1.0"
 	const val FIREBASE_ANALYTICS = "com.google.firebase:firebase-analytics:1.0.0"
 	const val FIREBASE_CORE = "com.google.firebase:firebase-core:1.0.0"

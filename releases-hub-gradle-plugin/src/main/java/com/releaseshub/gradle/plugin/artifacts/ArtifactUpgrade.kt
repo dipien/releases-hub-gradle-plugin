@@ -54,6 +54,21 @@ class ArtifactUpgrade {
         }
     }
 
+    fun isSnapshotVersion(): Boolean {
+        return fromVersion!!.endsWith("-SNAPSHOT")
+    }
+
+    fun isDynamicVersion(): Boolean {
+        return when {
+            fromVersion!!.startsWith("[") -> true
+            fromVersion!!.endsWith(")") -> true
+            fromVersion!!.endsWith("+") -> true
+            fromVersion!! == "+" -> true
+            fromVersion!! == "latest.release" -> true
+            else -> false
+        }
+    }
+
     override fun toString(): String {
         return if (groupId != null) "$groupId:$artifactId" else id!!
     }
