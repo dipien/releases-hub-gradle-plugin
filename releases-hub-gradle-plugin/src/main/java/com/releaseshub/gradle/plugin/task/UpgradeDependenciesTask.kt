@@ -51,7 +51,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
         if (artifactsToUpgrade.isNotEmpty()) {
 
-            var groupsToUpgrade = artifactsToUpgrade.groupBy { it.groupId }.entries.toList()
+            var groupsToUpgrade = artifactsToUpgrade.groupBy { if (pullRequestEnabled) it.groupId else null }.entries.toList()
 
             if (pullRequestEnabled) {
                 configureGit()
@@ -79,15 +79,15 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     dependenciesLinesMap = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
                 }
                 val upgradeResults = upgradeDependencies(dependenciesLinesMap, artifactsToUpgradeByGroup)
-                if (upgradeResults.isNotEmpty()) {
-                    if (pullRequestEnabled) {
+                if (pullRequestEnabled) {
+                    if (upgradeResults.isNotEmpty()) {
                         createPullRequest(upgradeResults, headBranch, groupId, group)
-                    }
-                } else {
-                    if (pullRequestEnabled && !branchCreated) {
-                        val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", project.rootProject.projectDir, true, true)
-                        if (execResult.isSuccessful()) {
-                            log("Merge pushed to $headBranch branch.")
+                    } else {
+                        if (!branchCreated) {
+                            val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", project.rootProject.projectDir, true, true)
+                            if (execResult.isSuccessful()) {
+                                log("Merge pushed to $headBranch branch.")
+                            }
                         }
                     }
                 }
@@ -214,7 +214,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     labelsService.addLabelsToIssue(repositoryIdProvider, pullRequest.number, pullRequestLabels!!)
                     log("Labels assigned to pull request #" + pullRequest.number)
                 }
-
             } else {
                 val pullRequestComment = PullRequestGenerator.createComment(upgradeResults)
                 val issueService = IssueService(client)
