@@ -74,11 +74,11 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     branchCreated = prepareGitBranch(headBranch)
                 }
 
-                var dependenciesMap = dependenciesParserResult.dependenciesLinesMap
+                var dependenciesLinesMap = dependenciesParserResult.dependenciesLinesMap
                 if (!branchCreated) {
-                    dependenciesMap = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
+                    dependenciesLinesMap = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
                 }
-                val upgradeResults = upgradeDependencies(dependenciesMap, artifactsToUpgradeByGroup)
+                val upgradeResults = upgradeDependencies(dependenciesLinesMap, artifactsToUpgradeByGroup)
                 if (upgradeResults.isNotEmpty()) {
                     if (pullRequestEnabled) {
                         createPullRequest(upgradeResults, headBranch, groupId, group)
@@ -125,9 +125,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
         }
     }
 
-    private fun upgradeDependencies(dependenciesMap: MutableMap<String, List<String>>, artifactsToUpgrade: List<ArtifactUpgrade>): List<UpgradeResult> {
+    private fun upgradeDependencies(dependenciesLinesMap: Map<String, List<String>>, artifactsToUpgradeByGroup: List<ArtifactUpgrade>): List<UpgradeResult> {
+        val dependenciesLinesMapByGroup = dependenciesLinesMap.toMutableMap()
         val upgradeResults = mutableListOf<UpgradeResult>()
-        artifactsToUpgrade.forEach { artifactToUpgrade ->
+        artifactsToUpgradeByGroup.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
@@ -148,7 +149,8 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     }
                 }
             } else {
-                dependenciesMap.entries.forEach { entry ->
+                dependenciesLinesMapByGroup.entries.forEach { entry ->
+                    val newLines = mutableListOf<String>()
                     File(entry.key).bufferedWriter().use { out ->
                         entry.value.forEach { line ->
                             val upgradeResult = DependenciesParser.upgradeDependency(line, artifactToUpgrade)
@@ -157,9 +159,11 @@ open class UpgradeDependenciesTask : AbstractTask() {
                                 log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
                                 upgradedUpgradeResult = upgradeResult
                             }
+                            newLines.add(upgradeResult.line)
                             out.write(upgradeResult.line + "\n")
                         }
                     }
+                    dependenciesLinesMapByGroup[entry.key] = newLines
                 }
             }
 
