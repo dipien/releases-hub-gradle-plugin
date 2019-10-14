@@ -4,7 +4,7 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 
 class DependenciesParserResult {
 
-    val artifactsMap = mutableMapOf<String, MutableList<ArtifactUpgrade>>()
+    val artifactsMap = mutableMapOf<String, List<ArtifactUpgrade>>()
     val excludedArtifacts = mutableListOf<ArtifactUpgrade>()
     val dependenciesLinesMap = mutableMapOf<String, List<String>>()
 

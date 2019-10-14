@@ -15,38 +15,41 @@ object DependenciesParser {
         val dependenciesParserResult = DependenciesParserResult()
 
         // Dependencies
-        dependenciesClassNames.forEach {
-            val lines = project.rootProject.file(dependenciesBasePath + it).readLines()
-            dependenciesParserResult.dependenciesLinesMap[dependenciesBasePath + it] = lines
+        dependenciesClassNames.forEach { className ->
+            val lines = project.rootProject.file(dependenciesBasePath + className).readLines()
+            dependenciesParserResult.dependenciesLinesMap[dependenciesBasePath + className] = lines
 
+            val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
             lines.forEach { line ->
                 val artifact = extractArtifact(line)
                 if (artifact != null) {
                     if (artifact.match(includes, excludes)) {
-                        dependenciesParserResult.artifactsMap.putIfAbsent(dependenciesBasePath + it, mutableListOf())
-                        dependenciesParserResult.artifactsMap[dependenciesBasePath + it]!!.add(artifact)
+                        matchedArtifactsUpgrades.add(artifact)
                     } else {
                         dependenciesParserResult.excludedArtifacts.add(artifact)
                     }
                 }
             }
+            dependenciesParserResult.artifactsMap[dependenciesBasePath + className] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
 
         // Gradle
         File(project.rootProject.projectDir.absolutePath).walk().forEach { file ->
             if (file.name == GRADLE_FILE_NAME) {
+
+                val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
+                val pathRelativeToRootProject = file.absolutePath.replaceFirst(project.rootProject.projectDir.absolutePath + "/", "")
                 file.forEachLine { line ->
                     val artifact = extractGradleArtifact(line)
                     if (artifact != null) {
                         if (artifact.match(includes, excludes)) {
-                            val pathRelativeToRootProject = file.absolutePath.replaceFirst(project.rootProject.projectDir.absolutePath + "/", "")
-                            dependenciesParserResult.artifactsMap.putIfAbsent(pathRelativeToRootProject, mutableListOf())
-                            dependenciesParserResult.artifactsMap[pathRelativeToRootProject]!!.add(artifact)
+                            matchedArtifactsUpgrades.add(artifact)
                         } else {
                             dependenciesParserResult.excludedArtifacts.add(artifact)
                         }
                     }
                 }
+                dependenciesParserResult.artifactsMap[pathRelativeToRootProject] = matchedArtifactsUpgrades.sortedBy { it.toString() }
             }
         }
 
