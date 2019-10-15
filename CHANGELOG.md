@@ -1,5 +1,24 @@
 # Change Log
 
+## [v1.2.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.2.0) (2019-10-15)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.1.0...v1.2.0)
+
+**Implemented enhancements:**
+
+- Support upgrading Gradle version [\#27](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/27)
+- Add support to assign labels to the generated PR  [\#26](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/26)
+- Validate dynamic and snapshot versions [\#10](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/10)
+- Add support to assign reviewers to the generated PR [\#2](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/2)
+
+**Fixed bugs:**
+
+- Upgrades reverted when upgrading multiples artifacts on same PR [\#38](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/38)
+
+**Closed issues:**
+
+- Integration with plugins.id\("de.fayard.buildSrcVersions"\) [\#33](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/33)
+- Please publish com.releasehub on the Gradle plugin portal [\#31](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/31)
+
 ## [v1.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.1.0) (2019-09-20)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.2...v1.1.0)
 
