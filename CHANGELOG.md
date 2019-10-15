@@ -14,10 +14,6 @@
 
 - Upgrades reverted when upgrading multiples artifacts on same PR [\#38](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/38)
 
-**Closed issues:**
-
-- Please publish com.releasehub on the Gradle plugin portal [\#31](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/31)
-
 ## [v1.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.1.0) (2019-09-20)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.2...v1.1.0)
 
