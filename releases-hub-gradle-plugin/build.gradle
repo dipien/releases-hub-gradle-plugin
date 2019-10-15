@@ -3,6 +3,7 @@ ext.ARTIFACT_ID = "releases-hub-gradle-plugin"
 group = "com.releaseshub"
 
 apply plugin: "com.jdroidtools.gradle.plugin"
+apply plugin: "com.gradle.plugin-publish"
 
 buildscript {
 	dependencies {
@@ -20,9 +21,22 @@ dependencies {
 
 gradlePlugin {
 	plugins {
-		publisherPlugin {
+		releasesHubPlugin {
 			id = "com.releaseshub.gradle.plugin"
 			implementationClass = "com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin"
+		}
+	}
+}
+
+pluginBundle {
+	website = "https://plugin.releaseshub.com/"
+	vcsUrl = "https://github.com/releaseshub/releases-hub-gradle-plugin"
+	description = "Gradle Plugin to automatically upgrade your java gradle project dependencies and send a GitHub pull request with the changes"
+	tags = ["gradle", "plugin", "dependencies", "github"]
+
+	plugins {
+		releasesHubPlugin {
+			displayName = "Releases Hub Gradle Plugin"
 		}
 	}
 }

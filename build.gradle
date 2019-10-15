@@ -27,7 +27,10 @@ buildscript {
 	}
 
 	dependencies {
-		classpath BuildLibs.JDROID_GRADLE_ROOT_PLUGIN
+		classpath(BuildLibs.JDROID_GRADLE_ROOT_PLUGIN)
+
+		// TODO Remove this when upgraded to jdroid gradle plugin 2.4.0
+		classpath("com.gradle.publish:plugin-publish-plugin:0.10.1")
 	}
 }
 
