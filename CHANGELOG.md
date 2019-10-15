@@ -16,7 +16,6 @@
 
 **Closed issues:**
 
-- Integration with plugins.id\("de.fayard.buildSrcVersions"\) [\#33](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/33)
 - Please publish com.releasehub on the Gradle plugin portal [\#31](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/31)
 
 ## [v1.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.1.0) (2019-09-20)
