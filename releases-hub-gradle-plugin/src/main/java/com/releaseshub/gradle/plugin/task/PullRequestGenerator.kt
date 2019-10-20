@@ -33,6 +33,11 @@ object PullRequestGenerator {
                 builder.append("[Documentation](${it.artifactUpgrade.documentationUrl})")
                 atLeastOneItem = true
             }
+            if (it.artifactUpgrade?.issueTrackerUrl != null) {
+                builder.append(if (atLeastOneItem) " | " else "* ")
+                builder.append("[Issue tracker](${it.artifactUpgrade.issueTrackerUrl})")
+                atLeastOneItem = true
+            }
             if (atLeastOneItem) {
                 builder.appendln()
             }

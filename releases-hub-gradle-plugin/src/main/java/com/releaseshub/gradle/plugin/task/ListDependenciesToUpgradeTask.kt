@@ -52,6 +52,9 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
                 if (it.documentationUrl != null) {
                     log("   - Documentation: ${it.documentationUrl}")
                 }
+                if (it.issueTrackerUrl != null) {
+                    log("   - Issue tracker: ${it.issueTrackerUrl}")
+                }
                 log("")
             }
         }
