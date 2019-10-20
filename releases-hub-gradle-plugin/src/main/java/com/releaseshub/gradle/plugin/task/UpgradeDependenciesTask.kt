@@ -143,7 +143,8 @@ open class UpgradeDependenciesTask : AbstractTask() {
                                     log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
                                     upgradedUpgradeResult = upgradeResult
                                 }
-                                out.write(upgradeResult.line + "\n")
+                                out.write(upgradeResult.line)
+                                out.newLine()
                             }
                         }
                     }

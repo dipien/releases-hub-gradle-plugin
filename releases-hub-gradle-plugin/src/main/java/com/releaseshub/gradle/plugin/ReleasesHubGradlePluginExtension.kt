@@ -12,20 +12,20 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
 
     private val propertyResolver: PropertyResolver = PropertyResolver(project)
 
-    var serverName: String?
-    var userToken: String?
+    var serverName: String? = propertyResolver.getStringProp(::serverName.name, AppServer.PROD.getServerName())
+    var userToken: String? = propertyResolver.getStringProp(::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
-    var dependenciesBasePath: String
-    var dependenciesClassNames: List<String>?
-    var includes: List<String>
-    var excludes: List<String>
+    var dependenciesBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
+    var dependenciesClassNames: List<String>? = propertyResolver.getStringListProp(::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
+    var includes: List<String> = propertyResolver.getStringListProp(::includes.name, listOf()) ?: listOf()
+    var excludes: List<String> = propertyResolver.getStringListProp(::excludes.name, listOf()) ?: listOf()
 
-    var baseBranch: String?
+    var baseBranch: String? = propertyResolver.getStringProp(::baseBranch.name, "master")
 
     @Deprecated(message = "Use headBranchPrefix instead. To be removed on v2.0.0")
     var headBranch: String? = null
 
-    var headBranchPrefix: String?
+    var headBranchPrefix: String? = propertyResolver.getStringProp(::headBranchPrefix.name, "releases_hub/")
 
     @Deprecated(message = "Not used anymore, because we create a commit per update. To be removed on v2.0.0")
     var commitMessage: String? = null
@@ -33,44 +33,19 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     @Deprecated(message = "Not used anymore, because we create a pull request per group id. To be removed on v2.0.0")
     var pullRequestTitle: String? = null
 
-    var pullRequestEnabled: Boolean
-    var pullRequestsMax: Int
-    var pullRequestLabels: List<String>? = null
-    var pullRequestReviewers: List<String>? = null
-    var pullRequestTeamReviewers: List<String>? = null
+    var pullRequestEnabled: Boolean = propertyResolver.getBooleanProp(::pullRequestEnabled.name, false) ?: false
+    var pullRequestsMax: Int = propertyResolver.getIntegerProp(::pullRequestsMax.name, 5) ?: 5
+    var pullRequestLabels: List<String>? = propertyResolver.getStringListProp(::pullRequestLabels.name)
+    var pullRequestReviewers: List<String>? = propertyResolver.getStringListProp(::pullRequestReviewers.name)
+    var pullRequestTeamReviewers: List<String>? = propertyResolver.getStringListProp(::pullRequestTeamReviewers.name)
 
-    var gitHubUserName: String?
-    var gitHubUserEmail: String?
-    var gitHubRepositoryOwner: String?
-    var gitHubRepositoryName: String?
-    var gitHubWriteToken: String?
+    var gitHubUserName: String? = propertyResolver.getStringProp(::gitHubUserName.name)
+    var gitHubUserEmail: String? = propertyResolver.getStringProp(::gitHubUserEmail.name)
+    var gitHubRepositoryOwner: String? = propertyResolver.getStringProp(::gitHubRepositoryOwner.name)
+    var gitHubRepositoryName: String? = propertyResolver.getStringProp(::gitHubRepositoryName.name)
+    var gitHubWriteToken: String? = propertyResolver.getStringProp(::gitHubWriteToken.name)
 
     var logLevel = LogLevel.LIFECYCLE
-
-    init {
-        serverName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::serverName.name, AppServer.PROD.getServerName())
-        userToken = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
-
-        dependenciesBasePath = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
-        dependenciesClassNames = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
-        includes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::includes.name, listOf()) ?: listOf()
-        excludes = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::excludes.name, listOf()) ?: listOf()
-
-        baseBranch = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::baseBranch.name, "master")
-        headBranchPrefix = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::headBranchPrefix.name, "releases_hub/")
-        pullRequestEnabled = propertyResolver.getBooleanProp(ReleasesHubGradlePluginExtension::pullRequestEnabled.name, false) ?: false
-        pullRequestsMax = propertyResolver.getIntegerProp(ReleasesHubGradlePluginExtension::pullRequestsMax.name, 5) ?: 5
-        pullRequestLabels = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::pullRequestLabels.name)
-        pullRequestReviewers = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::pullRequestReviewers.name)
-        pullRequestTeamReviewers = propertyResolver.getStringListProp(ReleasesHubGradlePluginExtension::pullRequestTeamReviewers.name)
-
-        gitHubUserName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubUserName.name)
-        gitHubUserEmail = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubUserEmail.name)
-
-        gitHubRepositoryOwner = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubRepositoryOwner.name)
-        gitHubRepositoryName = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubRepositoryName.name)
-        gitHubWriteToken = propertyResolver.getStringProp(ReleasesHubGradlePluginExtension::gitHubWriteToken.name)
-    }
 
     fun validateServerName() {
         requireNotNull(serverName.isNullOrEmpty()) { "The 'serverName' property is required" }
