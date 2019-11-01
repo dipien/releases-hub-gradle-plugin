@@ -6,11 +6,13 @@ import com.jdroid.github.service.IssueService
 import com.jdroid.github.service.LabelsService
 import com.jdroid.github.service.PullRequestService
 import com.jdroid.github.service.ReviewRequestsService
+import com.jdroid.java.concurrent.ExecutorUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import java.io.File
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 open class UpgradeDependenciesTask : AbstractTask() {
 
@@ -184,6 +186,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
     private fun createPullRequest(upgradeResults: List<UpgradeResult>, headBranch: String, groupId: String?, group: String) {
         gitHelper.push(headBranch)
         log("The changes were pushed to $headBranch branch.")
+
+        // We add this delay to automatically fix this: https://support.circleci.com/hc/en-us/articles/360034536433-Pull-requests-not-building-due-to-Only-build-pull-requests-settings
+        ExecutorUtils.sleep(10, TimeUnit.SECONDS)
 
         val client = GitHubClient()
         client.setSerializeNulls(false)
