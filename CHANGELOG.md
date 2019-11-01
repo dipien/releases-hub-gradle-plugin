@@ -1,5 +1,16 @@
 # Change Log
 
+## [v1.2.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.2.1) (2019-11-01)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.2.0...v1.2.1)
+
+**Implemented enhancements:**
+
+- Display issue tracker url for artifacts upgrades [\#41](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/41)
+
+**Fixed bugs:**
+
+- Circle CI workflow is not executed under race conditions [\#44](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/44)
+
 ## [v1.2.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.2.0) (2019-10-15)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.1.0...v1.2.0)
 
@@ -13,6 +24,11 @@
 **Fixed bugs:**
 
 - Upgrades reverted when upgrading multiples artifacts on same PR [\#38](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/38)
+
+**Closed issues:**
+
+- Integration with plugins.id\("de.fayard.buildSrcVersions"\) [\#33](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/33)
+- Please publish com.releasehub on the Gradle plugin portal [\#31](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/31)
 
 ## [v1.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.1.0) (2019-09-20)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.2...v1.1.0)
