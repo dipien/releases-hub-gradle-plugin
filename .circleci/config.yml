@@ -97,7 +97,9 @@ workflows:
   commit:
     jobs:
       - ktlint
-      - build
+      - build:
+          requires:
+            - ktlint
       - test:
           requires:
             - build
