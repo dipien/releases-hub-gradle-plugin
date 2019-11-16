@@ -4,6 +4,10 @@ import com.releaseshub.gradle.plugin.common.AbstractTask
 
 open class ValidateDependenciesTask : AbstractTask() {
 
+    companion object {
+        const val TASK_NAME = "validateDependencies"
+    }
+
     init {
         description = "Validate all dependencies"
     }

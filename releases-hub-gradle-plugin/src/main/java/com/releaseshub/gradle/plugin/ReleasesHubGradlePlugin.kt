@@ -20,22 +20,22 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         extension = project.extensions.create(EXTENSION_NAME, ReleasesHubGradlePluginExtension::class.java, project)
 
-        val validateDependenciesTask = project.tasks.create("validateDependencies", ValidateDependenciesTask::class.java)
+        val validateDependenciesTask = project.tasks.create(ValidateDependenciesTask.TASK_NAME, ValidateDependenciesTask::class.java)
         project.afterEvaluate {
             initTask(validateDependenciesTask)
         }
 
-        val listDependenciesTask = project.tasks.create("listDependencies", ListDependenciesTask::class.java)
+        val listDependenciesTask = project.tasks.create(ListDependenciesTask.TASK_NAME, ListDependenciesTask::class.java)
         project.afterEvaluate {
             initTask(listDependenciesTask)
         }
 
-        val listDependenciesToUpgradeTask = project.tasks.create("listDependenciesToUpgrade", ListDependenciesToUpgradeTask::class.java)
+        val listDependenciesToUpgradeTask = project.tasks.create(ListDependenciesToUpgradeTask.TASK_NAME, ListDependenciesToUpgradeTask::class.java)
         project.afterEvaluate {
             initTask(listDependenciesToUpgradeTask)
         }
 
-        val upgradeDependenciesTask = project.tasks.create("upgradeDependencies", UpgradeDependenciesTask::class.java)
+        val upgradeDependenciesTask = project.tasks.create(UpgradeDependenciesTask.TASK_NAME, UpgradeDependenciesTask::class.java)
         project.afterEvaluate {
             initTask(upgradeDependenciesTask)
             upgradeDependenciesTask.baseBranch = extension.baseBranch

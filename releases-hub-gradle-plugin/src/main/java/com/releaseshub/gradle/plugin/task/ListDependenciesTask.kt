@@ -4,6 +4,10 @@ import com.releaseshub.gradle.plugin.common.AbstractTask
 
 open class ListDependenciesTask : AbstractTask() {
 
+    companion object {
+        const val TASK_NAME = "listDependencies"
+    }
+
     init {
         description = "List all dependencies"
     }

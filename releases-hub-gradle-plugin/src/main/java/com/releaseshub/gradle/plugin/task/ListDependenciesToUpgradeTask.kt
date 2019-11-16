@@ -5,6 +5,10 @@ import com.releaseshub.gradle.plugin.common.AbstractTask
 
 open class ListDependenciesToUpgradeTask : AbstractTask() {
 
+    companion object {
+        const val TASK_NAME = "listDependenciesToUpgrade"
+    }
+
     init {
         description = "List all dependencies to upgrade"
     }

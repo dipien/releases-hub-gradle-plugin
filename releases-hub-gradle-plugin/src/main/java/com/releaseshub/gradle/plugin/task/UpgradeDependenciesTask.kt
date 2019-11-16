@@ -16,6 +16,10 @@ import java.util.concurrent.TimeUnit
 
 open class UpgradeDependenciesTask : AbstractTask() {
 
+    companion object {
+        const val TASK_NAME = "upgradeDependencies"
+    }
+
     var baseBranch: String? = null
     var headBranchPrefix: String? = null
     var pullRequestEnabled: Boolean = false
