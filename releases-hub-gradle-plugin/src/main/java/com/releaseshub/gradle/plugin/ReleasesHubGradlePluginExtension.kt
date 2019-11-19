@@ -17,8 +17,10 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
 
     var dependenciesBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
     var dependenciesClassNames: List<String>? = propertyResolver.getStringListProp(::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
-    var includes: List<String> = propertyResolver.getStringListProp(::includes.name, listOf()) ?: listOf()
-    var excludes: List<String> = propertyResolver.getStringListProp(::excludes.name, listOf()) ?: listOf()
+    var includes: List<String> = propertyResolver.getStringListProp(::includes.name, emptyList()) ?: emptyList()
+    var excludes: List<String> = propertyResolver.getStringListProp(::excludes.name, emptyList()) ?: emptyList()
+
+    var unusedExcludes: List<String> = propertyResolver.getStringListProp(::unusedExcludes.name, emptyList()) ?: emptyList()
 
     var baseBranch: String? = propertyResolver.getStringProp(::baseBranch.name, "master")
 

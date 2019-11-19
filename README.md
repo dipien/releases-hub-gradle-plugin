@@ -135,10 +135,20 @@ The following validations are executed:
 * All the dependencies defined on each `dependenciesClassNames` are sorted alphabetically by `groupId:artifactId`
 * There are not duplicated dependencies defined on each `dependenciesClassNames`
 * There are not dependencies with snapshot or dynamic versions assigned
+* There are dependencies on `dependenciesClassNames` but not used on the project
 
 ```
 ./gradlew validateDependencies
 ```
+##### Properties
+
+###### Unused Excludes
+
+The dependencies to exclude from the unused validation. 
+You can define a `groupId` to match all the artifacts for that group id, or `groupId:artifactId` to match a particular artifact.
+By default there aren't excluded dependencies.
+
+    unusedExcludes = ["com.groupid1", "com.groupid2:artifact1"]
 
 #### List dependencies
 

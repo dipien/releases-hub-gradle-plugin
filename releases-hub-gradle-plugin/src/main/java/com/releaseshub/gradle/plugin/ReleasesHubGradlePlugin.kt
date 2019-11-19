@@ -23,6 +23,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         val validateDependenciesTask = project.tasks.create(ValidateDependenciesTask.TASK_NAME, ValidateDependenciesTask::class.java)
         project.afterEvaluate {
             initTask(validateDependenciesTask)
+            validateDependenciesTask.unusedExcludes = extension.unusedExcludes
         }
 
         val listDependenciesTask = project.tasks.create(ListDependenciesTask.TASK_NAME, ListDependenciesTask::class.java)
