@@ -24,6 +24,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         project.afterEvaluate {
             initTask(validateDependenciesTask)
             validateDependenciesTask.unusedExcludes = extension.unusedExcludes
+            validateDependenciesTask.unusedExtensionsToSearch = extension.unusedExtensionsToSearch
         }
 
         val listDependenciesTask = project.tasks.create(ListDependenciesTask.TASK_NAME, ListDependenciesTask::class.java)

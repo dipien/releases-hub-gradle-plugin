@@ -149,6 +149,13 @@ You can define a `groupId` to match all the artifacts for that group id, or `gro
 By default there aren't excluded dependencies.
 
     unusedExcludes = ["com.groupid1", "com.groupid2:artifact1"]
+    
+###### Unused extensions to search
+
+The file extensions of the files where the artifact's packages will we search to find unused dependendencies. 
+By default `[".kt", ".java", ".xml"]`
+
+    unusedExtensionsToSearch = [".kt", ".java"]
 
 #### List dependencies
 

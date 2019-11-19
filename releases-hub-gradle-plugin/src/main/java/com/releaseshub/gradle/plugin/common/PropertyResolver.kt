@@ -70,4 +70,8 @@ class PropertyResolver(private val project: Project) {
             value as? List<String> ?: StringUtils.splitWithCommaSeparator(value.toString())
         }
     }
+
+    fun getRequiredStringListProp(propertyName: String, defaultValue: List<String>): List<String> {
+        return getStringListProp(propertyName, defaultValue) ?: defaultValue
+    }
 }

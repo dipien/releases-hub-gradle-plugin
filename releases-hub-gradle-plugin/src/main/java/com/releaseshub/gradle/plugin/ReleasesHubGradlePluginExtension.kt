@@ -16,11 +16,15 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var userToken: String? = propertyResolver.getStringProp(::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
     var dependenciesBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
+
+    // TODO On v2.0 change this to required and use getRequiredStringListProp
     var dependenciesClassNames: List<String>? = propertyResolver.getStringListProp(::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
+
     var includes: List<String> = propertyResolver.getStringListProp(::includes.name, emptyList()) ?: emptyList()
     var excludes: List<String> = propertyResolver.getStringListProp(::excludes.name, emptyList()) ?: emptyList()
 
-    var unusedExcludes: List<String> = propertyResolver.getStringListProp(::unusedExcludes.name, emptyList()) ?: emptyList()
+    var unusedExcludes: List<String> = propertyResolver.getRequiredStringListProp(::unusedExcludes.name, emptyList())
+    var unusedExtensionsToSearch: List<String> = propertyResolver.getRequiredStringListProp(::unusedExtensionsToSearch.name, listOf(".kt", ".java", ".xml"))
 
     var baseBranch: String? = propertyResolver.getStringProp(::baseBranch.name, "master")
 

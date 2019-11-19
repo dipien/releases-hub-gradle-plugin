@@ -56,6 +56,6 @@ class DependencyUsageSearcherTest {
         return DependencyUsageSearcher(listOf(
             File(ResourceUtils.getRequiredResourcePath("dependency_usage_1")),
             File(ResourceUtils.getRequiredResourcePath("dependency_usage_2"))
-        ))
+        ), listOf(".kt", ".java", ".xml"))
     }
 }

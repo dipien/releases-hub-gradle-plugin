@@ -10,6 +10,7 @@ open class ValidateDependenciesTask : AbstractTask() {
     }
 
     lateinit var unusedExcludes: List<String>
+    lateinit var unusedExtensionsToSearch: List<String>
 
     init {
         description = "Validate all dependencies"
@@ -96,17 +97,11 @@ open class ValidateDependenciesTask : AbstractTask() {
         }
 
         val excludes = unusedExcludes.plus("org.jetbrains.kotlin:kotlin-stdlib-jdk7").plus("com.pinterest:ktlint")
-        val dependencyUsageSearcher = DependencyUsageSearcher(sourcesDir)
-        artifactsUpgrades.forEach { artifactUpgrade ->
-            if (artifactUpgrade.match(listOf(), excludes)) {
-                if (!dependencyUsageSearcher.isDependencyDeclared(artifactUpgrade)) {
-                    log("- The dependency $artifactUpgrade seems to be not declared on your project. See if you can safely remove it.")
-                    fail = true
-                }
-                if (!dependencyUsageSearcher.isAnyPackageUsed(artifactUpgrade)) {
-                    log("- The dependency $artifactUpgrade seems to be unused on your project. See if you can safely remove it.")
-                    fail = true
-                }
+        val dependencyUsageSearcher = DependencyUsageSearcher(sourcesDir, unusedExtensionsToSearch)
+        artifactsUpgrades.filter { it.match(listOf(), excludes) }.forEach { artifactUpgrade ->
+            if (!dependencyUsageSearcher.isAnyPackageUsed(artifactUpgrade)) {
+                log("- The dependency $artifactUpgrade seems to be unused on your project. See if you can safely remove it.")
+                fail = true
             }
         }
 
