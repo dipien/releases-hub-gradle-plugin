@@ -3,8 +3,6 @@ package com.releaseshub.gradle.plugin.task
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import java.io.File
 
-
-
 open class ValidateDependenciesTask : AbstractTask() {
 
     companion object {

@@ -14,7 +14,7 @@ class DependencyUsageSearcher(private val sourcesDir: List<File>) {
     fun isAnyPackageUsed(artifactUpgrade: ArtifactUpgrade): Boolean {
         // TODO We should also check if a plugin is not applied
         if (!artifactUpgrade.packages.isNullOrEmpty() && (artifactUpgrade.packaging == Packaging.JAR || artifactUpgrade.packaging == Packaging.AAR)) {
-            return sourcesDir.any anyDir@ {
+            return sourcesDir.any anyDir@{
                 return@anyDir it.walk().any { file ->
                     var packageUsedOnFile = false
                     if (file.name.endsWith(".kt") || file.name.endsWith(".java") || file.name.endsWith(".xml")) {
