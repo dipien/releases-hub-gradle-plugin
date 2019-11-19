@@ -1,6 +1,9 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.common.AbstractTask
+import java.io.File
+
+
 
 open class ValidateDependenciesTask : AbstractTask() {
 
@@ -14,6 +17,8 @@ open class ValidateDependenciesTask : AbstractTask() {
 
     override fun onExecute() {
 
+        getExtension().validateServerName()
+        getExtension().validateUserToken()
         getExtension().validateDependenciesClassNames()
 
         var fail = false
@@ -55,6 +60,50 @@ open class ValidateDependenciesTask : AbstractTask() {
 
             if (!failOnFile) {
                 log("- No errors found")
+            }
+        }
+
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, emptyList(), emptyList())
+        val artifactsUpgrades = createAppService().getArtifactsToUpgrade(dependenciesParserResult.getAllArtifacts())
+
+        val sourcesDir = mutableListOf<File>()
+        // TODO We should automatically search for projects source sets
+        project.rootProject.allprojects.forEach {
+            var dir = File(it.projectDir, "src" + File.separator + "main" + File.separator + "java")
+            if (dir.exists()) {
+                sourcesDir.add(dir)
+            }
+            dir = File(it.projectDir, "src" + File.separator + "main" + File.separator + "kotlin")
+            if (dir.exists()) {
+                sourcesDir.add(dir)
+            }
+            dir = File(it.projectDir, "src" + File.separator + "main" + File.separator + "resources")
+            if (dir.exists()) {
+                sourcesDir.add(dir)
+            }
+            dir = File(it.projectDir, "src" + File.separator + "test" + File.separator + "java")
+            if (dir.exists()) {
+                sourcesDir.add(dir)
+            }
+            dir = File(it.projectDir, "src" + File.separator + "test" + File.separator + "kotlin")
+            if (dir.exists()) {
+                sourcesDir.add(dir)
+            }
+            dir = File(it.projectDir, "src" + File.separator + "test" + File.separator + "resources")
+            if (dir.exists()) {
+                sourcesDir.add(dir)
+            }
+        }
+
+        val dependencyUsageSearcher = DependencyUsageSearcher(sourcesDir)
+        artifactsUpgrades.forEach { artifactUpgrade ->
+            if (!dependencyUsageSearcher.isDependencyDeclared(artifactUpgrade)) {
+                log("- The dependency $artifactUpgrade seems to be not declared on your project. See if you can safely remove it.")
+                fail = true
+            }
+            if (!dependencyUsageSearcher.isAnyPackageUsed(artifactUpgrade)) {
+                log("- The dependency $artifactUpgrade seems to be unused on your project. See if you can safely remove it.")
+                fail = true
             }
         }
 

@@ -45,7 +45,11 @@ abstract class AbstractTask : DefaultTask() {
     }
 
     protected fun createArtifactsService(): ArtifactsService {
-        return ArtifactsService(AppService(AppServer.valueOf(serverName!!), project.version.toString(), userToken!!))
+        return ArtifactsService(createAppService())
+    }
+
+    protected fun createAppService(): AppService {
+        return AppService(AppServer.valueOf(serverName!!), project.version.toString(), userToken!!)
     }
 
     protected fun getRepositories(): List<MavenArtifactRepository> {

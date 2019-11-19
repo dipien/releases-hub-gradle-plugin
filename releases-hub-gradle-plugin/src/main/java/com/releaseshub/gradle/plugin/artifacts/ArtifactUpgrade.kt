@@ -10,12 +10,14 @@ class ArtifactUpgrade {
     var id: String? = null
     var groupId: String? = null
     var artifactId: String? = null
+    var packaging: Packaging? = null
     var fromVersion: String? = null
     var toVersion: String? = null
     var sourceCodeUrl: String? = null
     var releaseNotesUrl: String? = null
     var documentationUrl: String? = null
     var issueTrackerUrl: String? = null
+    var packages: List<String>? = null
     lateinit var artifactUpgradeStatus: ArtifactUpgradeStatus
 
     constructor() { }
