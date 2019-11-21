@@ -32,6 +32,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
     var gitHubRepositoryOwner: String? = null
     var gitHubRepositoryName: String? = null
     var gitHubWriteToken: String? = null
+    var gitHubApiUrl: String? = null
 
     init {
         description = "Upgrade dependencies"
