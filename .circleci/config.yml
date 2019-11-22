@@ -11,19 +11,9 @@ references:
 
   cache_key: &cache_key
     key: v1-cache-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
-  restore_cache: &restore_cache
-    restore_cache:
-      <<: *cache_key
-  save_cache: &save_cache
-    save_cache:
-      <<: *cache_key
-      paths:
-        - ~/.gradle
-        - ~/.m2
 
-  ## Docker image configurations
-
-  jdk_config: &jdk_config
+executors:
+  jdk_executor:
     working_directory: *workspace
     docker:
       - image: circleci/openjdk:8-jdk
@@ -31,17 +21,31 @@ references:
       JVM_OPTS: -Xmx3200m
       GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.caching=false
 
+commands:
+  restore_gradle_cache:
+    steps:
+      restore_cache:
+        <<: *cache_key
+
+  save_gradle_cache:
+    steps:
+    save_cache:
+      <<: *cache_key
+      paths:
+        - ~/.gradle
+        - ~/.m2
+
 jobs:
   build:
-    <<: *jdk_config
+    executor: jdk_executor
     steps:
       - checkout
 
-      - *restore_cache
+      - restore_gradle_cache
       - run:
           name: Download dependencies
           command: ./gradlew dependencies --refresh-dependencies --stacktrace
-      - *save_cache
+      - save_gradle_cache
 
       - run: ./gradlew assemble --stacktrace
       
@@ -50,16 +54,16 @@ jobs:
           destination: wars
 
   ktlint:
-    <<: *jdk_config
+    executor: jdk_executor
     steps:
       - checkout
       - run: ./gradlew ktlint --stacktrace
 
   test:
-    <<: *jdk_config
+    executor: jdk_executor
     steps:
       - checkout
-      - *restore_cache
+      - restore_gradle_cache
 
       - run: ./gradlew test --refresh-dependencies --stacktrace
       - run:
@@ -75,17 +79,17 @@ jobs:
           destination: tests
 
   publish:
-    <<: *jdk_config
+    executor: jdk_executor
     steps:
       - checkout
-      - *restore_cache
+      - restore_gradle_cache
 
       - run:
           name: Uploading to Nexus Sonatype
           command: ./gradlew publish -PLOCAL_UPLOAD=false --refresh-dependencies --stacktrace
 
   upgradeDependencies:
-    <<: *jdk_config
+    executor: jdk_executor
     steps:
       - checkout
       - run:
