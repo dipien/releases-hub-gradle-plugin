@@ -24,16 +24,16 @@ executors:
 commands:
   restore_gradle_cache:
     steps:
-      restore_cache:
-        <<: *cache_key
+      - restore_cache:
+          <<: *cache_key
 
   save_gradle_cache:
     steps:
-    save_cache:
-      <<: *cache_key
-      paths:
-        - ~/.gradle
-        - ~/.m2
+      - save_cache:
+          <<: *cache_key
+          paths:
+            - ~/.gradle
+            - ~/.m2
 
 jobs:
   build:
