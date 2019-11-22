@@ -264,6 +264,13 @@ Required String (only if `pullRequestEnabled` is `true`).
 
     gitHubWriteToken = "123"
 
+
+###### GitHub Api Host Name
+
+The GitHub api host name needed to access the GitHub Enterprise. Optional String.
+
+    gitHubApiHostName = "your.githubenterprise.com"
+
 ### Privacy Policy
 
 The `listDependenciesToUpgrade` & `upgradeDependencies` tasks send to **Releases Hub** servers the **groupId**, **artifactId** and **version** of the project dependencies, in order to process and fetch the artifacts updates. 

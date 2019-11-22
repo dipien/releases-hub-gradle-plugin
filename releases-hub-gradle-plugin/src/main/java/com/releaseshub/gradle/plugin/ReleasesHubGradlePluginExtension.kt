@@ -50,6 +50,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var gitHubRepositoryOwner: String? = propertyResolver.getStringProp(::gitHubRepositoryOwner.name)
     var gitHubRepositoryName: String? = propertyResolver.getStringProp(::gitHubRepositoryName.name)
     var gitHubWriteToken: String? = propertyResolver.getStringProp(::gitHubWriteToken.name)
+    var gitHubApiHostName: String? = propertyResolver.getStringProp(::gitHubApiHostName.name)
 
     var logLevel = LogLevel.LIFECYCLE
 

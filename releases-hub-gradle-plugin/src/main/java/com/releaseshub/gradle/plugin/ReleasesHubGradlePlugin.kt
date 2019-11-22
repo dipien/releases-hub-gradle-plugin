@@ -52,6 +52,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
             upgradeDependenciesTask.gitHubRepositoryOwner = extension.gitHubRepositoryOwner
             upgradeDependenciesTask.gitHubRepositoryName = extension.gitHubRepositoryName
             upgradeDependenciesTask.gitHubWriteToken = extension.gitHubWriteToken
+            upgradeDependenciesTask.gitHubApiHostName = extension.gitHubApiHostName
         }
     }
 
