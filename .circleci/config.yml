@@ -14,24 +14,30 @@ executors:
       - image: circleci/openjdk:8-jdk
     environment:
       JVM_OPTS: -Xmx3200m
-      GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.caching=false
+      GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.caching=true
 
 commands:
   restore_gradle_cache:
     steps:
       - restore_cache:
           keys:
-            - v1-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
-            - v1-gradle_cache-{{ .Branch }}
-            - v1-gradle_cache-
+            - v2-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
+            - v2-gradle_cache-{{ .Branch }}
+            - v2-gradle_cache-
 
   save_gradle_cache:
     steps:
       - save_cache:
-          key: v1-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
+          key: v2-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
           paths:
             - ~/.gradle
             - ~/.m2
+
+  clean_build_cache:
+    steps:
+      run:
+        name: Clean Build Cache
+        command: rm -rf ~/.gradle/caches/build-cache-*
 
 jobs:
   gradleCache:
@@ -41,7 +47,8 @@ jobs:
       - restore_gradle_cache
       - run:
           name: Download dependencies
-          command: ./gradlew dependencies --refresh-dependencies --stacktrace
+          command: ./gradlew dependencies --stacktrace
+      - clean_build_cache
       - save_gradle_cache
 
   build:
