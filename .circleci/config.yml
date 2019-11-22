@@ -51,17 +51,6 @@ jobs:
       - clean_build_cache
       - save_gradle_cache
 
-  build:
-    executor: jdk_executor
-    steps:
-      - checkout
-      - restore_gradle_cache
-      - run:
-          name: Assemble
-          command: ./gradlew assemble --stacktrace
-      - store_artifacts:
-          path: ./build/libs
-          destination: wars
 
   ktlint:
     executor: jdk_executor
@@ -71,6 +60,19 @@ jobs:
       - run:
           name: Ktlint
           command: ./gradlew ktlint --stacktrace
+
+  build:
+    executor: jdk_executor
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - run:
+          name: Assemble
+          command: ./gradlew assemble --stacktrace
+      - save_gradle_cache
+      - store_artifacts:
+          path: ./build/libs
+          destination: wars
 
   test:
     executor: jdk_executor
