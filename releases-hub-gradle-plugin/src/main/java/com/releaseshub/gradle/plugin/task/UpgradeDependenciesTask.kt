@@ -32,7 +32,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
     var gitHubRepositoryOwner: String? = null
     var gitHubRepositoryName: String? = null
     var gitHubWriteToken: String? = null
-    var gitHubApiUrl: String? = null
+    var gitHubApiHostName: String? = null
 
     init {
         description = "Upgrade dependencies"
@@ -195,7 +195,12 @@ open class UpgradeDependenciesTask : AbstractTask() {
         // We add this delay to automatically fix this: https://support.circleci.com/hc/en-us/articles/360034536433-Pull-requests-not-building-due-to-Only-build-pull-requests-settings
         ExecutorUtils.sleep(10, TimeUnit.SECONDS)
 
-        val client = GitHubClient()
+        val client = if (gitHubApiHostName.isNullOrEmpty()) {
+            GitHubClient()
+        } else {
+            GitHubClient(gitHubApiHostName)
+        }
+
         client.setSerializeNulls(false)
         client.setOAuth2Token(gitHubWriteToken)
 
