@@ -10,13 +10,13 @@ references:
   ## Cache
 
   gradle_cache_key_1: &gradle_cache_key_1
-    key: v1-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
+    v1-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
 
   gradle_cache_key_2: &gradle_cache_key_2
-    key: v1-gradle_cache-{{ .Branch }}
+    v1-gradle_cache-{{ .Branch }}
 
   gradle_cache_key_3: &gradle_cache_key_3
-    key: v1-gradle_cache-
+    v1-gradle_cache-
 
 executors:
   jdk_executor:
@@ -39,7 +39,7 @@ commands:
   save_gradle_cache:
     steps:
       - save_cache:
-          <<: *gradle_cache_key_1
+          key: <<: *gradle_cache_key_1
           paths:
             - ~/.gradle
             - ~/.m2
