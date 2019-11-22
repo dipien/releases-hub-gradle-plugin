@@ -34,7 +34,7 @@ commands:
             - ~/.m2
 
 jobs:
-  build:
+  gradleCache:
     executor: jdk_executor
     steps:
       - checkout
@@ -45,8 +45,14 @@ jobs:
           command: ./gradlew dependencies --refresh-dependencies --stacktrace
       - save_gradle_cache
 
-      - run: ./gradlew assemble --stacktrace
-      
+  build:
+    executor: jdk_executor
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - run:
+          name: Assemble
+          command: ./gradlew assemble --stacktrace
       - store_artifacts:
           path: ./build/libs
           destination: wars
@@ -55,7 +61,10 @@ jobs:
     executor: jdk_executor
     steps:
       - checkout
-      - run: ./gradlew ktlint --stacktrace
+      - restore_gradle_cache
+      - run:
+          name: Ktlint
+          command: ./gradlew ktlint --stacktrace
 
   test:
     executor: jdk_executor
@@ -63,7 +72,7 @@ jobs:
       - checkout
       - restore_gradle_cache
 
-      - run: ./gradlew test --refresh-dependencies --stacktrace
+      - run: ./gradlew test --stacktrace
       - run:
           name: Save test results 
           command: |
@@ -81,7 +90,6 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
-
       - run:
           name: Uploading to Nexus Sonatype
           command: ./gradlew publish -PLOCAL_UPLOAD=false --refresh-dependencies --stacktrace
@@ -90,6 +98,7 @@ jobs:
     executor: jdk_executor
     steps:
       - checkout
+      - restore_gradle_cache
       - run:
           name: Upgrade Dependencies
           command: ./gradlew upgradeDependencies -PpullRequestEnabled=true --stacktrace
@@ -98,9 +107,11 @@ workflows:
   commit:
     jobs:
       - ktlint
+      - gradleCache
       - build:
           requires:
             - ktlint
+            - gradleCache
       - test:
           requires:
             - build
