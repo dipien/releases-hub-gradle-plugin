@@ -33,7 +33,7 @@ commands:
             - ~/.gradle
             - ~/.m2
 
-  attach_gradle_build_cache:
+  attach_workspace:
     steps:
       - attach_workspace:
           at: *workspace
@@ -72,7 +72,7 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
-      - attach_gradle_build_cache
+      - attach_workspace
       - run:
           name: Assemble
           command: ./gradlew assemble --stacktrace
@@ -86,7 +86,7 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
-      - attach_gradle_build_cache
+      - attach_workspace
       - run:
           name: Run tests
           command: ./gradlew test --stacktrace
@@ -107,7 +107,7 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
-      - attach_gradle_build_cache
+      - attach_workspace
       - run:
           name: Uploading to Nexus Sonatype
           command: ./gradlew publish -PLOCAL_UPLOAD=false --refresh-dependencies --stacktrace
