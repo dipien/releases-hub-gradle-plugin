@@ -38,7 +38,6 @@ jobs:
     executor: jdk_executor
     steps:
       - checkout
-
       - restore_gradle_cache
       - run:
           name: Download dependencies
@@ -71,8 +70,9 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
-
-      - run: ./gradlew test --stacktrace
+      - run:
+          name: Run tests
+          command: ./gradlew test --stacktrace
       - run:
           name: Save test results 
           command: |
@@ -106,12 +106,12 @@ jobs:
 workflows:
   commit:
     jobs:
-      - ktlint
       - gradleCache
+      - ktlint
       - build:
           requires:
-            - ktlint
             - gradleCache
+            - ktlint
       - test:
           requires:
             - build
