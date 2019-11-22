@@ -7,17 +7,6 @@ references:
   workspace: &workspace
                ~/workspace
 
-  ## Cache
-
-  gradle_cache_key_1: &gradle_cache_key_1
-    v1-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
-
-  gradle_cache_key_2: &gradle_cache_key_2
-    v1-gradle_cache-{{ .Branch }}
-
-  gradle_cache_key_3: &gradle_cache_key_3
-    v1-gradle_cache-
-
 executors:
   jdk_executor:
     working_directory: *workspace
@@ -32,14 +21,14 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - <<: *gradle_cache_key_1
-            - <<: *gradle_cache_key_2
-            - <<: *gradle_cache_key_3
+            - <<: v1-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
+            - <<: v1-gradle_cache-{{ .Branch }}
+            - <<: v1-gradle_cache-
 
   save_gradle_cache:
     steps:
       - save_cache:
-          key: <<: *gradle_cache_key_1
+          key: v1-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
           paths:
             - ~/.gradle
             - ~/.m2
