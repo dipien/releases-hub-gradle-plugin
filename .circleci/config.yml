@@ -36,14 +36,14 @@ commands:
   attach_gradle_build_cache:
     steps:
       - attach_workspace:
-          at: ~/
+          at: *workspace
 
   persist_gradle_build_cache:
     steps:
       - persist_to_workspace:
-          root: ~/
+          root: *workspace
           paths:
-            - .gradle-build-cache
+            - gradle-build-cache
 
 jobs:
   gradleCache:
