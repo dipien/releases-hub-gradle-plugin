@@ -35,9 +35,9 @@ commands:
 
   clean_build_cache:
     steps:
-      run:
-        name: Clean Build Cache
-        command: rm -rf ~/.gradle/caches/build-cache-*
+      - run:
+          name: Clean Build Cache
+          command: rm -rf ~/.gradle/caches/build-cache-*
 
 jobs:
   gradleCache:
