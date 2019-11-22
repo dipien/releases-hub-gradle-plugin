@@ -33,23 +33,37 @@ commands:
             - ~/.gradle
             - ~/.m2
 
+  restore_gradle_build_cache:
+    steps:
+      - restore_cache:
+          keys:
+            - v1-gradle_build_cache-{{ .Revision }}-
+
+  save_gradle_build_cache:
+    steps:
+      - save_cache:
+          key: v1-gradle_build_cache-{{ .Revision }}-{{ epoch }}
+          paths:
+            - ~/.gradle-build-cache
+
   clean_build_cache:
     steps:
       - run:
           name: Clean Build Cache
-          command: rm -rf ~/.gradle/caches/build-cache-*
+          command: rm -rf ~/.gradle-build-cache
 
 jobs:
   gradleCache:
     executor: jdk_executor
     steps:
       - checkout
+      - clean_build_cache
       - restore_gradle_cache
       - run:
           name: Download dependencies
           command: ./gradlew dependencies --stacktrace
-      - clean_build_cache
       - save_gradle_cache
+      - save_gradle_build_cache
 
 
   ktlint:
@@ -66,10 +80,11 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
+      - restore_gradle_build_cache
       - run:
           name: Assemble
           command: ./gradlew assemble --stacktrace
-      - save_gradle_cache
+      - save_gradle_build_cache
       - store_artifacts:
           path: ./build/libs
           destination: wars
@@ -79,6 +94,7 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
+      - restore_gradle_build_cache
       - run:
           name: Run tests
           command: ./gradlew test --stacktrace
@@ -99,6 +115,7 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
+      - restore_gradle_build_cache
       - run:
           name: Uploading to Nexus Sonatype
           command: ./gradlew publish -PLOCAL_UPLOAD=false --refresh-dependencies --stacktrace
