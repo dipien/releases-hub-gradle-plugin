@@ -9,8 +9,14 @@ references:
 
   ## Cache
 
-  cache_key: &cache_key
-    key: v1-cache-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
+  gradle_cache_key_1: &gradle_cache_key_1
+    key: v1-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
+
+  gradle_cache_key_2: &gradle_cache_key_2
+    key: v1-gradle_cache-{{ .Branch }}
+
+  gradle_cache_key_3: &gradle_cache_key_3
+    key: v1-gradle_cache-
 
 executors:
   jdk_executor:
@@ -25,12 +31,15 @@ commands:
   restore_gradle_cache:
     steps:
       - restore_cache:
-          <<: *cache_key
+          keys:
+            - <<: *gradle_cache_key_1
+            - <<: *gradle_cache_key_2
+            - <<: *gradle_cache_key_3
 
   save_gradle_cache:
     steps:
       - save_cache:
-          <<: *cache_key
+          <<: *gradle_cache_key_1
           paths:
             - ~/.gradle
             - ~/.m2
