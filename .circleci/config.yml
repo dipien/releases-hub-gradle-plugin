@@ -4,12 +4,12 @@ references:
 
   ## Workspace
 
-  workspace: &workspace
-               ~/workspace
+  working_dir: &working_dir
+                 ~/project
 
 executors:
   jdk_executor:
-    working_directory: *workspace
+    working_directory: *working_dir
     docker:
       - image: circleci/openjdk:8-jdk
     environment:
@@ -36,12 +36,12 @@ commands:
   attach_to_workspace:
     steps:
       - attach_workspace:
-          at: *workspace
+          at: ~/
 
   persist_gradle_build_cache:
     steps:
       - persist_to_workspace:
-          root: *workspace
+          root: ~/
           paths:
             - gradle-build-cache
 
