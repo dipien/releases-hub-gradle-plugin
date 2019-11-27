@@ -31,7 +31,7 @@ abstract class AbstractTask : DefaultTask() {
         LoggerHelper.logLevel = logLevel!!
 
         propertyResolver = PropertyResolver(project)
-        commandExecutor = CommandExecutor(project, logLevel)
+        commandExecutor = CommandExecutor(project, logLevel!!)
         gitHelper = GitHelper(commandExecutor)
         onExecute()
     }

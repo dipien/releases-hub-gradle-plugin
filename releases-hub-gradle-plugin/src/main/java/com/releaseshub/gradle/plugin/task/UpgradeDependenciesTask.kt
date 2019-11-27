@@ -91,7 +91,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                         createPullRequest(upgradeResults, headBranch, groupId, group)
                     } else {
                         if (!branchCreated) {
-                            val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", project.rootProject.projectDir, true, true)
+                            val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", project.rootProject.projectDir, logStandardOutput = true, ignoreExitValue = true)
                             if (execResult.isSuccessful()) {
                                 log("Merge pushed to $headBranch branch.")
                             }
@@ -118,17 +118,17 @@ open class UpgradeDependenciesTask : AbstractTask() {
         gitHelper.pull()
 
         // Local headBranch cleanup
-        commandExecutor.execute("git branch -D $headBranch", project.rootProject.projectDir, true, true)
+        commandExecutor.execute("git branch -D $headBranch", project.rootProject.projectDir, logStandardOutput = true, ignoreExitValue = true)
         gitHelper.prune()
-        val execResult = commandExecutor.execute("git checkout $headBranch", project.rootProject.projectDir, true, true)
-        if (!execResult.isSuccessful()) {
+        val execResult = commandExecutor.execute("git checkout $headBranch", project.rootProject.projectDir, logStandardOutput = true, ignoreExitValue = true)
+        return if (!execResult.isSuccessful()) {
             gitHelper.createBranch(headBranch)
-            return true
+            true
         } else {
             // Try to merge from baseBranch to headBranch
             // TODO If there is a conflict, it will fail. Add an error message here telling that the dev need to merge and resolve the conflicts
             gitHelper.merge(baseBranch!!)
-            return false
+            false
         }
     }
 
