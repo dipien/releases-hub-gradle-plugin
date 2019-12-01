@@ -42,7 +42,7 @@ open class ValidateDependenciesTask : AbstractTask() {
                     if (artifact.isSnapshotVersion()) {
                         fail = true
                         failOnFile = true
-                        log("- The dependency $artifact is an snapshot")
+                        log("- The dependency $artifact is a snapshot")
                     }
 
                     if (artifact.isDynamicVersion()) {
