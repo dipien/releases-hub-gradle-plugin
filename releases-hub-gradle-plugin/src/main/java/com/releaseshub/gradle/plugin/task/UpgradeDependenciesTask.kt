@@ -139,20 +139,19 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                File(project.rootProject.projectDir.absolutePath).walk().forEach { file ->
-                    if (file.name == DependenciesParser.GRADLE_FILE_NAME) {
-                        val lines = file.readLines()
-                        file.bufferedWriter().use { out ->
-                            lines.forEach { line ->
-                                val upgradeResult = DependenciesParser.upgradeGradle(line, artifactToUpgrade)
-                                if (upgradeResult.upgraded) {
-                                    upgradeResults.add(upgradeResult)
-                                    log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
-                                    upgradedUpgradeResult = upgradeResult
-                                }
-                                out.write(upgradeResult.line)
-                                out.newLine()
+                val gradleWrapperFile = DependenciesParser.getGradleWrapperFile(project)
+                if (gradleWrapperFile.exists()) {
+                    val lines = gradleWrapperFile.readLines()
+                    gradleWrapperFile.bufferedWriter().use { out ->
+                        lines.forEach { line ->
+                            val upgradeResult = DependenciesParser.upgradeGradle(line, artifactToUpgrade)
+                            if (upgradeResult.upgraded) {
+                                upgradeResults.add(upgradeResult)
+                                log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+                                upgradedUpgradeResult = upgradeResult
                             }
+                            out.write(upgradeResult.line)
+                            out.newLine()
                         }
                     }
                 }

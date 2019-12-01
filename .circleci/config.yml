@@ -2,8 +2,6 @@ version: 2.1
 
 references:
 
-  ## Workspace
-
   working_dir: &working_dir
                  ~/project
 
@@ -31,7 +29,6 @@ commands:
           key: v2-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
           paths:
             - ~/.gradle
-            - ~/.m2
 
   attach_to_workspace:
     steps:
@@ -57,7 +54,6 @@ jobs:
       - save_gradle_cache
       - persist_gradle_build_cache
 
-
   ktlint:
     executor: jdk_executor
     steps:
@@ -79,7 +75,7 @@ jobs:
       - persist_gradle_build_cache
       - store_artifacts:
           path: ./build/libs
-          destination: wars
+          destination: jars
 
   test:
     executor: jdk_executor

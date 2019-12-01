@@ -9,8 +9,6 @@ object DependenciesParser {
     private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
     private val gradleRegex = """.*/gradle-([^-]+)-.*""".toRegex()
 
-    const val GRADLE_FILE_NAME = "gradle-wrapper.properties"
-
     fun extractArtifacts(project: Project, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>, excludes: List<String>): DependenciesParserResult {
         val dependenciesParserResult = DependenciesParserResult()
 
@@ -34,26 +32,28 @@ object DependenciesParser {
         }
 
         // Gradle
-        File(project.rootProject.projectDir.absolutePath).walk().forEach { file ->
-            if (file.name == GRADLE_FILE_NAME) {
-
-                val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
-                val pathRelativeToRootProject = file.absolutePath.replaceFirst(project.rootProject.projectDir.absolutePath + "/", "")
-                file.forEachLine { line ->
-                    val artifact = extractGradleArtifact(line)
-                    if (artifact != null) {
-                        if (artifact.match(includes, excludes)) {
-                            matchedArtifactsUpgrades.add(artifact)
-                        } else {
-                            dependenciesParserResult.excludedArtifacts.add(artifact)
-                        }
+        val gradleWrapperFile = getGradleWrapperFile(project)
+        if (gradleWrapperFile.exists()) {
+            val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
+            val pathRelativeToRootProject = gradleWrapperFile.absolutePath.replaceFirst(project.rootProject.projectDir.absolutePath + File.separator, "")
+            gradleWrapperFile.forEachLine { line ->
+                val artifact = extractGradleArtifact(line)
+                if (artifact != null) {
+                    if (artifact.match(includes, excludes)) {
+                        matchedArtifactsUpgrades.add(artifact)
+                    } else {
+                        dependenciesParserResult.excludedArtifacts.add(artifact)
                     }
                 }
-                dependenciesParserResult.artifactsMap[pathRelativeToRootProject] = matchedArtifactsUpgrades.sortedBy { it.toString() }
             }
+            dependenciesParserResult.artifactsMap[pathRelativeToRootProject] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
 
         return dependenciesParserResult
+    }
+
+    fun getGradleWrapperFile(project: Project): File {
+        return File(project.rootProject.projectDir.absolutePath + File.separator + "gradle" + File.separator + "wrapper" + File.separator + "gradle-wrapper.properties")
     }
 
     fun extractArtifact(line: String): ArtifactUpgrade? {
