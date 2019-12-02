@@ -1,6 +1,7 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.common.AbstractTask
+import org.gradle.api.Project
 import java.io.File
 
 open class ValidateDependenciesTask : AbstractTask() {
@@ -68,32 +69,8 @@ open class ValidateDependenciesTask : AbstractTask() {
         val artifactsUpgrades = createAppService().getArtifactsToUpgrade(dependenciesParserResult.getAllArtifacts())
 
         val sourcesDir = mutableListOf<File>()
-        // TODO We should automatically search for projects source sets
         project.rootProject.allprojects.forEach {
-            var dir = File(it.projectDir, "src" + File.separator + "main" + File.separator + "java")
-            if (dir.exists()) {
-                sourcesDir.add(dir)
-            }
-            dir = File(it.projectDir, "src" + File.separator + "main" + File.separator + "kotlin")
-            if (dir.exists()) {
-                sourcesDir.add(dir)
-            }
-            dir = File(it.projectDir, "src" + File.separator + "main" + File.separator + "resources")
-            if (dir.exists()) {
-                sourcesDir.add(dir)
-            }
-            dir = File(it.projectDir, "src" + File.separator + "test" + File.separator + "java")
-            if (dir.exists()) {
-                sourcesDir.add(dir)
-            }
-            dir = File(it.projectDir, "src" + File.separator + "test" + File.separator + "kotlin")
-            if (dir.exists()) {
-                sourcesDir.add(dir)
-            }
-            dir = File(it.projectDir, "src" + File.separator + "test" + File.separator + "resources")
-            if (dir.exists()) {
-                sourcesDir.add(dir)
-            }
+            sourcesDir.addAll(getSourceSets(it))
         }
 
         val excludes = unusedExcludes.plus("org.jetbrains.kotlin:kotlin-stdlib-jdk7").plus("com.pinterest:ktlint")
@@ -108,5 +85,34 @@ open class ValidateDependenciesTask : AbstractTask() {
         if (fail) {
             throw RuntimeException("Some errors were found on your dependencies")
         }
+    }
+
+    // TODO We should automatically search for projects source sets
+    private fun getSourceSets(project: Project): List<File> {
+        val paths = mutableListOf<String>()
+        paths.add("src" + File.separator + "main" + File.separator + "java")
+        paths.add("src" + File.separator + "main" + File.separator + "kotlin")
+        paths.add("src" + File.separator + "main" + File.separator + "resources")
+        paths.add("src" + File.separator + "release" + File.separator + "java")
+        paths.add("src" + File.separator + "release" + File.separator + "kotlin")
+        paths.add("src" + File.separator + "release" + File.separator + "resources")
+        paths.add("src" + File.separator + "debug" + File.separator + "java")
+        paths.add("src" + File.separator + "debug" + File.separator + "kotlin")
+        paths.add("src" + File.separator + "debug" + File.separator + "resources")
+        paths.add("src" + File.separator + "test" + File.separator + "java")
+        paths.add("src" + File.separator + "test" + File.separator + "kotlin")
+        paths.add("src" + File.separator + "test" + File.separator + "resources")
+        paths.add("src" + File.separator + "androidTest" + File.separator + "java")
+        paths.add("src" + File.separator + "androidTest" + File.separator + "kotlin")
+        paths.add("src" + File.separator + "androidTest" + File.separator + "resources")
+
+        val sourceSets = mutableListOf<File>()
+        paths.forEach {
+            val dir = File(project.projectDir, it)
+            if (dir.exists()) {
+                sourceSets.add(dir)
+            }
+        }
+        return sourceSets.toList()
     }
 }
