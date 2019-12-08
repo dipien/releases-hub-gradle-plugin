@@ -1,5 +1,15 @@
 # Change Log
 
+## [v1.3.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.3.0) (2019-12-08)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.2.1...v1.3.0)
+
+**Implemented enhancements:**
+
+- Improve git errors logs [\#48](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/48)
+- Support GitHub Enterprise [\#47](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/47)
+- Display issue tracker url for artifacts upgrades [\#41](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/41)
+- Check for unused libraries [\#35](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/35)
+
 ## [v1.2.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.2.1) (2019-11-01)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.2.0...v1.2.1)
 
@@ -25,6 +35,7 @@
 
 - Integration with plugins.id\("de.fayard.buildSrcVersions"\) [\#33](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/33)
 - Please publish com.releasehub on the Gradle plugin portal [\#31](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/31)
+- Publish on Gradle plugin portal [\#32](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/32)
 
 ## [v1.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.1.0) (2019-09-20)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.0.2...v1.1.0)
@@ -71,12 +82,20 @@
 
 - Duplicated PR descriptions [\#9](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/9)
 
+**Closed issues:**
+
+- Migrated repo to new owner [\#13](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/13)
+
 ## [v0.1.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v0.1.0) (2019-09-04)
 **Implemented enhancements:**
 
 - New upgradeDependencies task [\#7](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/7)
 - New listDependenciesToUpgrade task [\#6](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/6)
 - New listDependencies task [\#5](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/5)
+
+**Closed issues:**
+
+- Migrate group id to com.releaseshub [\#1](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/1)
 
 
 
