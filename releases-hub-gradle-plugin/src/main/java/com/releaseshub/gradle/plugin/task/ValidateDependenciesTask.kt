@@ -1,8 +1,8 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.common.AbstractTask
-import org.gradle.api.Project
 import java.io.File
+import org.gradle.api.Project
 
 open class ValidateDependenciesTask : AbstractTask() {
 

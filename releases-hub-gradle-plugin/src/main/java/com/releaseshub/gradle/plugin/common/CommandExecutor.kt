@@ -1,11 +1,11 @@
 package com.releaseshub.gradle.plugin.common
 
+import java.io.ByteArrayOutputStream
+import java.io.File
 import org.apache.tools.ant.types.Commandline
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 import org.gradle.process.internal.ExecException
-import java.io.ByteArrayOutputStream
-import java.io.File
 
 class CommandExecutor(private val project: Project, private val logLevel: LogLevel) {
 

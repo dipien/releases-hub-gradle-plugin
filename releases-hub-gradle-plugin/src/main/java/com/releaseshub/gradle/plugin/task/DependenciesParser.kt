@@ -1,8 +1,8 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
-import org.gradle.api.Project
 import java.io.File
+import org.gradle.api.Project
 
 object DependenciesParser {
 

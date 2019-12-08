@@ -1,9 +1,8 @@
 package com.releaseshub.gradle.plugin.common
 
+import java.io.ByteArrayOutputStream
 import org.gradle.process.ExecResult
 import org.gradle.process.internal.ExecException
-
-import java.io.ByteArrayOutputStream
 
 class ExtendedExecResult(
     private val execResult: ExecResult,

@@ -3,9 +3,9 @@ package com.releaseshub.gradle.plugin.task
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.Packaging
 import com.releaseshub.gradle.plugin.common.ResourceUtils
+import java.io.File
 import org.junit.Assert
 import org.junit.Test
-import java.io.File
 
 class DependencyUsageSearcherTest {
 
