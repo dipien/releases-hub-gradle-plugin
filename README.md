@@ -22,7 +22,7 @@ Add the following configuration to your root `build.gradle`, replacing X.Y.Z by 
 ```groovy
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath("com.releaseshub:releases-hub-gradle-plugin:X.Y.Z")
