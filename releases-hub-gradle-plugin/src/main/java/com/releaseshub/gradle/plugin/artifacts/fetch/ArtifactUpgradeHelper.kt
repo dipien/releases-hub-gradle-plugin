@@ -40,30 +40,39 @@ object ArtifactUpgradeHelper {
         val releases = mutableListOf<Release>()
         artifact.releases = releases
 
-        run loop@{
-            repositories.forEach {
-                releases.addAll(getArtifactReleases(artifact, it))
-                // TODO We should search on all the repositories for the latest release
-                if (artifact.getStableRelease() != null) {
-                    return@loop
-                }
+        val versions = mutableListOf<Version>()
+        repositories.forEach { repository ->
+            try {
+                versions.addAll(MavenArtifactRepositoryStrategy(repository).getAllVersions(artifact))
+            } catch (e: HttpResponseException) {
+                LoggerHelper.logger.info("Error when fetching fetch for $artifact on repository ${repository.name}")
             }
         }
+
+        if (!versions.isNullOrEmpty()) {
+            val release = Release()
+            release.version = getLatestVersion(versions).toString()
+            releases.add(release)
+        }
+
         return artifact
     }
 
-    private fun getArtifactReleases(artifact: Artifact, repository: MavenArtifactRepository): List<Release> {
-        val releases = mutableListOf<Release>()
-        try {
-            for (latestVersion in MavenArtifactRepositoryStrategy(repository).getLatestVersions(artifact)) {
-                val release = Release()
-                release.version = latestVersion.toString()
-                releases.add(release)
+    fun getLatestVersion(versions: List<Version>): Version {
+        var latestStableVersion: Version? = null
+        var latestNotStableVersion: Version? = null
+        for (version in versions) {
+            if (version.isStable()) {
+                if (latestStableVersion == null || version > latestStableVersion) {
+                    latestStableVersion = version
+                }
+            } else {
+                if (latestNotStableVersion == null || version > latestNotStableVersion) {
+                    latestNotStableVersion = version
+                }
             }
-        } catch (e: HttpResponseException) {
-            LoggerHelper.logger.info("Error when fetching fetch for $artifact on repository ${repository.name}")
         }
-        return releases
+        return latestStableVersion ?: latestNotStableVersion!!
     }
 
     private fun getReleaseToUpgrade(artifactToCheck: ArtifactUpgrade, artifact: Artifact): Release? {

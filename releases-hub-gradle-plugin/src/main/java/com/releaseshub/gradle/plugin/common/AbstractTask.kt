@@ -57,7 +57,8 @@ abstract class AbstractTask : DefaultTask() {
         project.repositories.plus(project.buildscript.repositories).forEach {
             if (it is org.gradle.api.artifacts.repositories.MavenArtifactRepository) {
                 if (it.url.scheme == "http" || it.url.scheme == "https") {
-                    repositories.add(MavenArtifactRepository(it.name, it.url.toString()))
+                    val url = it.url.toString().dropLastWhile { char -> char == '/' }
+                    repositories.add(MavenArtifactRepository(it.name, url))
                 }
             }
         }
