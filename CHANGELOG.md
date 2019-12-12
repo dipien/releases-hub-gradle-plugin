@@ -1,5 +1,12 @@
 # Change Log
 
+## [v1.3.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.3.1) (2019-12-12)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.3.0...v1.3.1)
+
+**Fixed bugs:**
+
+- Upgrades not detected for some artifacts  [\#49](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/49)
+
 ## [v1.3.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.3.0) (2019-12-08)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.2.1...v1.3.0)
 
