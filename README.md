@@ -19,10 +19,20 @@ Gradle Plugin to automatically upgrade your java gradle project dependencies and
 
 Add the following configuration to your root `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/releaseshub/releases-hub-gradle-plugin/releases/latest)
 
+Using the plugins DSL:
+
+```groovy
+plugins {
+  id "com.releaseshub.gradle.plugin" version "X.Y.Z"
+}
+```
+
+Using legacy plugin application:
+
 ```groovy
 buildscript {
     repositories {
-        mavenCentral()
+        mavenCentral() // or gradlePluginPortal()
     }
     dependencies {
         classpath("com.releaseshub:releases-hub-gradle-plugin:X.Y.Z")
