@@ -115,7 +115,14 @@ jobs:
       - restore_gradle_cache
       - run:
           name: Upgrade Dependencies
-          command: ./gradlew upgradeDependencies -PpullRequestEnabled=true --stacktrace
+          command: |
+            a=$GITHUB_USER_EMAIL
+            b=$$GITHUB_USER_NAME
+            c=$GITHUB_WRITE_TOKEN
+            echo $a
+            echo $b
+            echo $c
+            ./gradlew upgradeDependencies -PpullRequestEnabled=true --stacktrace
 
 workflows:
   commit:
