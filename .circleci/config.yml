@@ -117,7 +117,7 @@ jobs:
           name: Upgrade Dependencies
           command: |
             a=$GITHUB_USER_EMAIL
-            b=$$GITHUB_USER_NAME
+            b=$GITHUB_USER_NAME
             c=$GITHUB_WRITE_TOKEN
             echo $a
             echo $b
