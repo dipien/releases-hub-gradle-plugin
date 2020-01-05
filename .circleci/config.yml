@@ -114,7 +114,7 @@ jobs:
       - checkout
       - restore_gradle_cache
       - run:
-          name: Upgrade Dependencies.
+          name: Upgrade Dependencies
           command: ./gradlew upgradeDependencies -PpullRequestEnabled=true --stacktrace
 
 workflows:
