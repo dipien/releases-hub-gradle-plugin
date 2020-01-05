@@ -113,9 +113,6 @@ jobs:
     steps:
       - checkout
       - restore_gradle_cache
-      - add_ssh_keys:
-          fingerprints:
-            - "16:52:87:7c:34:e0:e6:ad:3c:b0:1a:dc:21:95:af:06"
       - run:
           name: Upgrade Dependencies.
           command: ./gradlew upgradeDependencies -PpullRequestEnabled=true --stacktrace
