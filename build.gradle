@@ -34,7 +34,7 @@ buildscript {
 	}
 }
 
-subprojects {
+allprojects {
 	buildscript {
 		repositories {
 			jcenter()
