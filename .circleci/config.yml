@@ -124,16 +124,18 @@ workflows:
   commit:
     jobs:
       - gradleCache
-      - ktlint
       - build:
           requires:
             - gradleCache
-            - ktlint
+      - ktlint:
+          requires:
+            - build
       - test:
           requires:
             - build
       - publish:
           requires:
+            - ktlint
             - test
   weekly:
     triggers:

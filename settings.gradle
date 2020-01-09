@@ -1,3 +1,0 @@
-include ':releases-hub-gradle-plugin'
-
-apply from: new File(settingsDir, "buildCacheSettings.gradle")
