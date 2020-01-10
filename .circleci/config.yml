@@ -19,14 +19,14 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v2-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
-            - v2-gradle_cache-{{ .Branch }}
+            - v2-gradle_cache-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ .Branch }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
+            - v2-gradle_cache-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ .Branch }}
             - v2-gradle_cache-
 
   save_gradle_cache:
     steps:
       - save_cache:
-          key: v2-gradle_cache-{{ .Branch }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
+          key: v2-gradle_cache-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}-{{ .Branch }}-{{ checksum "buildSrc/src/main/kotlin/Libs.kt" }}-{{ checksum "buildSrc/src/main/kotlin/BuildLibs.kt" }}
           paths:
             - ~/.gradle
 
