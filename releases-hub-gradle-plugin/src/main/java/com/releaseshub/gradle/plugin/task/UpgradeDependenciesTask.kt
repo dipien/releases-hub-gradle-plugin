@@ -91,7 +91,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                         createPullRequest(upgradeResults, headBranch, groupId, group)
                     } else {
                         if (!branchCreated) {
-                            val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", project.rootProject.projectDir, logStandardOutput = true, ignoreExitValue = true)
+                            val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", ignoreExitValue = true)
                             if (execResult.isSuccessful()) {
                                 log("Merge pushed to $headBranch branch.")
                             }
@@ -118,9 +118,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
         gitHelper.pull()
 
         // Local headBranch cleanup
-        commandExecutor.execute("git branch -D $headBranch", project.rootProject.projectDir, logStandardOutput = true, ignoreExitValue = true)
+        commandExecutor.execute("git branch -D $headBranch", ignoreExitValue = true)
         gitHelper.prune()
-        val execResult = commandExecutor.execute("git checkout $headBranch", project.rootProject.projectDir, logStandardOutput = true, ignoreExitValue = true)
+        val execResult = commandExecutor.execute("git checkout $headBranch", ignoreExitValue = true)
         return if (!execResult.isSuccessful()) {
             gitHelper.createBranch(headBranch)
             true

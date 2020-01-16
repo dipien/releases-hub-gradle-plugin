@@ -1,6 +1,5 @@
 package com.releaseshub.gradle.plugin.common
 
-import com.jdroid.java.utils.StringUtils
 import com.jdroid.java.utils.TypeUtils
 import org.gradle.api.Project
 
@@ -67,7 +66,7 @@ class PropertyResolver(private val project: Project) {
         return if (value == null) {
             defaultValue
         } else {
-            value as? List<String> ?: StringUtils.splitWithCommaSeparator(value.toString())
+            value as? List<String> ?: value.toString().split(",")
         }
     }
 

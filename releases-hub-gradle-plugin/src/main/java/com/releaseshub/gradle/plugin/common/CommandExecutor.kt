@@ -1,16 +1,15 @@
 package com.releaseshub.gradle.plugin.common
 
-import java.io.ByteArrayOutputStream
-import java.io.File
 import org.apache.tools.ant.types.Commandline
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
-import org.gradle.process.internal.ExecException
+import java.io.ByteArrayOutputStream
+import java.io.File
 
 class CommandExecutor(private val project: Project, private val logLevel: LogLevel) {
 
     @Suppress("UNCHECKED_CAST")
-    fun execute(command: String, workingDirectory: File? = project.rootProject.projectDir, logStandardOutput: Boolean = true, ignoreExitValue: Boolean = false): ExtendedExecResult {
+    fun execute(command: String, workingDirectory: File? = project.rootProject.projectDir, logStandardOutput: Boolean = true, logErrorOutput: Boolean = true, ignoreExitValue: Boolean = false): ExtendedExecResult {
         log("Executing command: $command")
 
         val standardOutputStream = ByteArrayOutputStream()
@@ -26,7 +25,9 @@ class CommandExecutor(private val project: Project, private val logLevel: LogLev
                 if (logStandardOutput) {
                     execSpec.standardOutput = standardOutputStream
                 }
-                execSpec.errorOutput = errorOutputStream
+                if (logErrorOutput) {
+                    execSpec.errorOutput = errorOutputStream
+                }
             }
             if (standardOutputStream.size() > 0) {
                 log(standardOutputStream.toString())
@@ -36,11 +37,13 @@ class CommandExecutor(private val project: Project, private val logLevel: LogLev
                 project.logger.error(errorOutputStream.toString())
             }
             return ExtendedExecResult(execResult, standardOutputStream, errorOutputStream)
-        } catch (e: ExecException) {
-            if (errorOutputStream.size() > 0) {
-                project.logger.error(errorOutputStream.toString())
+        } finally {
+            if (standardOutputStream.size() > 0) {
+                log(standardOutputStream.toString())
             }
-            throw e
+            if (errorOutputStream.size() > 0) {
+                project.logger.error("Failed to execute command $command\n$errorOutputStream")
+            }
         }
     }
 
