@@ -21,4 +21,5 @@ function configure_hook {
     fi
 }
 
+configure_hook "pre-commit"
 configure_hook "commit-msg"

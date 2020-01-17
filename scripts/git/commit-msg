@@ -10,6 +10,11 @@ function skip_ci_if_needed()
        return # If .ciignore doesn't exists, just quit this function
     fi
 
+    is_amend=$(ps -ocommand= -p $PPID | grep -e '--amend')
+    if [[ -n "$is_amend" ]]; then
+        return # It's a commit amending, just quit this function
+    fi
+
     changes=( `git diff --name-only --cached` )
 
     # Load the patterns we want to skip into an array
