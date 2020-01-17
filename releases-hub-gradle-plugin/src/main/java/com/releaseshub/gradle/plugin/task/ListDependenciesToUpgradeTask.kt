@@ -2,6 +2,7 @@ package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
+import com.releaseshub.gradle.plugin.core.FileSizeFormatter
 
 open class ListDependenciesToUpgradeTask : AbstractTask() {
 
@@ -47,6 +48,22 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             log("Dependencies to upgrade:")
             artifactsToUpgrade.forEach {
                 log(" * $it ${it.fromVersion} -> ${it.toVersion}")
+                if (it.toSize != null) {
+                    val builder = StringBuilder()
+                    builder.append("   - Size: ${FileSizeFormatter.format(it.toSize!!)}")
+                    // TODO We need to store the complete history of versions on the backend to make the diff work
+                    // log("**** fromSize " + it.fromSize)
+                    // if (it.fromSize != null) {
+                    //     val diff = it.toSize!! - it.fromSize!!
+                    //     if (abs(diff) > 1024) {
+                    //         builder.append("(" + (if (diff > 0) "+" else "-") + diff + " KB)")
+                    //     }
+                    // }
+                    log(builder.toString())
+                }
+                if (!it.toAndroidPermissions.isNullOrEmpty()) {
+                    log("   - Android permissions: ${it.toAndroidPermissions}")
+                }
                 if (it.releaseNotesUrl != null) {
                     log("   - Releases notes: ${it.releaseNotesUrl}")
                 }

@@ -13,6 +13,10 @@ class ArtifactUpgrade {
     var packaging: Packaging? = null
     var fromVersion: String? = null
     var toVersion: String? = null
+    var fromSize: Long? = null
+    var toSize: Long? = null
+    var fromAndroidPermissions: List<String>? = null
+    var toAndroidPermissions: List<String>? = null
     var sourceCodeUrl: String? = null
     var releaseNotesUrl: String? = null
     var documentationUrl: String? = null
