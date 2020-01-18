@@ -1,8 +1,8 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.common.AbstractTask
-import java.io.File
 import org.gradle.api.Project
+import java.io.File
 
 open class ValidateDependenciesTask : AbstractTask() {
 
@@ -65,7 +65,7 @@ open class ValidateDependenciesTask : AbstractTask() {
             }
         }
 
-        val dependenciesParserResult = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, emptyList(), emptyList())
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, emptyList(), emptyList())
         val artifactsUpgrades = createAppService().getArtifactsToUpgrade(dependenciesParserResult.getAllArtifacts())
 
         val sourcesDir = mutableListOf<File>()

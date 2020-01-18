@@ -16,7 +16,7 @@ open class ListDependenciesTask : AbstractTask() {
 
         getExtension().validateDependenciesClassNames()
 
-        val dependenciesParserResult = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
         dependenciesParserResult.artifactsMap.forEach { (file, artifacts) ->
             if (artifacts.isNotEmpty()) {
                 log(file)

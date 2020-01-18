@@ -20,7 +20,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
         getExtension().validateUserToken()
         getExtension().validateDependenciesClassNames()
 
-        val dependenciesParserResult = DependenciesParser.extractArtifacts(project, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
 
         if (dependenciesParserResult.excludedArtifacts.isNotEmpty()) {
             log("Dependencies excluded:")

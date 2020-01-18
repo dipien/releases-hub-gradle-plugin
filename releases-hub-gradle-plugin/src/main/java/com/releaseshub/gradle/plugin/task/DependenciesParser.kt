@@ -2,19 +2,18 @@ package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import java.io.File
-import org.gradle.api.Project
 
 object DependenciesParser {
 
     private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
     private val gradleRegex = """.*/gradle-([^-]+)-.*""".toRegex()
 
-    fun extractArtifacts(project: Project, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>, excludes: List<String>): DependenciesParserResult {
+    fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>, excludes: List<String>): DependenciesParserResult {
         val dependenciesParserResult = DependenciesParserResult()
 
         // Dependencies
         dependenciesClassNames.forEach { className ->
-            val lines = project.rootProject.file(dependenciesBasePath + className).readLines()
+            val lines = File(rootDir, dependenciesBasePath + className).readLines()
             dependenciesParserResult.dependenciesLinesMap[dependenciesBasePath + className] = lines
 
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
@@ -32,10 +31,10 @@ object DependenciesParser {
         }
 
         // Gradle
-        val gradleWrapperFile = getGradleWrapperFile(project)
+        val gradleWrapperFile = getGradleWrapperFile(rootDir)
         if (gradleWrapperFile.exists()) {
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
-            val pathRelativeToRootProject = gradleWrapperFile.absolutePath.replaceFirst(project.rootProject.projectDir.absolutePath + File.separator, "")
+            val pathRelativeToRootProject = gradleWrapperFile.absolutePath.replaceFirst(rootDir.absolutePath + File.separator, "")
             gradleWrapperFile.forEachLine { line ->
                 val artifact = extractGradleArtifact(line)
                 if (artifact != null) {
@@ -52,8 +51,8 @@ object DependenciesParser {
         return dependenciesParserResult
     }
 
-    fun getGradleWrapperFile(project: Project): File {
-        return File(project.rootProject.projectDir.absolutePath + File.separator + "gradle" + File.separator + "wrapper" + File.separator + "gradle-wrapper.properties")
+    fun getGradleWrapperFile(rootDir: File): File {
+        return File(rootDir.absolutePath + File.separator + "gradle" + File.separator + "wrapper" + File.separator + "gradle-wrapper.properties")
     }
 
     fun extractArtifact(line: String): ArtifactUpgrade? {
