@@ -11,10 +11,12 @@ object DependenciesParser {
     fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>, excludes: List<String>): DependenciesParserResult {
         val dependenciesParserResult = DependenciesParserResult()
 
+        val basePath = if (dependenciesBasePath.endsWith(File.separator)) dependenciesBasePath else "$dependenciesBasePath${File.separator}"
+
         // Dependencies
         dependenciesClassNames.forEach { className ->
-            val lines = File(rootDir, dependenciesBasePath + className).readLines()
-            dependenciesParserResult.dependenciesLinesMap[dependenciesBasePath + className] = lines
+            val lines = File(rootDir, basePath + className).readLines()
+            dependenciesParserResult.dependenciesLinesMap[basePath + className] = lines
 
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
             lines.forEach { line ->
@@ -27,7 +29,7 @@ object DependenciesParser {
                     }
                 }
             }
-            dependenciesParserResult.artifactsMap[dependenciesBasePath + className] = matchedArtifactsUpgrades.sortedBy { it.toString() }
+            dependenciesParserResult.artifactsMap[basePath + className] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
 
         // Gradle
@@ -100,6 +102,7 @@ object DependenciesParser {
     }
 
     private fun getDependencyMatchResult(line: String): MatchResult? {
+        // TODO Add support to inline or multiline /* */ comments
         if (!line.trim().startsWith("//")) {
             return dependenciesRegex.matchEntire(line)
         }
