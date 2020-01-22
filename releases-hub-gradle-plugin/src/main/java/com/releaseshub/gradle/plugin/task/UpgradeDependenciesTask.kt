@@ -10,6 +10,8 @@ import com.jdroid.java.concurrent.ExecutorUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -20,18 +22,49 @@ open class UpgradeDependenciesTask : AbstractTask() {
         const val TASK_NAME = "upgradeDependencies"
     }
 
+    @get:Input
     var baseBranch: String? = null
+
+    @get:Input
     var headBranchPrefix: String? = null
+
+    @get:Input
     var pullRequestEnabled: Boolean = false
+
+    @get:Input
     var pullRequestsMax: Int? = null
+
+    @get:Input
+    @get:Optional
     var pullRequestLabels: List<String>? = null
+
+    @get:Input
+    @get:Optional
     var pullRequestReviewers: List<String>? = null
+
+    @get:Input
+    @get:Optional
     var pullRequestTeamReviewers: List<String>? = null
+
+    @get:Input
+    @get:Optional
     var gitHubUserName: String? = null
+
+    @get:Input
+    @get:Optional
     var gitHubUserEmail: String? = null
+
+    @get:Input
     var gitHubRepositoryOwner: String? = null
+
+    @get:Input
     var gitHubRepositoryName: String? = null
+
+    @get:Input
     var gitHubWriteToken: String? = null
+
+    @get:Input
+    @get:Optional
     var gitHubApiHostName: String? = null
 
     init {

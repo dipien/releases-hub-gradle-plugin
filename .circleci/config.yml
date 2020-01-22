@@ -98,6 +98,16 @@ jobs:
           path: ./build/reports/tests/test
           destination: tests
 
+  validatePlugins:
+    executor: jdk_executor
+    steps:
+      - checkout
+      - restore_gradle_cache
+      - attach_to_workspace
+      - run:
+          name: Validate plugins
+          command: ./gradlew validatePlugins --stacktrace
+
   publish:
     executor: jdk_executor
     steps:
@@ -133,10 +143,14 @@ workflows:
       - test:
           requires:
             - build
+      - validatePlugins:
+          requires:
+            - build
       - publish:
           requires:
             - ktlint
             - test
+            - validatePlugins
   weekly:
     triggers:
       - schedule:
