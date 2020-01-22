@@ -33,31 +33,30 @@ open class ValidateDependenciesTask : AbstractTask() {
             val dependencies = mutableListOf<String>()
             log(it)
             var failOnFile = false
+            project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
+                val artifact = DependenciesParser.extractArtifact(line)
+                if (artifact != null) {
+                    if (dependencies.contains(artifact.toString())) {
+                        fail = true
+                        failOnFile = true
+                        log("- The dependency $artifact is duplicated")
+                    } else {
+                        dependencies.add(artifact.toString())
+                    }
 
-            // project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
-            //     val artifact = DependenciesParser.extractArtifact(line)
-            //     if (artifact != null) {
-            //         if (dependencies.contains(artifact.toString())) {
-            //             fail = true
-            //             failOnFile = true
-            //             log("- The dependency $artifact is duplicated")
-            //         } else {
-            //             dependencies.add(artifact.toString())
-            //         }
-            //
-            //         if (artifact.isSnapshotVersion()) {
-            //             fail = true
-            //             failOnFile = true
-            //             log("- The dependency $artifact is a snapshot")
-            //         }
-            //
-            //         if (artifact.isDynamicVersion()) {
-            //             fail = true
-            //             failOnFile = true
-            //             log("- The dependency $artifact is using a dynamic version")
-            //         }
-            //     }
-            // }
+                    if (artifact.isSnapshotVersion()) {
+                        fail = true
+                        failOnFile = true
+                        log("- The dependency $artifact is a snapshot")
+                    }
+
+                    if (artifact.isDynamicVersion()) {
+                        fail = true
+                        failOnFile = true
+                        log("- The dependency $artifact is using a dynamic version")
+                    }
+                }
+            }
 
             if (dependencies.sortedWith(String.CASE_INSENSITIVE_ORDER) != dependencies) {
                 fail = true
@@ -70,21 +69,7 @@ open class ValidateDependenciesTask : AbstractTask() {
             }
         }
 
-        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!)
-        dependenciesParserResult.getAllArtifacts().forEach { artifact ->
-            if (artifact.isSnapshotVersion()) {
-                fail = true
-                failOnFile = true
-                log("- The dependency $artifact is a snapshot")
-            }
-
-            if (artifact.isDynamicVersion()) {
-                fail = true
-                failOnFile = true
-                log("- The dependency $artifact is using a dynamic version")
-            }
-        }
-
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, emptyList(), emptyList())
         val artifactsUpgrades = createAppService().getArtifactsToUpgrade(dependenciesParserResult.getAllArtifacts())
 
         val sourcesDir = mutableListOf<File>()
