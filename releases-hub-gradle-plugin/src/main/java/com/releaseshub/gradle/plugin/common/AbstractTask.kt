@@ -56,6 +56,7 @@ abstract class AbstractTask : DefaultTask() {
         onExecute()
     }
 
+    @Internal
     protected fun getExtension(): ReleasesHubGradlePluginExtension {
         return project.extensions.getByName(ReleasesHubGradlePlugin.EXTENSION_NAME) as ReleasesHubGradlePluginExtension
     }
@@ -72,6 +73,7 @@ abstract class AbstractTask : DefaultTask() {
         return AppService(AppServer.valueOf(serverName!!), project.version.toString(), userToken!!)
     }
 
+    @Internal
     protected fun getRepositories(): List<MavenArtifactRepository> {
         val repositories = mutableListOf<MavenArtifactRepository>()
         project.repositories.plus(project.buildscript.repositories).forEach {

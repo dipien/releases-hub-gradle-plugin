@@ -2,6 +2,7 @@ package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import org.gradle.api.Project
+import org.gradle.api.tasks.Input
 import java.io.File
 
 open class ValidateDependenciesTask : AbstractTask() {
@@ -10,7 +11,10 @@ open class ValidateDependenciesTask : AbstractTask() {
         const val TASK_NAME = "validateDependencies"
     }
 
+    @get:Input
     lateinit var unusedExcludes: List<String>
+
+    @get:Input
     lateinit var unusedExtensionsToSearch: List<String>
 
     init {
@@ -29,30 +33,31 @@ open class ValidateDependenciesTask : AbstractTask() {
             val dependencies = mutableListOf<String>()
             log(it)
             var failOnFile = false
-            project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
-                val artifact = DependenciesParser.extractArtifact(line)
-                if (artifact != null) {
-                    if (dependencies.contains(artifact.toString())) {
-                        fail = true
-                        failOnFile = true
-                        log("- The dependency $artifact is duplicated")
-                    } else {
-                        dependencies.add(artifact.toString())
-                    }
 
-                    if (artifact.isSnapshotVersion()) {
-                        fail = true
-                        failOnFile = true
-                        log("- The dependency $artifact is a snapshot")
-                    }
-
-                    if (artifact.isDynamicVersion()) {
-                        fail = true
-                        failOnFile = true
-                        log("- The dependency $artifact is using a dynamic version")
-                    }
-                }
-            }
+            // project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
+            //     val artifact = DependenciesParser.extractArtifact(line)
+            //     if (artifact != null) {
+            //         if (dependencies.contains(artifact.toString())) {
+            //             fail = true
+            //             failOnFile = true
+            //             log("- The dependency $artifact is duplicated")
+            //         } else {
+            //             dependencies.add(artifact.toString())
+            //         }
+            //
+            //         if (artifact.isSnapshotVersion()) {
+            //             fail = true
+            //             failOnFile = true
+            //             log("- The dependency $artifact is a snapshot")
+            //         }
+            //
+            //         if (artifact.isDynamicVersion()) {
+            //             fail = true
+            //             failOnFile = true
+            //             log("- The dependency $artifact is using a dynamic version")
+            //         }
+            //     }
+            // }
 
             if (dependencies.sortedWith(String.CASE_INSENSITIVE_ORDER) != dependencies) {
                 fail = true
@@ -65,7 +70,21 @@ open class ValidateDependenciesTask : AbstractTask() {
             }
         }
 
-        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, emptyList(), emptyList())
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!)
+        dependenciesParserResult.getAllArtifacts().forEach { artifact ->
+            if (artifact.isSnapshotVersion()) {
+                fail = true
+                failOnFile = true
+                log("- The dependency $artifact is a snapshot")
+            }
+
+            if (artifact.isDynamicVersion()) {
+                fail = true
+                failOnFile = true
+                log("- The dependency $artifact is using a dynamic version")
+            }
+        }
+
         val artifactsUpgrades = createAppService().getArtifactsToUpgrade(dependenciesParserResult.getAllArtifacts())
 
         val sourcesDir = mutableListOf<File>()
