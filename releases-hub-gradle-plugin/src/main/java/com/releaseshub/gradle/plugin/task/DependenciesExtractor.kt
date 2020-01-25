@@ -11,16 +11,28 @@ object DependenciesExtractor {
     fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String> = emptyList(), excludes: List<String> = emptyList()): DependenciesExtractorResult {
         val dependenciesParserResult = DependenciesExtractorResult()
 
+        extractDependency(rootDir, dependenciesBasePath, dependenciesClassNames, includes, excludes, dependenciesParserResult)
+        extractGradle(rootDir, includes, excludes, dependenciesParserResult)
+
+        return dependenciesParserResult
+    }
+
+    private fun extractDependency(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String> = emptyList(), excludes: List<String> = emptyList(), dependenciesParserResult: DependenciesExtractorResult) {
+
         val basePath = if (dependenciesBasePath.endsWith(File.separator)) dependenciesBasePath else "$dependenciesBasePath${File.separator}"
 
-        // Dependencies
         dependenciesClassNames.forEach { className ->
             val lines = File(rootDir, basePath + className).readLines()
             dependenciesParserResult.dependenciesLinesMap[basePath + className] = lines
 
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
             lines.forEach { line ->
-                val artifact = extractArtifact(line)
+                var artifact: ArtifactUpgrade? = null
+                val matchResult = getDependencyMatchResult(line)
+                if (matchResult != null) {
+                    artifact = ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
+                }
+
                 if (artifact != null) {
                     if (artifact.match(includes, excludes)) {
                         matchedArtifactsUpgrades.add(artifact)
@@ -31,8 +43,9 @@ object DependenciesExtractor {
             }
             dependenciesParserResult.artifactsMap[basePath + className] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
+    }
 
-        // Gradle
+    private fun extractGradle(rootDir: File, includes: List<String> = emptyList(), excludes: List<String> = emptyList(), dependenciesParserResult: DependenciesExtractorResult) {
         val gradleWrapperFile = getGradleWrapperFile(rootDir)
         if (gradleWrapperFile.exists()) {
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
@@ -45,30 +58,20 @@ object DependenciesExtractor {
                     artifact = ArtifactUpgrade(ArtifactUpgrade.GRADLE_ID, matchResult.groupValues[1])
                 }
 
-                if (artifact != null) {
-                    if (artifact.match(includes, excludes)) {
-                        matchedArtifactsUpgrades.add(artifact)
+                artifact?.let { it ->
+                    if (it.match(includes, excludes)) {
+                        matchedArtifactsUpgrades.add(it)
                     } else {
-                        dependenciesParserResult.excludedArtifacts.add(artifact)
+                        dependenciesParserResult.excludedArtifacts.add(it)
                     }
                 }
             }
             dependenciesParserResult.artifactsMap[pathRelativeToRootProject] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
-
-        return dependenciesParserResult
     }
 
     fun getGradleWrapperFile(rootDir: File): File {
         return File(rootDir.absolutePath + File.separator + "gradle" + File.separator + "wrapper" + File.separator + "gradle-wrapper.properties")
-    }
-
-    private fun extractArtifact(line: String): ArtifactUpgrade? {
-        val matchResult = getDependencyMatchResult(line)
-        if (matchResult != null) {
-            return ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
-        }
-        return null
     }
 
     fun getDependencyMatchResult(line: String): MatchResult? {
