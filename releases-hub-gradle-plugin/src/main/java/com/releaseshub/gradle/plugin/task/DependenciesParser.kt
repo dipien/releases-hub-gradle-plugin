@@ -8,7 +8,7 @@ object DependenciesParser {
     private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
     private val gradleRegex = """.*/gradle-([^-]+)-.*""".toRegex()
 
-    fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>, excludes: List<String>): DependenciesParserResult {
+    fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String> = emptyList(), excludes: List<String> = emptyList()): DependenciesParserResult {
         val dependenciesParserResult = DependenciesParserResult()
 
         val basePath = if (dependenciesBasePath.endsWith(File.separator)) dependenciesBasePath else "$dependenciesBasePath${File.separator}"
@@ -38,7 +38,13 @@ object DependenciesParser {
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
             val pathRelativeToRootProject = gradleWrapperFile.absolutePath.replaceFirst(rootDir.absolutePath + File.separator, "")
             gradleWrapperFile.forEachLine { line ->
-                val artifact = extractGradleArtifact(line)
+                var artifact: ArtifactUpgrade? = null
+
+                val matchResult = getGradleMatchResult(line)
+                if (matchResult != null) {
+                    artifact = ArtifactUpgrade(ArtifactUpgrade.GRADLE_ID, matchResult.groupValues[1])
+                }
+
                 if (artifact != null) {
                     if (artifact.match(includes, excludes)) {
                         matchedArtifactsUpgrades.add(artifact)
@@ -57,18 +63,10 @@ object DependenciesParser {
         return File(rootDir.absolutePath + File.separator + "gradle" + File.separator + "wrapper" + File.separator + "gradle-wrapper.properties")
     }
 
-    fun extractArtifact(line: String): ArtifactUpgrade? {
+    private fun extractArtifact(line: String): ArtifactUpgrade? {
         val matchResult = getDependencyMatchResult(line)
         if (matchResult != null) {
             return ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
-        }
-        return null
-    }
-
-    fun extractGradleArtifact(line: String): ArtifactUpgrade? {
-        val matchResult = getGradleMatchResult(line)
-        if (matchResult != null) {
-            return ArtifactUpgrade(ArtifactUpgrade.GRADLE_ID, matchResult.groupValues[1])
         }
         return null
     }

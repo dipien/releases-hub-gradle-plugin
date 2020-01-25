@@ -174,14 +174,24 @@ class DependenciesParserTest {
 
     @Test
     fun extractGradleArtifactTest() {
-        Assert.assertNull(DependenciesParser.extractGradleArtifact(""))
-        Assert.assertNull(DependenciesParser.extractGradleArtifact("distributionBase=GRADLE_USER_HOME"))
-        val artifact = ArtifactUpgrade(ArtifactUpgrade.GRADLE_ID, "5.5.1")
-        Assert.assertEquals(artifact, DependenciesParser.extractGradleArtifact("distributionUrl=https\\://services.gradle.org/distributions/gradle-5.5.1-all.zip"))
+
+        val dependenciesParserResult = extractGradleArtifacts()
+        Assert.assertEquals(1, dependenciesParserResult.getAllArtifacts().size)
+
+        val firstArtifact = dependenciesParserResult.getAllArtifacts()[0]
+        Assert.assertEquals(ArtifactUpgrade.GRADLE_ID, firstArtifact.id)
+        Assert.assertEquals("6.0.1", firstArtifact.fromVersion)
+
+        Assert.assertTrue(dependenciesParserResult.excludedArtifacts.isEmpty())
     }
 
     private fun extractArtifacts(basePath: String): DependenciesParserResult {
         return DependenciesParser.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root")),
             basePath, listOf("Libs.kt"), emptyList(), emptyList())
+    }
+
+    private fun extractGradleArtifacts(): DependenciesParserResult {
+        return DependenciesParser.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root_gradle")),
+            "", emptyList(), emptyList(), emptyList())
     }
 }
