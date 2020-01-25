@@ -3,13 +3,13 @@ package com.releaseshub.gradle.plugin.task
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import java.io.File
 
-object DependenciesParser {
+object DependenciesExtractor {
 
     private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
     private val gradleRegex = """.*/gradle-([^-]+)-.*""".toRegex()
 
-    fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String> = emptyList(), excludes: List<String> = emptyList()): DependenciesParserResult {
-        val dependenciesParserResult = DependenciesParserResult()
+    fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String> = emptyList(), excludes: List<String> = emptyList()): DependenciesExtractorResult {
+        val dependenciesParserResult = DependenciesExtractorResult()
 
         val basePath = if (dependenciesBasePath.endsWith(File.separator)) dependenciesBasePath else "$dependenciesBasePath${File.separator}"
 
@@ -71,35 +71,7 @@ object DependenciesParser {
         return null
     }
 
-    fun upgradeDependency(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult {
-        val matchResult = getDependencyMatchResult(line)
-        if (matchResult != null) {
-            if (artifactToUpgrade.groupId == matchResult.groupValues[1] && artifactToUpgrade.artifactId == matchResult.groupValues[2]) {
-                val newLine = line.replaceFirst(matchResult.groupValues[3], artifactToUpgrade.toVersion!!)
-                if (newLine != line) {
-                    artifactToUpgrade.fromVersion = matchResult.groupValues[3]
-                    return UpgradeResult(true, artifactToUpgrade, newLine)
-                }
-            }
-        }
-        return UpgradeResult(false, null, line)
-    }
-
-    fun upgradeGradle(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult {
-        val matchResult = getGradleMatchResult(line)
-        if (matchResult != null) {
-            if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                val newLine = line.replaceFirst(matchResult.groupValues[1], artifactToUpgrade.toVersion!!)
-                if (newLine != line) {
-                    artifactToUpgrade.fromVersion = matchResult.groupValues[1]
-                    return UpgradeResult(true, artifactToUpgrade, newLine)
-                }
-            }
-        }
-        return UpgradeResult(false, null, line)
-    }
-
-    private fun getDependencyMatchResult(line: String): MatchResult? {
+    fun getDependencyMatchResult(line: String): MatchResult? {
         // TODO Add support to inline or multiline /* */ comments
         if (!line.trim().startsWith("//")) {
             return dependenciesRegex.matchEntire(line)
@@ -107,7 +79,7 @@ object DependenciesParser {
         return null
     }
 
-    private fun getGradleMatchResult(line: String): MatchResult? {
+    fun getGradleMatchResult(line: String): MatchResult? {
         if (line.trim().startsWith("distributionUrl")) {
             return gradleRegex.matchEntire(line)
         }

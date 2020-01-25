@@ -85,7 +85,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             getExtension().validateGitHubWriteToken()
         }
 
-        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
+        val dependenciesParserResult = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
 
         val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
 
@@ -116,7 +116,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
                 var dependenciesLinesMap = dependenciesParserResult.dependenciesLinesMap
                 if (!branchCreated) {
-                    dependenciesLinesMap = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
+                    dependenciesLinesMap = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
                 }
                 val upgradeResults = upgradeDependencies(dependenciesLinesMap, artifactsToUpgradeByGroup)
                 if (pullRequestEnabled) {
@@ -172,12 +172,12 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                val gradleWrapperFile = DependenciesParser.getGradleWrapperFile(project.rootProject.projectDir)
+                val gradleWrapperFile = DependenciesExtractor.getGradleWrapperFile(project.rootProject.projectDir)
                 if (gradleWrapperFile.exists()) {
                     val lines = gradleWrapperFile.readLines()
                     gradleWrapperFile.bufferedWriter().use { out ->
                         lines.forEach { line ->
-                            val upgradeResult = DependenciesParser.upgradeGradle(line, artifactToUpgrade)
+                            val upgradeResult = DependenciesUpgrader.upgradeGradle(line, artifactToUpgrade)
                             if (upgradeResult.upgraded) {
                                 upgradeResults.add(upgradeResult)
                                 log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
@@ -193,7 +193,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     val newLines = mutableListOf<String>()
                     File(entry.key).bufferedWriter().use { out ->
                         entry.value.forEach { line ->
-                            val upgradeResult = DependenciesParser.upgradeDependency(line, artifactToUpgrade)
+                            val upgradeResult = DependenciesUpgrader.upgradeDependency(line, artifactToUpgrade)
                             if (upgradeResult.upgraded) {
                                 upgradeResults.add(upgradeResult)
                                 log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")

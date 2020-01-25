@@ -2,7 +2,7 @@ package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 
-class DependenciesParserResult {
+class DependenciesExtractorResult {
 
     val artifactsMap = mutableMapOf<String, List<ArtifactUpgrade>>()
     val excludedArtifacts = mutableListOf<ArtifactUpgrade>()
