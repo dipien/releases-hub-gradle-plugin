@@ -80,6 +80,10 @@ class ArtifactUpgrade {
         return if (groupId != null) "$groupId:$artifactId" else id!!
     }
 
+    fun toFromVersionedString(): String {
+        return if (groupId != null) "$groupId:$artifactId:$fromVersion" else "$id:$fromVersion"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

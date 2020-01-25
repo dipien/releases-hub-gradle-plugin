@@ -1,5 +1,6 @@
 package com.releaseshub.gradle.plugin.task
 
+import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import org.gradle.api.Project
 import org.gradle.api.tasks.Input
@@ -28,49 +29,42 @@ open class ValidateDependenciesTask : AbstractTask() {
         getExtension().validateDependenciesClassNames()
 
         var fail = false
-
-        dependenciesClassNames!!.forEach {
-            val dependencies = mutableListOf<String>()
-            log(it)
+        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!)
+        dependenciesParserResult.artifactsMap.forEach { (path, artifacts) ->
             var failOnFile = false
-            project.rootProject.file(dependenciesBasePath + it).forEachLine { line ->
-                val artifact = DependenciesParser.extractArtifact(line)
-                if (artifact != null) {
-                    if (dependencies.contains(artifact.toString())) {
-                        fail = true
-                        failOnFile = true
-                        log("- The dependency $artifact is duplicated")
-                    } else {
-                        dependencies.add(artifact.toString())
-                    }
+            log(path)
+            artifacts.forEach { artifact ->
+                if (artifact.isSnapshotVersion()) {
+                    fail = true
+                    failOnFile = true
+                    log("- The dependency ${artifact.toFromVersionedString()} is a snapshot")
+                }
 
-                    if (artifact.isSnapshotVersion()) {
-                        fail = true
-                        failOnFile = true
-                        log("- The dependency $artifact is a snapshot")
-                    }
-
-                    if (artifact.isDynamicVersion()) {
-                        fail = true
-                        failOnFile = true
-                        log("- The dependency $artifact is using a dynamic version")
-                    }
+                if (artifact.isDynamicVersion()) {
+                    fail = true
+                    failOnFile = true
+                    log("- The dependency ${artifact.toFromVersionedString()} is using a dynamic version")
                 }
             }
-
-            if (dependencies.sortedWith(String.CASE_INSENSITIVE_ORDER) != dependencies) {
-                fail = true
-                failOnFile = true
-                log("- The dependencies are not alphabetically sorted")
-            }
-
             if (!failOnFile) {
                 log("- No errors found")
             }
         }
 
-        val dependenciesParserResult = DependenciesParser.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, emptyList(), emptyList())
-        val artifactsUpgrades = createAppService().getArtifactsToUpgrade(dependenciesParserResult.getAllArtifacts())
+        // Find duplicates
+        log("")
+        val notDuplicatedArtifacts = mutableListOf<ArtifactUpgrade>()
+        val artifacts = dependenciesParserResult.getAllArtifacts()
+        artifacts.forEach { artifact ->
+            if (notDuplicatedArtifacts.contains(artifact)) {
+                fail = true
+                log("- The dependency $artifact is duplicated")
+            } else {
+                notDuplicatedArtifacts.add(artifact)
+            }
+        }
+
+        val artifactsUpgrades = createAppService().getArtifactsToUpgrade(notDuplicatedArtifacts)
 
         val sourcesDir = mutableListOf<File>()
         project.rootProject.allprojects.forEach {

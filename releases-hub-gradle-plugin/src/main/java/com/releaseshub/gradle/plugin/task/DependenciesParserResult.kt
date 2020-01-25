@@ -11,6 +11,6 @@ class DependenciesParserResult {
     fun getAllArtifacts(): List<ArtifactUpgrade> {
         val artifacts = mutableListOf<ArtifactUpgrade>()
         artifactsMap.values.forEach { artifacts.addAll(it) }
-        return artifacts
+        return artifacts.sortedBy { it.toString() }
     }
 }
