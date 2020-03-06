@@ -95,7 +95,11 @@ You can define a `groupId` to match all the artifacts for that group id, or `gro
 By default there aren't excluded dependencies.
 
     excludes = ["com.groupid1", "com.groupid2:artifact1"]
+    
+If you need to exclude the Gradle upgrade, use "gradle". For example: 
 
+    excludes = ["gradle"]
+    
 ## Usage
 
 We suggest to define your dependencies on `/buildSrc/src/main/kotlin/Libs.kt` and `/buildSrc/src/main/kotlin/BuildLibs.kt` classes. For example:
