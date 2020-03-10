@@ -29,8 +29,6 @@
       </value>
     </option>
     <option name="RIGHT_MARGIN" value="145" />
-    <option name="JD_ALIGN_PARAM_COMMENTS" value="false" />
-    <option name="JD_ALIGN_EXCEPTION_COMMENTS" value="false" />
     <AndroidXmlCodeStyleSettings>
       <option name="MANIFEST_SETTINGS">
         <value>
@@ -84,9 +82,6 @@
       <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="2147483647" />
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
     </JetCodeStyleSettings>
-    <MarkdownNavigatorCodeStyleSettings>
-      <option name="RIGHT_MARGIN" value="72" />
-    </MarkdownNavigatorCodeStyleSettings>
     <XML>
       <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
     </XML>
