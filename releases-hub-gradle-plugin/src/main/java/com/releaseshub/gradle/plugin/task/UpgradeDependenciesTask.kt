@@ -242,7 +242,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         try {
             var pullRequest = pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch)
             if (pullRequest == null) {
-                val pullRequestBody = PullRequestGenerator.createBody(upgradeResults)
+                val pullRequestBody = PullRequestGenerator.createBody(upgradeResults, project.version.toString())
                 val title: String? = if (groupId == group) {
                     "Upgraded dependencies for groupId $groupId"
                 } else {
