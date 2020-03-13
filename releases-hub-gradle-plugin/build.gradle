@@ -110,3 +110,29 @@ jdroid {
 
 	};
 }
+
+sourceSets {
+	main.java.srcDirs += "build/generated"
+}
+
+project.afterEvaluate {
+
+	project.task('generateBuildConfigClass') {
+		doLast {
+			File dir = new File("$projectDir/build/generated/com/releaseshub/gradle/plugin/context")
+			dir.mkdirs()
+			File file = new File(dir, "BuildConfig.kt")
+			file.withWriter { out ->
+
+				out.writeLine("package com.releaseshub.gradle.plugin.context")
+				out.writeLine("")
+				out.writeLine("object BuildConfig {")
+				jdroid.setBuildConfigString(out, 'VERSION', project.version.toString())
+
+				out.writeLine("}")
+			}
+		}
+	}
+
+	project.tasks.'compileKotlin'.dependsOn 'generateBuildConfigClass'
+}

@@ -10,6 +10,7 @@ import com.jdroid.java.concurrent.ExecutorUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
+import com.releaseshub.gradle.plugin.context.BuildConfig
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import java.io.File
@@ -242,7 +243,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         try {
             var pullRequest = pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch)
             if (pullRequest == null) {
-                val pullRequestBody = PullRequestGenerator.createBody(upgradeResults, project.version.toString())
+                val pullRequestBody = PullRequestGenerator.createBody(upgradeResults, BuildConfig.VERSION)
                 val title: String? = if (groupId == group) {
                     "Upgraded dependencies for groupId $groupId"
                 } else {
