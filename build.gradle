@@ -1,4 +1,4 @@
-version = '1.4.0'
+version = '1.4.1'
 
 ext.GITHUB_REPOSITORY_OWNER = "releaseshub"
 ext.GITHUB_REPOSITORY_NAME = "releases-hub-gradle-plugin"
