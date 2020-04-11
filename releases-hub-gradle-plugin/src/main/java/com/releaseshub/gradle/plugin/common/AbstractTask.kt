@@ -10,6 +10,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
 abstract class AbstractTask : DefaultTask() {
@@ -33,10 +34,12 @@ abstract class AbstractTask : DefaultTask() {
     var dependenciesClassNames: List<String>? = null
 
     @get:Input
-    lateinit var includes: List<String>
+    @get:Optional
+    var includes: List<String>? = null
 
     @get:Input
-    lateinit var excludes: List<String>
+    @get:Optional
+    var excludes: List<String>? = null
 
     @get:Input
     var serverName: String? = null

@@ -73,7 +73,7 @@ open class ValidateDependenciesTask : AbstractTask() {
 
         val excludes = unusedExcludes.plus("org.jetbrains.kotlin:kotlin-stdlib-jdk7").plus("com.pinterest:ktlint")
         val dependencyUsageSearcher = DependencyUsageSearcher(sourcesDir, unusedExtensionsToSearch)
-        artifactsUpgrades.filter { it.match(listOf(), excludes) }.forEach { artifactUpgrade ->
+        artifactsUpgrades.filter { it.match(null, excludes) }.forEach { artifactUpgrade ->
             if (!dependencyUsageSearcher.isAnyPackageUsed(artifactUpgrade)) {
                 log("- The dependency $artifactUpgrade seems to be unused on your project. See if you can safely remove it.")
                 fail = true

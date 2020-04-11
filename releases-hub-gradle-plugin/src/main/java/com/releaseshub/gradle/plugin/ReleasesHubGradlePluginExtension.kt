@@ -19,8 +19,8 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     // TODO On v2.0 change this to required and use getRequiredStringListProp
     var dependenciesClassNames: List<String>? = propertyResolver.getStringListProp(::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
 
-    var includes: List<String> = propertyResolver.getStringListProp(::includes.name, emptyList()) ?: emptyList()
-    var excludes: List<String> = propertyResolver.getStringListProp(::excludes.name, emptyList()) ?: emptyList()
+    var includes: List<String>? = propertyResolver.getStringListProp(::includes.name)
+    var excludes: List<String>? = propertyResolver.getStringListProp(::excludes.name)
 
     var unusedExcludes: List<String> = propertyResolver.getRequiredStringListProp(::unusedExcludes.name, emptyList())
     var unusedExtensionsToSearch: List<String> = propertyResolver.getRequiredStringListProp(::unusedExtensionsToSearch.name, listOf(".kt", ".java", ".xml"))
