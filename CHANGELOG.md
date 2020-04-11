@@ -19,7 +19,6 @@
 
 **Fixed bugs:**
 
-- gradle.properties file is being updated with flags [\#67](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/67)
 - This release is the same than v1.4.0. Ignore it. [\#71](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/71)
 
 ## [v1.4.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.0) (2020-03-13)
