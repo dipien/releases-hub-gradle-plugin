@@ -38,10 +38,10 @@ class ArtifactUpgrade {
         this.fromVersion = fromVersion
     }
 
-    fun match(includes: List<String>, excludes: List<String>): Boolean {
-        val includeMatches = includes.isEmpty() || includes.find { match(it) } != null
+    fun match(includes: List<String>?, excludes: List<String>?): Boolean {
+        val includeMatches = includes.isNullOrEmpty() || includes.find { match(it) } != null
         return if (includeMatches) {
-            excludes.find { match(it) } == null
+            excludes.orEmpty().find { match(it) } == null
         } else {
             false
         }

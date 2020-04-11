@@ -8,7 +8,7 @@ object DependenciesExtractor {
     private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
     private val gradleRegex = """.*/gradle-([^-]+)-.*""".toRegex()
 
-    fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String> = emptyList(), excludes: List<String> = emptyList()): DependenciesExtractorResult {
+    fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>? = null, excludes: List<String>? = null): DependenciesExtractorResult {
         val dependenciesParserResult = DependenciesExtractorResult()
 
         extractDependency(rootDir, dependenciesBasePath, dependenciesClassNames, includes, excludes, dependenciesParserResult)
@@ -17,7 +17,7 @@ object DependenciesExtractor {
         return dependenciesParserResult
     }
 
-    private fun extractDependency(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String> = emptyList(), excludes: List<String> = emptyList(), dependenciesParserResult: DependenciesExtractorResult) {
+    private fun extractDependency(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>?, excludes: List<String>?, dependenciesParserResult: DependenciesExtractorResult) {
 
         val basePath = if (dependenciesBasePath.endsWith(File.separator)) dependenciesBasePath else "$dependenciesBasePath${File.separator}"
 
@@ -45,7 +45,7 @@ object DependenciesExtractor {
         }
     }
 
-    private fun extractGradle(rootDir: File, includes: List<String> = emptyList(), excludes: List<String> = emptyList(), dependenciesParserResult: DependenciesExtractorResult) {
+    private fun extractGradle(rootDir: File, includes: List<String>?, excludes: List<String>?, dependenciesParserResult: DependenciesExtractorResult) {
         val gradleWrapperFile = getGradleWrapperFile(rootDir)
         if (gradleWrapperFile.exists()) {
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
