@@ -23,7 +23,11 @@ class GitHelper(var commandExecutor: CommandExecutor) {
     }
 
     fun addAll() {
-        commandExecutor.execute("git add -A")
+        commandExecutor.execute("git add .")
+    }
+
+    fun diffHead() {
+        commandExecutor.execute("git diff HEAD")
     }
 
     fun status() {

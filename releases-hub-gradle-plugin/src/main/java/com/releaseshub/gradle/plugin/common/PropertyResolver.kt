@@ -63,7 +63,7 @@ class PropertyResolver(private val project: Project) {
     @Suppress("UNCHECKED_CAST")
     fun getStringListProp(propertyName: String, defaultValue: List<String>? = null): List<String>? {
         val value = getProp(propertyName)
-        return if (value == null) {
+        return if (value == null || value.toString().isEmpty()) {
             defaultValue
         } else {
             value as? List<String> ?: value.toString().split(",")

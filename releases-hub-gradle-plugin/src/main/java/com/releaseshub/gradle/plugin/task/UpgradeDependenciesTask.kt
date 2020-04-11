@@ -218,6 +218,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     private fun commit(upgradeResult: UpgradeResult) {
         gitHelper.addAll()
+        gitHelper.diffHead()
         gitHelper.commit("Upgraded ${upgradeResult.artifactUpgrade} from ${upgradeResult.artifactUpgrade!!.fromVersion} to ${upgradeResult.artifactUpgrade.toVersion}")
     }
 

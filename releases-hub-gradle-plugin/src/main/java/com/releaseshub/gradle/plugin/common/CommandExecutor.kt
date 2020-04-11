@@ -15,36 +15,32 @@ class CommandExecutor(private val project: Project, private val logLevel: LogLev
         val standardOutputStream = ByteArrayOutputStream()
         val errorOutputStream = ByteArrayOutputStream()
 
-        try {
-            val execResult = project.exec { execSpec ->
-                if (workingDirectory != null) {
-                    execSpec.workingDir = workingDirectory
-                }
-                execSpec.setCommandLine(*Commandline.translateCommandline(command) as Array<Any>)
-                execSpec.isIgnoreExitValue = ignoreExitValue
-                if (logStandardOutput) {
-                    execSpec.standardOutput = standardOutputStream
-                }
-                if (logErrorOutput) {
-                    execSpec.errorOutput = errorOutputStream
-                }
+        val execResult = project.exec { execSpec ->
+            if (workingDirectory != null) {
+                execSpec.workingDir = workingDirectory
             }
-            if (standardOutputStream.size() > 0) {
-                log(standardOutputStream.toString())
+            execSpec.setCommandLine(*Commandline.translateCommandline(command) as Array<Any>)
+            execSpec.isIgnoreExitValue = true
+            if (logStandardOutput) {
+                execSpec.standardOutput = standardOutputStream
             }
-
-            if (errorOutputStream.size() > 0) {
-                project.logger.error(errorOutputStream.toString())
-            }
-            return ExtendedExecResult(execResult, standardOutputStream, errorOutputStream)
-        } finally {
-            if (standardOutputStream.size() > 0) {
-                log(standardOutputStream.toString())
-            }
-            if (errorOutputStream.size() > 0) {
-                project.logger.error("Failed to execute command $command\n$errorOutputStream")
+            if (logErrorOutput) {
+                execSpec.errorOutput = errorOutputStream
             }
         }
+        if (standardOutputStream.size() > 0) {
+            log(standardOutputStream.toString())
+        }
+
+        if (errorOutputStream.size() > 0) {
+            project.logger.error(errorOutputStream.toString())
+        }
+
+        if (!ignoreExitValue && execResult.exitValue > 0) {
+            throw RuntimeException("Failed execution of command: $command")
+        }
+
+        return ExtendedExecResult(execResult, standardOutputStream, errorOutputStream)
     }
 
     private fun log(message: String) {
