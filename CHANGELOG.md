@@ -1,16 +1,26 @@
 # Changelog
 
-## [v1.4.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.1) (2020-03-28)
+## [v1.4.2](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.2) (2020-04-11)
 
-[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.0...v1.4.1)
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.1...v1.4.2)
 
 **Implemented enhancements:**
 
+- Includes & excludes props are now optional [\#70](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/70)
 - Improved git commands logs [\#69](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/69)
 
 **Fixed bugs:**
 
 - Fix excludes property default value when it's empty [\#68](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/68)
+
+## [v1.4.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.1) (2020-03-28)
+
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.0...v1.4.1)
+
+**Fixed bugs:**
+
+- gradle.properties file is being updated with flags [\#67](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/67)
+- This release is the same than v1.4.0. Ignore it. [\#71](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/71)
 
 ## [v1.4.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.0) (2020-03-13)
 
