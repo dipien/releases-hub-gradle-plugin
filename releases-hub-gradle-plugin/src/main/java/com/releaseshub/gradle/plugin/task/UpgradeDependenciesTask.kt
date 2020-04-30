@@ -11,6 +11,7 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.context.BuildConfig
+import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
 import java.io.File
@@ -159,9 +160,12 @@ open class UpgradeDependenciesTask : AbstractTask() {
             gitHelper.createBranch(headBranch)
             true
         } else {
-            // Try to merge from baseBranch to headBranch
-            // TODO If there is a conflict, it will fail. Add an error message here telling that the dev need to merge and resolve the conflicts
-            gitHelper.merge(baseBranch!!)
+            try {
+                // Try to merge from baseBranch to headBranch
+                gitHelper.merge(baseBranch!!)
+            } catch (e: Exception) {
+                logger.log(LogLevel.WARN, "Failed to merge from $baseBranch to $headBranch branch. Please manually resolve the conflicts.")
+            }
             false
         }
     }
