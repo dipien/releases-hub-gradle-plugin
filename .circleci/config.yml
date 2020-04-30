@@ -167,6 +167,7 @@ workflows:
             branches:
               only:
                 - master
+                - production
           requires:
             - ktlint
             - test
