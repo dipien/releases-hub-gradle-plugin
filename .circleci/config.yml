@@ -163,10 +163,15 @@ workflows:
           requires:
             - build
       - publish:
+          filters:
+            branches:
+              only:
+                - master
           requires:
             - ktlint
             - test
             - validatePlugins
+            - security
   weekly:
     triggers:
       - schedule:
