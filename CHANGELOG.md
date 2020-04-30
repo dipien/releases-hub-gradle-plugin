@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.4.3](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.3) (2020-04-30)
+
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.2...v1.4.3)
+
+**Fixed bugs:**
+
+- Don't fail if there is a conflict when merging [\#72](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/72)
+
 ## [v1.4.2](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.2) (2020-04-11)
 
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.1...v1.4.2)
