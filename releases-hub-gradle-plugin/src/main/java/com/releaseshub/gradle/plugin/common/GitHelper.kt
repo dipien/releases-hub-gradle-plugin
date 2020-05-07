@@ -49,4 +49,8 @@ class GitHelper(var commandExecutor: CommandExecutor) {
     fun push(headBranch: String) {
         commandExecutor.execute("git push origin HEAD:$headBranch")
     }
+
+    fun hardReset(branch: String) {
+        commandExecutor.execute("git reset --hard origin/$branch")
+    }
 }
