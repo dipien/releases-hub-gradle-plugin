@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.4.4](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.4) (2020-05-07)
+
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.3...v1.4.4)
+
+**Fixed bugs:**
+
+- Run a hard reset after a failed merge [\#73](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/73)
+
 ## [v1.4.3](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.3) (2020-04-30)
 
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.2...v1.4.3)

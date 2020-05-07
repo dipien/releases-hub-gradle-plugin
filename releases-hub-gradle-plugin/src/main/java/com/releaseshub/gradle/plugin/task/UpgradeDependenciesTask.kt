@@ -164,6 +164,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 // Try to merge from baseBranch to headBranch
                 gitHelper.merge(baseBranch!!)
             } catch (e: Exception) {
+                gitHelper.hardReset(headBranch)
                 logger.log(LogLevel.WARN, "Failed to merge from $baseBranch to $headBranch branch. Please manually resolve the conflicts.")
             }
             false
