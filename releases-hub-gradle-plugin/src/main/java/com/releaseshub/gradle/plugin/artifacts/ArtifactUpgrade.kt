@@ -24,9 +24,7 @@ class ArtifactUpgrade {
     var packages: List<String>? = null
     lateinit var artifactUpgradeStatus: ArtifactUpgradeStatus
 
-    constructor() { }
-
-    constructor(groupId: String, artifactId: String, fromVersion: String) {
+    constructor(groupId: String, artifactId: String, fromVersion: String?) {
         this.id = groupId + "_" + artifactId
         this.groupId = groupId
         this.artifactId = artifactId

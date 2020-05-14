@@ -101,6 +101,11 @@ class ArtifactUpgradeTest {
         Assert.assertTrue(createArtifactUpgrade("+").isDynamicVersion())
     }
 
+    @Test
+    fun equalsTest() {
+        Assert.assertTrue(createArtifactUpgrade("1.0.0") == createArtifactUpgrade("2.0.0"))
+    }
+
     private fun createArtifactUpgrade(fromVersion: String): ArtifactUpgrade {
         return ArtifactUpgrade("group1", "artifact1", fromVersion)
     }

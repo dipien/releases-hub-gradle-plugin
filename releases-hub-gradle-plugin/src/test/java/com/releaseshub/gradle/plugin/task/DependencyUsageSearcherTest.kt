@@ -46,7 +46,7 @@ class DependencyUsageSearcherTest {
     }
 
     private fun createArtifactUpgrade(vararg packages: String): ArtifactUpgrade {
-        val artifactUpgrade = ArtifactUpgrade()
+        val artifactUpgrade = ArtifactUpgrade("1", "1.0.0")
         artifactUpgrade.packaging = Packaging.JAR
         artifactUpgrade.packages = packages.asList()
         return artifactUpgrade
