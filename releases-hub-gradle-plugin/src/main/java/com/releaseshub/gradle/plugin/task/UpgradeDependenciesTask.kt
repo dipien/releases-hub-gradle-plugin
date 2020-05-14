@@ -63,6 +63,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
     var gitHubRepositoryName: String? = null
 
     @get:Input
+    @get:Optional
     var gitHubWriteToken: String? = null
 
     @get:Input
@@ -178,21 +179,11 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                val gradleWrapperFile = DependenciesExtractor.getGradleWrapperFile(project.rootProject.projectDir)
-                if (gradleWrapperFile.exists()) {
-                    val lines = gradleWrapperFile.readLines()
-                    gradleWrapperFile.bufferedWriter().use { out ->
-                        lines.forEach { line ->
-                            val upgradeResult = DependenciesUpgrader.upgradeGradle(line, artifactToUpgrade)
-                            if (upgradeResult.upgraded) {
-                                upgradeResults.add(upgradeResult)
-                                log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
-                                upgradedUpgradeResult = upgradeResult
-                            }
-                            out.write(upgradeResult.line)
-                            out.newLine()
-                        }
-                    }
+                val upgradeResult = DependenciesUpgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
+                if (upgradeResult.upgraded) {
+                    upgradeResults.add(upgradeResult)
+                    log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+                    upgradedUpgradeResult = upgradeResult
                 }
             } else {
                 dependenciesLinesMapByGroup.entries.forEach { entry ->

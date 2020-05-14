@@ -46,7 +46,7 @@ object DependenciesExtractor {
     }
 
     private fun extractGradle(rootDir: File, includes: List<String>?, excludes: List<String>?, dependenciesParserResult: DependenciesExtractorResult) {
-        val gradleWrapperFile = getGradleWrapperFile(rootDir)
+        val gradleWrapperFile = GradleHelper.getGradleWrapperPropertiesFile(rootDir)
         if (gradleWrapperFile.exists()) {
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
             val pathRelativeToRootProject = gradleWrapperFile.absolutePath.replaceFirst(rootDir.absolutePath + File.separator, "")
@@ -68,10 +68,6 @@ object DependenciesExtractor {
             }
             dependenciesParserResult.artifactsMap[pathRelativeToRootProject] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
-    }
-
-    fun getGradleWrapperFile(rootDir: File): File {
-        return File(rootDir.absolutePath + File.separator + "gradle" + File.separator + "wrapper" + File.separator + "gradle-wrapper.properties")
     }
 
     fun getDependencyMatchResult(line: String): MatchResult? {

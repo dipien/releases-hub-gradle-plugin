@@ -49,3 +49,7 @@ releasesHub {
 	gitHubRepositoryOwner = ""
 	gitHubRepositoryName = ""
 }
+
+wrapper {
+	distributionType = Wrapper.DistributionType.ALL
+}
