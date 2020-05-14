@@ -21,9 +21,9 @@ buildscript {
 apply plugin: "java"
 
 dependencies {
-	compile(Libs.FIREBASE_CORE)
-	compile("com.google.firebase:firebase-auth:19.0.0")
-	compile("com.google.firebase:firebase-messaging:16.0.1")
+	implementation(Libs.FIREBASE_CORE)
+	implementation("com.google.firebase:firebase-auth:19.0.0")
+	implementation("com.google.firebase:firebase-messaging:16.0.1")
 }
 
 allprojects {

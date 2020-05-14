@@ -12,11 +12,11 @@ buildscript {
 }
 
 dependencies {
-	compile(Libs.JDROID_JAVA_CORE)
-	compile(Libs.JDROID_JAVA_HTTP_OKHTTP)
-	compile(Libs.JDROID_JAVA_GITHUB)
+	implementation(Libs.JDROID_JAVA_CORE)
+	implementation(Libs.JDROID_JAVA_HTTP_OKHTTP)
+	implementation(Libs.JDROID_JAVA_GITHUB)
 
-	testCompile(Libs.JUNIT)
+	testImplementation(Libs.JUNIT)
 }
 
 gradlePlugin {
