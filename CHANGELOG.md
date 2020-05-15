@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.5.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.5.0) (2020-05-15)
+
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.4...v1.5.0)
+
+**Implemented enhancements:**
+
+- New countDependenciesToUpgrade task [\#75](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/75)
+- Improve gradle upgrade [\#59](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/59)
+- Check for resolved dependencies not defined on dependenciesClassNames [\#11](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/11)
+
 ## [v1.4.4](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.4.4) (2020-05-07)
 
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.3...v1.4.4)
