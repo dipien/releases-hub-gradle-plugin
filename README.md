@@ -150,6 +150,7 @@ The following validations are executed:
 * There are not duplicated dependencies defined on each `dependenciesClassNames`
 * There are not dependencies with snapshot or dynamic versions assigned
 * There are dependencies on `dependenciesClassNames` but not used on the project
+* There are declared dependencies on any build.gradle but not defined on `dependenciesClassNames` classes
 
 ```
 ./gradlew validateDependencies
@@ -183,7 +184,13 @@ Print all the dependencies that will be analyzed to upgrade.
 Print all the dependencies that are upgradeable.
 
     ./gradlew listDependenciesToUpgrade
-    
+
+#### Count dependencies to upgrade
+
+Print the count of dependencies that are upgradeable. This could be useful for metrics.
+
+    ./gradlew countDependenciesToUpgrade --quiet
+
 #### Upgrade dependencies
 
 This task creates a Github Pull Request for each groupId that have at least one dependency to upgrade. 
