@@ -73,7 +73,7 @@ abstract class AbstractTask : DefaultTask() {
     }
 
     protected fun createAppService(): AppService {
-        return AppService(AppServer.valueOf(serverName!!), project.version.toString(), userToken!!)
+        return AppService(AppServer.valueOf(serverName!!), userToken!!)
     }
 
     @Internal

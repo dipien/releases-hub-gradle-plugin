@@ -10,7 +10,7 @@ import com.jdroid.java.http.parser.json.GsonParser
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeBody
 
-class AppService(private val server: Server, private val appVersion: String, private val userToken: String) : AbstractApiService() {
+class AppService(private val server: Server, private val userToken: String) : AbstractApiService() {
 
     fun getArtifactsToUpgrade(artifactsToCheck: List<ArtifactUpgrade>): List<ArtifactUpgrade> {
         val httpService = newPostService("artifacts", "upgrade")
@@ -28,7 +28,7 @@ class AppService(private val server: Server, private val appVersion: String, pri
     override fun getHttpServiceProcessors(): MutableList<HttpServiceProcessor> {
         val processors = super.getHttpServiceProcessors().toMutableList()
         processors.add(BasicHttpResponseValidator())
-        processors.add(HeadersAppender(appVersion, userToken))
+        processors.add(HeadersAppender(userToken))
         return processors
     }
 

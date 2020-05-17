@@ -6,13 +6,12 @@ import com.jdroid.java.http.HttpServiceProcessor
 import com.jdroid.java.http.MimeType
 import com.jdroid.java.utils.LocaleUtils
 
-class HeadersAppender(private val appVersion: String, private val userToken: String) : HttpServiceProcessor {
+class HeadersAppender(private val userToken: String) : HttpServiceProcessor {
 
     companion object {
         private const val USER_AGENT_HEADER_VALUE = "gradle"
         const val USER_TOKEN_HEADER = "x-user-token"
         const val DEFAULT_USER_TOKEN_HEADER = "default"
-        const val CLIENT_APP_VERSION_HEADER = "clientAppVersion"
     }
 
     override fun onInit(httpService: HttpService) {
@@ -32,7 +31,7 @@ class HeadersAppender(private val appVersion: String, private val userToken: Str
         httpService.addHeader(HttpService.ACCEPT_ENCODING_HEADER, HttpService.GZIP_ENCODING)
 
         httpService.addHeader(USER_TOKEN_HEADER, userToken)
-        httpService.addHeader(CLIENT_APP_VERSION_HEADER, appVersion)
+        // TODO We should send a useer agent header here, with the client name (releases-hub-gradle-plugin) and the version
     }
 
     private fun addLanguageHeader(httpService: HttpService) {
