@@ -19,9 +19,6 @@ abstract class AbstractTask : DefaultTask() {
     var logLevel: LogLevel? = null
 
     @get:Internal
-    protected lateinit var propertyResolver: PropertyResolver
-
-    @get:Internal
     protected lateinit var commandExecutor: CommandExecutor
 
     @get:Internal
@@ -53,7 +50,6 @@ abstract class AbstractTask : DefaultTask() {
         LoggerHelper.logger = logger
         LoggerHelper.logLevel = logLevel!!
 
-        propertyResolver = PropertyResolver(project)
         commandExecutor = CommandExecutor(project, logLevel!!)
         gitHelper = GitHelper(commandExecutor)
         onExecute()
