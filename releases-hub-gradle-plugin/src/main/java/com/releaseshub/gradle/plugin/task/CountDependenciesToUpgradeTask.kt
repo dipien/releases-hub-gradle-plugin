@@ -4,6 +4,7 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import org.gradle.api.logging.LogLevel
 
+@Deprecated(message = "Use the file generateed by ListDependenciesToUpgradeTask")
 open class CountDependenciesToUpgradeTask : AbstractTask() {
 
     companion object {

@@ -3,6 +3,7 @@ package com.releaseshub.gradle.plugin.task
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.core.FileSizeFormatter
+import java.io.File
 
 open class ListDependenciesToUpgradeTask : AbstractTask() {
 
@@ -23,7 +24,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
         val dependenciesParserResult = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
 
         if (dependenciesParserResult.excludedArtifacts.isNotEmpty()) {
-            log("Dependencies excluded:")
+            log("${dependenciesParserResult.excludedArtifacts.size} dependencies excluded:")
             dependenciesParserResult.excludedArtifacts.sortedBy { it.toString() }.forEach {
                 log(" * $it ${it.fromVersion}")
             }
@@ -34,7 +35,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 
         val notFoundArtifacts = artifactsUpgrades.filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.NOT_FOUND }
         if (notFoundArtifacts.isNotEmpty()) {
-            log("Dependencies not found:")
+            log("${notFoundArtifacts.size} dependencies not found:")
             notFoundArtifacts.forEach {
                 log(" * $it ${it.fromVersion}")
             }
@@ -45,7 +46,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
         if (artifactsToUpgrade.isNullOrEmpty()) {
             log("No dependencies to upgrade")
         } else {
-            log("Dependencies to upgrade:")
+            log("${artifactsToUpgrade.size} dependencies to upgrade:")
             artifactsToUpgrade.forEach {
                 log(" * $it ${it.fromVersion} -> ${it.toVersion}")
                 if (it.toSize != null) {
@@ -79,5 +80,10 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
                 log("")
             }
         }
+
+        val releasesHubDir = File(project.buildDir, File.separator + "releasesHub")
+        releasesHubDir.mkdirs()
+        val file = File(releasesHubDir, "dependencies_to_upgrade_count.txt")
+        file.writeText(artifactsToUpgrade.size.toString())
     }
 }
