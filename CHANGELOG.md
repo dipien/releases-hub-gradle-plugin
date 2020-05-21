@@ -1,5 +1,17 @@
 # Changelog
 
+## [v1.5.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.5.1) (2020-05-21)
+
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.5.0...v1.5.1)
+
+**Implemented enhancements:**
+
+- Generate dependencies\_to\_upgrade\_count.txt file [\#78](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/78)
+
+**Fixed bugs:**
+
+- Avoid fails on timeouts when fetching upgrades [\#77](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/77)
+
 ## [v1.5.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.5.0) (2020-05-15)
 
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.4.4...v1.5.0)
