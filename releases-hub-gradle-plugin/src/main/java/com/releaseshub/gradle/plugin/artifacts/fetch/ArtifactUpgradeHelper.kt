@@ -1,5 +1,6 @@
 package com.releaseshub.gradle.plugin.artifacts.fetch
 
+import com.jdroid.java.http.exception.ConnectionException
 import com.jdroid.java.http.exception.HttpResponseException
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
@@ -45,7 +46,9 @@ object ArtifactUpgradeHelper {
             try {
                 versions.addAll(MavenArtifactRepositoryStrategy(repository).getAllVersions(artifact))
             } catch (e: HttpResponseException) {
-                LoggerHelper.logger.info("Error when fetching fetch for $artifact on repository ${repository.name}")
+                LoggerHelper.logger.info("Error when fetching fetch for $artifact on repository ${repository.url}")
+            } catch (e: ConnectionException) {
+                LoggerHelper.logger.info("Timeout when fetching fetch for $artifact on repository ${repository.url}")
             }
         }
 
