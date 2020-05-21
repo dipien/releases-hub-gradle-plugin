@@ -3,6 +3,7 @@ package com.releaseshub.gradle.plugin.task
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.core.FileSizeFormatter
+import java.io.File
 
 open class ListDependenciesToUpgradeTask : AbstractTask() {
 
@@ -79,5 +80,10 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
                 log("")
             }
         }
+
+        val releasesHubDir = File(project.buildDir, File.separator + "releasesHub")
+        releasesHubDir.mkdirs()
+        val file = File(releasesHubDir, "dependencies_to_upgrade_count.txt")
+        file.writeText(artifactsToUpgrade.size.toString())
     }
 }

@@ -181,15 +181,9 @@ Print all the dependencies that will be analyzed to upgrade.
     
 #### List dependencies to upgrade
 
-Print all the dependencies that are upgradeable.
+Print all the dependencies that are upgradeable. A file `build/releasesHub/dependencies_to_upgrade_count.txt` is generated with the count of dependencies that are upgradeable. This could be useful for metrics.
 
     ./gradlew listDependenciesToUpgrade
-
-#### Count dependencies to upgrade
-
-Print the count of dependencies that are upgradeable. This could be useful for metrics.
-
-    ./gradlew countDependenciesToUpgrade --quiet
 
 #### Upgrade dependencies
 
