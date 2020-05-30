@@ -28,7 +28,7 @@ object DependenciesUpgrader {
         val keepGradleBatFile = gradlewBatFile.exists()
 
         // We execute this twice because I had cases in the past where I had to do that to upgrade all files
-        val upgradeCommand = "./gradlew wrapper --gradle-version=${artifactToUpgrade.toVersion!!}"
+        val upgradeCommand = "./gradlew wrapper --gradle-version=${artifactToUpgrade.toVersion!!} --stacktrace"
         try {
             commandExecutor.execute(upgradeCommand)
             commandExecutor.execute(upgradeCommand)
