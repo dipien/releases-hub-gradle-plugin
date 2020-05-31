@@ -6,7 +6,6 @@
 
 **Closed issues:**
 
-- Maintain same distribution type when updating the Gradle Wrapper [\#79](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/79)
 - Sort dependencies to upgrade by the days since last update [\#76](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/76)
 
 ## [v1.5.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.5.1) (2020-05-21)
