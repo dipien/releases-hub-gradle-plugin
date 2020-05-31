@@ -5,7 +5,6 @@ import com.jdroid.java.http.exception.HttpResponseException
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.LoggerHelper
-import java.util.Date
 
 object ArtifactUpgradeHelper {
 
@@ -23,7 +22,7 @@ object ArtifactUpgradeHelper {
             val release = getReleaseToUpgrade(artifactToCheck, artifact)
             if (release != null) {
                 artifactToCheck.toVersion = release.version!!
-                artifactToCheck.toReleaseDate = release.date?.time
+                artifactToCheck.toReleaseDate = release.date
                 artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.PENDING_UPGRADE
                 return artifactToCheck
             } else {
@@ -44,13 +43,15 @@ object ArtifactUpgradeHelper {
         artifact.releases = releases
 
         val versions = mutableListOf<Version>()
-        val lastUpdatedList = mutableListOf<Date>()
+        var lastUpdated: Long? = null
         repositories.forEach { repository ->
             try {
                 val versioningMetadata = MavenArtifactRepositoryStrategy(repository).getVersioningMetadata(artifact)
                 versions.addAll(versioningMetadata.versions.orEmpty())
                 if (versioningMetadata.lastUpdated != null) {
-                    lastUpdatedList.add(versioningMetadata.lastUpdated!!)
+                    if (lastUpdated == null || versioningMetadata.lastUpdated!!.time > lastUpdated!!) {
+                        lastUpdated = versioningMetadata.lastUpdated!!.time
+                    }
                 }
             } catch (e: HttpResponseException) {
                 LoggerHelper.logger.info("Error when fetching fetch for $artifact on repository ${repository.url}")
@@ -62,7 +63,7 @@ object ArtifactUpgradeHelper {
         if (!versions.isNullOrEmpty()) {
             val release = Release()
             release.version = getLatestVersion(versions).toString()
-            release.date = getNewestLastUpdated(lastUpdatedList)
+            release.date = lastUpdated
             releases.add(release)
         }
 
@@ -84,10 +85,6 @@ object ArtifactUpgradeHelper {
             }
         }
         return latestStableVersion ?: latestNotStableVersion!!
-    }
-
-    private fun getNewestLastUpdated(lastUpdatedList: List<Date>): Date? {
-        return lastUpdatedList.maxBy { it.time }
     }
 
     private fun getReleaseToUpgrade(artifactToCheck: ArtifactUpgrade, artifact: Artifact): Release? {
