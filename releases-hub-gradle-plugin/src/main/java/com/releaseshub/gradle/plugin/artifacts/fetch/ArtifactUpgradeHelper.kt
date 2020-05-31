@@ -86,8 +86,8 @@ object ArtifactUpgradeHelper {
         return latestStableVersion ?: latestNotStableVersion!!
     }
 
-    private fun getNewestLastUpdated(lastUpdatedList: List<Date>): Date {
-        return lastUpdatedList.maxBy { it.time }!!
+    private fun getNewestLastUpdated(lastUpdatedList: List<Date>): Date? {
+        return lastUpdatedList.maxBy { it.time }
     }
 
     private fun getReleaseToUpgrade(artifactToCheck: ArtifactUpgrade, artifact: Artifact): Release? {
