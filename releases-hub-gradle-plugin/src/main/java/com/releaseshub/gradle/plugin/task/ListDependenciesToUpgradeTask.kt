@@ -4,6 +4,7 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.core.FileSizeFormatter
 import java.io.File
+import java.util.Date
 
 open class ListDependenciesToUpgradeTask : AbstractTask() {
 
@@ -49,6 +50,10 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             log("${artifactsToUpgrade.size} dependencies to upgrade:")
             artifactsToUpgrade.forEach {
                 log(" * $it ${it.fromVersion} -> ${it.toVersion}")
+                val releaseDate = it.toReleaseDate
+                if (releaseDate != null) {
+                    log("   - Release Date: " + Date(releaseDate))
+                }
                 if (it.toSize != null) {
                     val builder = StringBuilder()
                     builder.append("   - Size: ${FileSizeFormatter.format(it.toSize!!)}")

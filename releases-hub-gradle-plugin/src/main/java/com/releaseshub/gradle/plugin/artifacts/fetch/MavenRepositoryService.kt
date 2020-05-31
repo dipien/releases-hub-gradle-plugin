@@ -9,7 +9,7 @@ import com.jdroid.java.http.mock.AbstractMockHttpService
 
 class MavenRepositoryService(private val serverName: String, private val serverUrl: String) : AbstractApiService() {
 
-    fun getVersions(artifact: Artifact): List<String> {
+    fun getVersioningMetadata(artifact: Artifact): VersioningMetadata {
         val httpService = newGetService()
         httpService.setSsl(true)
         httpService.addUrlSegment(artifact.groupId!!.replace(".", "/"))

@@ -1,5 +1,7 @@
 package com.releaseshub.gradle.plugin.artifacts.fetch
 
+import java.util.Date
+
 class Release {
 
     var version: String? = null
@@ -8,12 +10,9 @@ class Release {
             lifeCycle = Version(version!!).releaseLifeCycle
         }
     var lifeCycle: ReleaseLifeCycle? = null
+    var date: Date? = null
 
     fun isStable(): Boolean {
         return lifeCycle == ReleaseLifeCycle.STABLE
-    }
-
-    fun getBaseVersion(): String {
-        return Version(version!!).baseVersion
     }
 }

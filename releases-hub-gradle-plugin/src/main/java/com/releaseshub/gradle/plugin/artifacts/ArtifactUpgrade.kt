@@ -17,6 +17,7 @@ class ArtifactUpgrade {
     var toSize: Long? = null
     var fromAndroidPermissions: List<String>? = null
     var toAndroidPermissions: List<String>? = null
+    var toReleaseDate: Long? = null
     var sourceCodeUrl: String? = null
     var releaseNotesUrl: String? = null
     var documentationUrl: String? = null

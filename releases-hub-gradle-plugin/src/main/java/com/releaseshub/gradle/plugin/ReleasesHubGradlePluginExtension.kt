@@ -9,7 +9,7 @@ import org.gradle.api.logging.LogLevel
 
 open class ReleasesHubGradlePluginExtension(project: Project) {
 
-    var serverName: String? = project.propertyResolver.getStringProp(::serverName.name, AppServer.PROD.getServerName())
+    var server: String? = project.propertyResolver.getStringProp(::server.name, AppServer.PROD.getServerName())
     var userToken: String? = project.propertyResolver.getStringProp(::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
     var dependenciesBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
@@ -52,34 +52,34 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var logLevel = LogLevel.LIFECYCLE
 
     fun validateServerName() {
-        requireNotNull(serverName.isNullOrEmpty()) { "The 'serverName' property is required" }
+        requireNotNull(server.isNullOrEmpty()) { "The '${::server.name}' property is required" }
     }
 
     fun validateUserToken() {
-        requireNotNull(userToken.isNullOrEmpty()) { "The 'userToken' property is required" }
+        requireNotNull(userToken.isNullOrEmpty()) { "The '${::userToken.name}' property is required" }
     }
 
     fun validateDependenciesClassNames() {
-        require(!dependenciesClassNames.isNullOrEmpty()) { "The 'dependenciesClassNames' property is required" }
+        require(!dependenciesClassNames.isNullOrEmpty()) { "The '${::dependenciesClassNames.name}' property is required" }
     }
 
     fun validateBaseBranch() {
-        requireNotNull(baseBranch) { "The 'baseBranch' property is required" }
+        requireNotNull(baseBranch) { "The '${::baseBranch.name}' property is required" }
     }
 
     fun validateHeadBranchPrefix() {
-        requireNotNull(headBranchPrefix) { "The 'headBranchPrefix' property is required" }
+        requireNotNull(headBranchPrefix) { "The '${::headBranchPrefix.name}' property is required" }
     }
 
     fun validateGitHubRepositoryOwner() {
-        requireNotNull(gitHubRepositoryOwner) { "The 'gitHubRepositoryOwner' property is required" }
+        requireNotNull(gitHubRepositoryOwner) { "The '${::gitHubRepositoryOwner.name}' property is required" }
     }
 
     fun validateGitHubRepositoryName() {
-        requireNotNull(gitHubRepositoryName) { "The 'gitHubRepositoryName' property is required" }
+        requireNotNull(gitHubRepositoryName) { "The '${::gitHubRepositoryName.name}' property is required" }
     }
 
     fun validateGitHubWriteToken() {
-        requireNotNull(gitHubWriteToken) { "The 'gitHubWriteToken' property is required" }
+        requireNotNull(gitHubWriteToken) { "The '${::gitHubWriteToken.name}' property is required" }
     }
 }

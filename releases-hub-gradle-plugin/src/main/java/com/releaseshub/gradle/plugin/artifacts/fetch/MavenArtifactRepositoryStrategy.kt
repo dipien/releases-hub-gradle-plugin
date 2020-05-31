@@ -1,9 +1,9 @@
 package com.releaseshub.gradle.plugin.artifacts.fetch
 
-class MavenArtifactRepositoryStrategy(private val mavenArtifactRepository: MavenArtifactRepository) : AbstractArtifactRepositoryStrategy() {
+class MavenArtifactRepositoryStrategy(private val mavenArtifactRepository: MavenArtifactRepository) : ArtifactRepositoryStrategy {
 
-    override fun fetchVersions(artifact: Artifact): List<String> {
+    override fun getVersioningMetadata(artifact: Artifact): VersioningMetadata {
         val service = MavenRepositoryService(mavenArtifactRepository.name, mavenArtifactRepository.url)
-        return service.getVersions(artifact)
+        return service.getVersioningMetadata(artifact)
     }
 }

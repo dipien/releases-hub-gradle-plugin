@@ -5,6 +5,7 @@ import com.jdroid.java.http.exception.HttpResponseException
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.LoggerHelper
+import java.util.Date
 
 object ArtifactUpgradeHelper {
 
@@ -22,6 +23,7 @@ object ArtifactUpgradeHelper {
             val release = getReleaseToUpgrade(artifactToCheck, artifact)
             if (release != null) {
                 artifactToCheck.toVersion = release.version!!
+                artifactToCheck.toReleaseDate = release.date?.time
                 artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.PENDING_UPGRADE
                 return artifactToCheck
             } else {
@@ -42,9 +44,14 @@ object ArtifactUpgradeHelper {
         artifact.releases = releases
 
         val versions = mutableListOf<Version>()
+        val lastUpdatedList = mutableListOf<Date>()
         repositories.forEach { repository ->
             try {
-                versions.addAll(MavenArtifactRepositoryStrategy(repository).getAllVersions(artifact))
+                val versioningMetadata = MavenArtifactRepositoryStrategy(repository).getVersioningMetadata(artifact)
+                versions.addAll(versioningMetadata.versions.orEmpty())
+                if (versioningMetadata.lastUpdated != null) {
+                    lastUpdatedList.add(versioningMetadata.lastUpdated!!)
+                }
             } catch (e: HttpResponseException) {
                 LoggerHelper.logger.info("Error when fetching fetch for $artifact on repository ${repository.url}")
             } catch (e: ConnectionException) {
@@ -55,6 +62,7 @@ object ArtifactUpgradeHelper {
         if (!versions.isNullOrEmpty()) {
             val release = Release()
             release.version = getLatestVersion(versions).toString()
+            release.date = getNewestLastUpdated(lastUpdatedList)
             releases.add(release)
         }
 
@@ -76,6 +84,10 @@ object ArtifactUpgradeHelper {
             }
         }
         return latestStableVersion ?: latestNotStableVersion!!
+    }
+
+    private fun getNewestLastUpdated(lastUpdatedList: List<Date>): Date {
+        return lastUpdatedList.maxBy { it.time }!!
     }
 
     private fun getReleaseToUpgrade(artifactToCheck: ArtifactUpgrade, artifact: Artifact): Release? {
