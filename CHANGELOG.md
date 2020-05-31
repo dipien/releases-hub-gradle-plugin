@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.6.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.6.0) (2020-05-31)
+
+[Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.5.1...v1.6.0)
+
+**Closed issues:**
+
+- Maintain same distribution type when updating the Gradle Wrapper [\#79](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/79)
+- Sort dependencies to upgrade by the days since last update [\#76](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/76)
+
 ## [v1.5.1](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.5.1) (2020-05-21)
 
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.5.0...v1.5.1)
