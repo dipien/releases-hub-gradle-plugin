@@ -1,5 +1,7 @@
 package com.releaseshub.gradle.plugin.task
 
+import com.jdroid.java.date.DateTimeFormat
+import com.jdroid.java.date.DateUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.core.FileSizeFormatter
@@ -52,7 +54,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
                 log(" * $it ${it.fromVersion} -> ${it.toVersion}")
                 val releaseDate = it.toReleaseDate
                 if (releaseDate != null) {
-                    log("   - Release Date: " + Date(releaseDate))
+                    log("   - Release Date: " + DateUtils.format(Date(releaseDate), DateTimeFormat.MMMDYYYY))
                 }
                 if (it.toSize != null) {
                     val builder = StringBuilder()
