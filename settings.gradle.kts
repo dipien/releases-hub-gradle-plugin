@@ -1,5 +1,5 @@
 plugins {
-    id("com.gradle.enterprise").version("3.1.1")
+    id("com.gradle.enterprise").version("3.3.4")
 }
 
 include(":releases-hub-gradle-plugin")
