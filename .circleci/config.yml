@@ -150,12 +150,10 @@ workflows:
     jobs:
       - gradleCache
       - security
+      - ktlint
       - build:
           requires:
             - gradleCache
-      - ktlint:
-          requires:
-            - build
       - test:
           requires:
             - build

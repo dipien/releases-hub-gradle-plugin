@@ -44,6 +44,10 @@ abstract class AbstractTask : DefaultTask() {
     @get:Input
     var userToken: String? = null
 
+    init {
+        group = "Releases Hub"
+    }
+
     @TaskAction
     fun doExecute() {
 
