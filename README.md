@@ -290,3 +290,12 @@ The GitHub api host name needed to access the GitHub Enterprise. Optional String
 
 The `listDependenciesToUpgrade` & `upgradeDependencies` tasks send to **Releases Hub** servers the **groupId**, **artifactId** and **version** of the project dependencies, in order to process and fetch the artifacts updates. 
 That information is sent using **SSL** and it is NOT stored on the servers. The dependencies excluded through the plugin configuration are not send to the servers.
+
+## Donations
+
+Any donations are greatly appreciated. Donations will help us to pay for the Releases Hub backend needed to provide you the latest libraries upgrades.
+
+http://donations.releaseshub.com/
+
+----
+Follow us on [Twitter](https://twitter.com/ReleasesHub)
