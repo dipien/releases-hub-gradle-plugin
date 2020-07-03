@@ -293,7 +293,7 @@ That information is sent using **SSL** and it is NOT stored on the servers. The 
 
 ## Donations
 
-Any donations are greatly appreciated. Donations will help us to pay for the Releases Hub backend needed to provide you the latest libraries upgrades.
+Donations are greatly appreciated. You can help us to pay for our domain & cloud backend, both needed to provide you the latest libraries upgrades.
 
 http://donations.releaseshub.com/
 
