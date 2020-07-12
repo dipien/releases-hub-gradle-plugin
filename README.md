@@ -99,7 +99,11 @@ By default there aren't excluded dependencies.
 If you need to exclude the Gradle upgrade, use "gradle". For example: 
 
     excludes = ["gradle"]
-    
+
+## Versioning
+
+This project uses the [Semantic Versioning guidelines](http://semver.org/) for transparency into our release cycle.
+
 ## Usage
 
 We suggest to define your dependencies on `/buildSrc/src/main/kotlin/Libs.kt` and `/buildSrc/src/main/kotlin/BuildLibs.kt` classes. For example:
