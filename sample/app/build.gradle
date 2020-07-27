@@ -1,14 +1,13 @@
-import com.sample.dependencies.BuildLibs
-import com.sample.dependencies.Libs
+import com.sample.dependencies.Kotlin
 
 apply plugin: "kotlin"
 
 buildscript {
 	dependencies {
-		classpath(BuildLibs.KOTLIN_PLUGIN)
+		classpath(Kotlin.KOTLIN_PLUGIN)
 	}
 }
 
 dependencies {
-	compile(Libs.KOTLIN)
+	compile(Kotlin.KOTLIN_JDK)
 }

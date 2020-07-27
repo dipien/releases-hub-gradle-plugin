@@ -5,6 +5,7 @@ import java.io.File
 
 object DependenciesExtractor {
 
+    private val placeholderRegex = """const val ([^ ]+) = "([^"]+)"""".toRegex()
     private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
     private val gradleRegex = """.*/gradle-([^-]+)-.*""".toRegex()
 
@@ -25,12 +26,24 @@ object DependenciesExtractor {
             val lines = File(rootDir, basePath + className).readLines()
             dependenciesParserResult.dependenciesLinesMap[basePath + className] = lines
 
+            val placeholdersMap = mutableMapOf<String, String>()
+
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
             lines.forEach { line ->
+
+                val placeholderMatchResult = getPlaceholderMatchResult(line)
+
+                if (placeholderMatchResult != null) {
+                    placeholdersMap[placeholderMatchResult.groupValues[1]] = placeholderMatchResult.groupValues[2]
+                }
+
                 var artifact: ArtifactUpgrade? = null
                 val matchResult = getDependencyMatchResult(line)
                 if (matchResult != null) {
-                    artifact = ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
+                    val groupId = extractValue(matchResult.groupValues[1], placeholdersMap)
+                    val artifactId = extractValue(matchResult.groupValues[2], placeholdersMap)
+                    val version = extractValue(matchResult.groupValues[3], placeholdersMap)
+                    artifact = ArtifactUpgrade(groupId, artifactId, version)
                 }
 
                 if (artifact != null) {
@@ -45,7 +58,17 @@ object DependenciesExtractor {
         }
     }
 
-    private fun extractGradle(rootDir: File, includes: List<String>?, excludes: List<String>?, dependenciesParserResult: DependenciesExtractorResult) {
+    private fun extractValue(value: String, placeholdersMap: Map<String, String>): String {
+        var result = value
+        if (value.startsWith("\${") && value.endsWith("}")) {
+            var key = value.removePrefix("\${")
+            key = key.removeSuffix("}")
+            result = placeholdersMap[key]!!
+        }
+        return result
+    }
+
+    private fun extractGradle(rootDir: File, includes: List<String> = emptyList(), excludes: List<String> = emptyList(), dependenciesParserResult: DependenciesExtractorResult) {
         val gradleWrapperFile = GradleHelper.getGradleWrapperPropertiesFile(rootDir)
         if (gradleWrapperFile.exists()) {
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
@@ -68,6 +91,14 @@ object DependenciesExtractor {
             }
             dependenciesParserResult.artifactsMap[pathRelativeToRootProject] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
+    }
+
+    fun getPlaceholderMatchResult(line: String): MatchResult? {
+        // TODO Add support to inline or multiline /* */ comments
+        if (!line.trim().startsWith("//")) {
+            return placeholderRegex.matchEntire(line.trim())
+        }
+        return null
     }
 
     fun getDependencyMatchResult(line: String): MatchResult? {

@@ -122,6 +122,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     dependenciesLinesMap = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
                 }
                 val upgradeResults = upgradeDependencies(dependenciesLinesMap, artifactsToUpgradeByGroup)
+                upgradeResults.forEach { upgradeResult ->
+                    log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+                }
                 if (pullRequestEnabled) {
                     if (upgradeResults.isNotEmpty()) {
                         createPullRequest(upgradeResults, headBranch, groupId, group)
@@ -193,7 +196,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
                             val upgradeResult = DependenciesUpgrader.upgradeDependency(line, artifactToUpgrade)
                             if (upgradeResult.upgraded) {
                                 upgradeResults.add(upgradeResult)
-                                log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
                                 upgradedUpgradeResult = upgradeResult
                             }
                             newLines.add(upgradeResult.line)
@@ -207,7 +209,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
             if (pullRequestEnabled && upgradedUpgradeResult != null) {
                 commit(upgradedUpgradeResult!!)
             }
-            log("")
         }
         return upgradeResults
     }

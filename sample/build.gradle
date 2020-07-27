@@ -1,5 +1,7 @@
-import com.sample.dependencies.BuildLibs
-import com.sample.dependencies.Libs
+import com.sample.dependencies.Firebase
+import com.sample.dependencies.OkHttp
+import com.sample.dependencies.ReleasesHub
+
 
 buildscript {
 	repositories {
@@ -13,7 +15,7 @@ buildscript {
 
 	buildscript {
 		dependencies {
-			classpath(BuildLibs.RELEASES_HUB_GRADLE_PLUGIN)
+			classpath(ReleasesHub.RELEASES_HUB_PLUGIN)
 		}
 	}
 }
@@ -21,9 +23,9 @@ buildscript {
 apply plugin: "java"
 
 dependencies {
-	implementation(Libs.FIREBASE_CORE)
-	implementation("com.google.firebase:firebase-auth:19.0.0")
-	implementation("com.google.firebase:firebase-messaging:16.0.1")
+	compile(Firebase.ANALYTICS)
+	compile(OkHttp.OKHTTP)
+	compile(OkHttp.OKHTTP_URL_CONNECTION)
 }
 
 allprojects {
@@ -43,7 +45,7 @@ allprojects {
 apply plugin: "com.releaseshub.gradle.plugin"
 
 releasesHub {
-	dependenciesClassNames = ["com/sample/dependencies/Libs.kt", "com/sample/dependencies/BuildLibs.kt"]
+	dependenciesClassNames = ["com/sample/dependencies/Libs.kt"]
 	excludes = ["ccc", "ddd"]
 	gitHubRepositoryOwner = ""
 	gitHubRepositoryName = ""

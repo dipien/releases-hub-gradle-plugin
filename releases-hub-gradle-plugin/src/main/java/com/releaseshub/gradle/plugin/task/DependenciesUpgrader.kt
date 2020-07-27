@@ -1,12 +1,50 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import java.io.File
 import com.releaseshub.gradle.plugin.common.CommandExecutor
 import com.releaseshub.gradle.plugin.common.LoggerHelper
-import java.io.File
 import java.lang.Exception
 
 object DependenciesUpgrader {
+
+    fun upgradeDependency(artifactToUpgrade: ArtifactUpgrade, val upgradeResults: MutableList<UpgradeResult>) {
+        var upgradedUpgradeResult: UpgradeResult? = null
+
+        if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
+            val gradleWrapperFile = DependenciesExtractor.getGradleWrapperFile(project.rootProject.projectDir)
+            if (gradleWrapperFile.exists()) {
+                val lines = gradleWrapperFile.readLines()
+                gradleWrapperFile.bufferedWriter().use { out ->
+                    lines.forEach { line ->
+                        val upgradeResult = DependenciesUpgrader.upgradeGradle(line, artifactToUpgrade)
+                        if (upgradeResult.upgraded) {
+                            upgradeResults.add(upgradeResult)
+                            upgradedUpgradeResult = upgradeResult
+                        }
+                        out.write(upgradeResult.line)
+                        out.newLine()
+                    }
+                }
+            }
+        } else {
+            dependenciesLinesMapByGroup.entries.forEach { entry ->
+                val newLines = mutableListOf<String>()
+                File(entry.key).bufferedWriter().use { out ->
+                    entry.value.forEach { line ->
+                        val upgradeResult = DependenciesUpgrader.upgradeDependency(line, artifactToUpgrade)
+                        if (upgradeResult.upgraded) {
+                            upgradeResults.add(upgradeResult)
+                            upgradedUpgradeResult = upgradeResult
+                        }
+                        newLines.add(upgradeResult.line)
+                        out.write(upgradeResult.line + "\n")
+                    }
+                }
+                dependenciesLinesMapByGroup[entry.key] = newLines
+            }
+        }
+    }
 
     fun upgradeDependency(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult {
         val matchResult = DependenciesExtractor.getDependencyMatchResult(line)

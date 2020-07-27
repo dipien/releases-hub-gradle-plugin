@@ -41,6 +41,39 @@ class DependenciesExtractorTest {
     }
 
     @Test
+    fun extractWithPlaceholdersTest() {
+        val dependenciesParserResult = extractArtifacts("placeholders_dependencies_file")
+        Assert.assertEquals(5, dependenciesParserResult.getAllArtifacts().size)
+
+        var artifact = dependenciesParserResult.getAllArtifacts()[0]
+        Assert.assertEquals("com.google.firebase", artifact.groupId)
+        Assert.assertEquals("firebase-analytics", artifact.artifactId)
+        Assert.assertEquals("1.0.0", artifact.fromVersion)
+
+        artifact = dependenciesParserResult.getAllArtifacts()[1]
+        Assert.assertEquals("com.google.firebase", artifact.groupId)
+        Assert.assertEquals("firebase-messaging", artifact.artifactId)
+        Assert.assertEquals("16.0.0", artifact.fromVersion)
+
+        artifact = dependenciesParserResult.getAllArtifacts()[2]
+        Assert.assertEquals("com.releaseshub", artifact.groupId)
+        Assert.assertEquals("releases-hub-gradle-plugin", artifact.artifactId)
+        Assert.assertEquals("1.4.0", artifact.fromVersion)
+
+        artifact = dependenciesParserResult.getAllArtifacts()[3]
+        Assert.assertEquals("org.jetbrains.kotlin", artifact.groupId)
+        Assert.assertEquals("kotlin-gradle-plugin", artifact.artifactId)
+        Assert.assertEquals("1.3.40", artifact.fromVersion)
+
+        artifact = dependenciesParserResult.getAllArtifacts()[4]
+        Assert.assertEquals("org.jetbrains.kotlin", artifact.groupId)
+        Assert.assertEquals("kotlin-stdlib-jdk7", artifact.artifactId)
+        Assert.assertEquals("1.3.40", artifact.fromVersion)
+
+        Assert.assertTrue(dependenciesParserResult.excludedArtifacts.isEmpty())
+    }
+
+    @Test
     fun extractGradleArtifactTest() {
 
         val dependenciesParserResult = extractGradleArtifacts()
