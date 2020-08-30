@@ -49,6 +49,8 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var gitHubWriteToken: String? = project.propertyResolver.getStringProp(::gitHubWriteToken.name)
     var gitHubApiHostName: String? = project.propertyResolver.getStringProp(::gitHubApiHostName.name)
 
+    var gradleDistributionType: String? = project.propertyResolver.getStringProp(::gradleDistributionType.name) ?: "bin"
+
     var logLevel = LogLevel.LIFECYCLE
 
     fun validateServerName() {

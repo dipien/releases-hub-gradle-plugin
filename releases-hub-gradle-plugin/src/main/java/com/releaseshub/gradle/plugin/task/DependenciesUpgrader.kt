@@ -22,13 +22,13 @@ object DependenciesUpgrader {
         return UpgradeResult(false, null, line)
     }
 
-    fun upgradeGradle(commandExecutor: CommandExecutor, rootDir: File, artifactToUpgrade: ArtifactUpgrade): UpgradeResult {
+    fun upgradeGradle(commandExecutor: CommandExecutor, rootDir: File, artifactToUpgrade: ArtifactUpgrade, distributionType: String): UpgradeResult {
         val gradleWrapperPropertiesContent = GradleHelper.getGradleWrapperPropertiesFile(rootDir).readText()
         val gradlewBatFile = GradleHelper.getGradleBatWrapperFile(rootDir)
         val keepGradleBatFile = gradlewBatFile.exists()
 
         // We execute this twice because I had cases in the past where I had to do that to upgrade all files
-        val upgradeCommand = "./gradlew wrapper --gradle-version=${artifactToUpgrade.toVersion!!} --stacktrace"
+        val upgradeCommand = "./gradlew wrapper --gradle-version=${artifactToUpgrade.toVersion!!} --distribution-type=$distributionType --stacktrace"
         try {
             commandExecutor.execute(upgradeCommand)
             commandExecutor.execute(upgradeCommand)

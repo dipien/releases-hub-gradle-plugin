@@ -70,6 +70,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
     @get:Optional
     var gitHubApiHostName: String? = null
 
+    @get:Input
+    var gradleDistributionType: String? = null
+
     init {
         description = "Upgrade dependencies"
     }
@@ -179,7 +182,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                val upgradeResult = DependenciesUpgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
+                val upgradeResult = DependenciesUpgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade, gradleDistributionType!!)
                 if (upgradeResult.upgraded) {
                     upgradeResults.add(upgradeResult)
                     log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
