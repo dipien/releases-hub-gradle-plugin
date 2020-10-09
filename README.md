@@ -9,7 +9,13 @@ Gradle Plugin to automatically upgrade your java gradle project dependencies and
 4. Verify that your CI checks pass, scan the included release notes, perform manual tests, and merge the PR.
 
 ## Features
-* Automatic Pull Request creation, including release notes, documentation and source code links whenever available.
+* Automatic Pull Request creation, including useful information whenever available:
+  * new version release notes link
+  * library documentation link
+  * library source code link
+  * library issue tracker link
+  * library size
+  * new permissions added by the library (only for android libraries)
 * Support to configure which dependencies include and exclude, where to find their definitions, how many pull requests create and more.
 * Support any java based project using Gradle.
 
