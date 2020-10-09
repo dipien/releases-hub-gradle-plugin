@@ -6,7 +6,7 @@ Gradle Plugin to automatically upgrade your java gradle project dependencies and
 1. Apply and configure the plugin according to your needs
 2. Invoke the `upgradeDependencies` task on your CI tool (daily, weekly, monthly, as you wish)
 3. If any of your dependencies is out-of-date, the plugin will create a pull request to update it.
-4. Verify that your CI checks pass, scan the included release notes, perform manual tests, and merge the PR.
+4. Verify that your PR CI checks pass, scan the included release notes, perform manual tests, and merge the PR.
 
 ## Features
 * Automatic Pull Request creation, including useful information whenever available:
