@@ -2,7 +2,12 @@ package com.releaseshub.gradle.plugin.common
 
 import org.gradle.api.Project
 
-private val propertyResolverCache = mutableMapOf<Project, PropertyResolver>()
+private var propertyResolverCache: PropertyResolver? = null
 
 val Project.propertyResolver: PropertyResolver
-    get() = propertyResolverCache.getOrPut(this) { PropertyResolver(this) }
+    get() {
+        if (propertyResolverCache == null) {
+            propertyResolverCache = PropertyResolver(this)
+        }
+        return propertyResolverCache!!
+    }
