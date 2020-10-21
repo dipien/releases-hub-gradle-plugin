@@ -7,10 +7,6 @@
 
 - Fix memory leak on ProjectExtensions.propertyResolverCache [\#93](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/93)
 
-**Closed issues:**
-
-- Running upgradeDependencies as a GitHub Action [\#87](https://github.com/releaseshub/releases-hub-gradle-plugin/issues/87)
-
 ## [v1.6.0](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/v1.6.0) (2020-05-31)
 [Full Changelog](https://github.com/releaseshub/releases-hub-gradle-plugin/compare/v1.5.1...v1.6.0)
 
