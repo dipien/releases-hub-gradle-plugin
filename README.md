@@ -48,6 +48,8 @@ buildscript {
 apply plugin: "com.releaseshub.gradle.plugin"
 ```
 
+## Configure
+
 #### How to configure the properties
 
 All the plugin configuration properties can be added using any of the following ways:
@@ -105,10 +107,6 @@ By default there aren't excluded dependencies.
 If you need to exclude the Gradle upgrade, use "gradle". For example: 
 
     excludes = ["gradle"]
-
-## Versioning
-
-This project uses the [Semantic Versioning guidelines](http://semver.org/) for transparency into our release cycle.
 
 ## Usage
 
@@ -296,7 +294,12 @@ The GitHub api host name needed to access the GitHub Enterprise. Optional String
 
     gitHubApiHostName = "your.githubenterprise.com"
 
-### Privacy Policy
+
+## Versioning
+
+This project uses the [Semantic Versioning guidelines](http://semver.org/) for transparency into our release cycle.
+
+## Privacy Policy
 
 The `listDependenciesToUpgrade` & `upgradeDependencies` tasks send to **Releases Hub** servers the **groupId**, **artifactId** and **version** of the project dependencies, in order to process and fetch the artifacts updates. 
 That information is sent using **SSL** and it is NOT stored on the servers. The dependencies excluded through the plugin configuration are not send to the servers.
