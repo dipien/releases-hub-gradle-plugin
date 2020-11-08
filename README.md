@@ -1,6 +1,8 @@
 # Releases Hub Gradle Plugin
 Gradle Plugin to automatically upgrade your java gradle project dependencies and send a GitHub pull request with the changes.
 
+You can read [this](https://medium.com/swlh/automate-dependencies-upgrades-with-releases-hub-8eac6d7f43d6) blog post for more detailed information.
+
 ## How it works
 
 1. Apply and configure the plugin according to your needs
