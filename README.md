@@ -308,9 +308,12 @@ That information is sent using **SSL** and it is NOT stored on the servers. The 
 
 ## Donations
 
-Donations are greatly appreciated. You can help us to pay for our domain & cloud backend, both needed to provide you the latest libraries upgrades.
+Donations are greatly appreciated. You can help us to pay for our domain and this project development.
 
-http://donations.releaseshub.com/
+* [Donate cryptocurrency](http://coinbase.dipien.com/)
+* [Donate with PayPal](http://paypal.dipien.com/)
 
-----
-Follow us on [Twitter](https://twitter.com/ReleasesHub)
+## Follow us
+* [Twitter](https://twitter.com/ReleasesHub)
+* [Medium](https://medium.dipien.com)
+* [Blog](https://blog.dipien.com)
