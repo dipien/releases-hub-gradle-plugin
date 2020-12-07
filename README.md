@@ -315,5 +315,5 @@ Donations are greatly appreciated. You can help us to pay for our domain and thi
 
 ## Follow us
 * [Twitter](https://twitter.com/ReleasesHub)
-* [Medium](https://medium.dipien.com)
-* [Blog](https://blog.dipien.com)
+* [Medium](http://medium.dipien.com)
+* [Blog](http://blog.dipien.com)
