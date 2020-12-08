@@ -1,6 +1,9 @@
 package com.releaseshub.gradle.plugin.task
 
+import com.jdroid.java.date.DateTimeFormat
+import com.jdroid.java.date.DateUtils
 import com.releaseshub.gradle.plugin.core.FileSizeFormatter
+import java.util.Date
 
 object PullRequestGenerator {
 
@@ -22,6 +25,9 @@ object PullRequestGenerator {
             builder.appendln("* **Version:** `${it.artifactUpgrade?.fromVersion}` -> `${it.artifactUpgrade?.toVersion}`")
             if (it.artifactUpgrade?.toSize != null) {
                 builder.appendln("* **Size:** `${FileSizeFormatter.format(it.artifactUpgrade.toSize!!)}`")
+            }
+            if (it.artifactUpgrade?.toReleaseDate != null) {
+                builder.appendln("* **Release Date:** `${DateUtils.format(Date(it.artifactUpgrade.toReleaseDate!!), DateTimeFormat.MMMDYYYY)}`")
             }
             if (!it.artifactUpgrade?.toAndroidPermissions.isNullOrEmpty()) {
                 builder.appendln("* **Android permissions:** `${it.artifactUpgrade?.toAndroidPermissions}`")
