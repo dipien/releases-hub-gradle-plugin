@@ -21,14 +21,13 @@ buildscript {
 apply plugin: "java"
 
 dependencies {
-	implementation(Libs.FIREBASE_CORE)
-	implementation("com.google.firebase:firebase-auth:19.0.0")
-	implementation("com.google.firebase:firebase-messaging:16.0.1")
+	compile(Libs.ANDROID_SUPPORT)
 }
 
 allprojects {
 	repositories {
 		jcenter()
+		google()
 	}
 
 	buildscript {

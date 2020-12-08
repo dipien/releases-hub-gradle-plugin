@@ -15,4 +15,7 @@ object Libs {
     const val KOTLIN = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40"
     const val GLIDE = "com.github.bumptech.glide:glide:3.8.0"
     const val OTTO = "com.squareup:otto:1.0.0"
+
+    @Deprecated("")
+    const val ANDROID_SUPPORT = "com.android.support:support-v4:25.3.1"
 }

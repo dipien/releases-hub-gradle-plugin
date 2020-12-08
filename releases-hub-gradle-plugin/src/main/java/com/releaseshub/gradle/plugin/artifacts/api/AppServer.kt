@@ -11,7 +11,7 @@ enum class AppServer(
 
     PROD(null, true, true) {
         override fun getDomain(): String? {
-            return "api.releaseshub.com"
+            return "api.releaseshub.dipien.com"
         }
     },
     DEV("/app/api", false, false) {
