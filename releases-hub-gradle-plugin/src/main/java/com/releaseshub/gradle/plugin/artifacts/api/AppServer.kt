@@ -11,7 +11,18 @@ enum class AppServer(
 
     PROD(null, true, true) {
         override fun getDomain(): String? {
-            return "api.releaseshub.com"
+            // To avoid phishing attacks
+            val stringBuilder = StringBuilder()
+            stringBuilder.append("cloud")
+            stringBuilder.append(".")
+            stringBuilder.append("dipien")
+            stringBuilder.append(".")
+            stringBuilder.append("com")
+            stringBuilder.append("/")
+            stringBuilder.append("releases-hub")
+            stringBuilder.append("/")
+            stringBuilder.append("api")
+            return stringBuilder.toString()
         }
     },
     DEV("/app/api", false, false) {
