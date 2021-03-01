@@ -14,8 +14,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
 
     var dependenciesBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
 
-    // TODO On v2.0 change this to required and use getRequiredStringListProp
-    var dependenciesClassNames: List<String>? = project.propertyResolver.getStringListProp(::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
+    var dependenciesClassNames: List<String> = project.propertyResolver.getRequiredStringListProp(::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
 
     var includes: List<String>? = project.propertyResolver.getStringListProp(::includes.name)
     var excludes: List<String>? = project.propertyResolver.getStringListProp(::excludes.name)
@@ -25,18 +24,9 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
 
     var baseBranch: String? = project.propertyResolver.getStringProp(::baseBranch.name, "master")
 
-    @Deprecated(message = "Use headBranchPrefix instead. To be removed on v2.0.0")
-    var headBranch: String? = null
-
     var headBranchPrefix: String? = project.propertyResolver.getStringProp(::headBranchPrefix.name, "releases_hub/")
 
-    @Deprecated(message = "Not used anymore, because we create a commit per update. To be removed on v2.0.0")
-    var commitMessage: String? = null
-
-    @Deprecated(message = "Not used anymore, because we create a pull request per group id. To be removed on v2.0.0")
-    var pullRequestTitle: String? = null
-
-    var pullRequestEnabled: Boolean = project.propertyResolver.getBooleanProp(::pullRequestEnabled.name, false) ?: false
+    var pullRequestEnabled: Boolean = project.propertyResolver.getBooleanProp(::pullRequestEnabled.name, true) ?: true
     var pullRequestsMax: Int = project.propertyResolver.getIntegerProp(::pullRequestsMax.name, 5) ?: 5
     var pullRequestLabels: List<String>? = project.propertyResolver.getStringListProp(::pullRequestLabels.name)
     var pullRequestReviewers: List<String>? = project.propertyResolver.getStringListProp(::pullRequestReviewers.name)
