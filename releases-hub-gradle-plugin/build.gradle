@@ -3,7 +3,7 @@ description = "Gradle Plugin to automatically upgrade your java gradle project d
 ext.ARTIFACT_ID = "releases-hub-gradle-plugin"
 ext.GRADLE_PLUGIN_ID = "com.dipien.releaseshub.gradle.plugin"
 ext.GRADLE_PLUGIN_IMPLEMENTATION_CLASS = "com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin"
-ext.GRADLE_PLUGIN_PORTAL_TAGS = ["gradle", "plugin", "dependencies", "github"]
+ext.GRADLE_PLUGIN_PORTAL_TAGS = ["gradle", "plugin", "dependencies", "github", "releases"]
 
 apply plugin: "com.jdroidtools.gradle.plugin"
 
