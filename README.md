@@ -1,3 +1,5 @@
+[![Dipien](https://raw.githubusercontent.com/dipien/dipien-component-builder/master/.github/dipien_logo.png)](http://www.dipien.com)
+
 # Releases Hub Gradle Plugin
 Gradle Plugin to automatically upgrade your java gradle project dependencies and send a GitHub pull request with the changes.
 
