@@ -1,7 +1,6 @@
 package com.releaseshub.gradle.plugin
 
 import com.releaseshub.gradle.plugin.common.AbstractTask
-import com.releaseshub.gradle.plugin.task.CountDependenciesToUpgradeTask
 import com.releaseshub.gradle.plugin.task.ListDependenciesTask
 import com.releaseshub.gradle.plugin.task.ListDependenciesToUpgradeTask
 import com.releaseshub.gradle.plugin.task.UpgradeDependenciesTask
@@ -36,11 +35,6 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         val listDependenciesToUpgradeTask = project.tasks.create(ListDependenciesToUpgradeTask.TASK_NAME, ListDependenciesToUpgradeTask::class.java)
         project.afterEvaluate {
             initTask(listDependenciesToUpgradeTask)
-        }
-
-        val countDependenciesToUpgradeTask = project.tasks.create(CountDependenciesToUpgradeTask.TASK_NAME, CountDependenciesToUpgradeTask::class.java)
-        project.afterEvaluate {
-            initTask(countDependenciesToUpgradeTask)
         }
 
         val upgradeDependenciesTask = project.tasks.create(UpgradeDependenciesTask.TASK_NAME, UpgradeDependenciesTask::class.java)

@@ -1,7 +1,9 @@
+[![Dipien](https://raw.githubusercontent.com/dipien/dipien-component-builder/master/.github/dipien_logo.png)](http://www.dipien.com)
+
 # Releases Hub Gradle Plugin
 Gradle Plugin to automatically upgrade your java gradle project dependencies and send a GitHub pull request with the changes.
 
-You can read [this](https://medium.com/swlh/automate-dependencies-upgrades-with-releases-hub-8eac6d7f43d6) blog post for more detailed information.
+You can read [this](https://medium.com/dipien/automate-dependencies-upgrades-with-releases-hub-8eac6d7f43d6) blog post for more detailed information.
 
 ## How it works
 
@@ -25,13 +27,13 @@ You can read [this](https://medium.com/swlh/automate-dependencies-upgrades-with-
 
 ## Setup
 
-Add the following configuration to your root `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/releaseshub/releases-hub-gradle-plugin/releases/latest)
+Add the following configuration to your root `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/dipien/releases-hub-gradle-plugin/releases/latest)
 
 Using the plugins DSL:
 
 ```groovy
 plugins {
-  id "com.releaseshub.gradle.plugin" version "X.Y.Z"
+  id "com.dipien.releaseshub.gradle.plugin" version "X.Y.Z"
 }
 ```
 
@@ -43,11 +45,11 @@ buildscript {
         mavenCentral() // or gradlePluginPortal()
     }
     dependencies {
-        classpath("com.releaseshub:releases-hub-gradle-plugin:X.Y.Z")
+        classpath("com.dipien:releases-hub-gradle-plugin:X.Y.Z")
     }
 }
     
-apply plugin: "com.releaseshub.gradle.plugin"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
 ```
 
 ## Configure
@@ -134,7 +136,7 @@ object BuildLibs {
 
 ```groovy
 apply plugin: "kotlin"
-apply plugin: "com.releaseshub.gradle.plugin"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
 
 buildscript {
     dependencies {
@@ -147,7 +149,7 @@ dependencies {
 }
 ```
 
-See the [sample](https://github.com/releaseshub/releases-hub-gradle-plugin/tree/master/sample) for more details.
+See the [sample](https://github.com/dipien/releases-hub-gradle-plugin/tree/master/sample) for more details.
 
 ### Tasks
 
@@ -216,9 +218,9 @@ The following steps are executed for each `groupId`:
 
 ###### Pull Request Enabled
 
-Whether a pull request with all the upgrades should be created or not. The default value is `false`
+Whether a pull request with all the upgrades should be created or not. The default value is `true`
 
-    pullRequestEnabled = true
+    pullRequestEnabled = false
 
 ###### Pull Requests Max
 

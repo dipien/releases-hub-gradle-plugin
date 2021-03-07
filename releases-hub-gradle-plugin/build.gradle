@@ -1,9 +1,11 @@
 ext.PROJECT_NAME = "Releases Hub Gradle Plugin"
+description = "Gradle Plugin to automatically upgrade your java gradle project dependencies and send a GitHub pull request with the changes"
 ext.ARTIFACT_ID = "releases-hub-gradle-plugin"
-group = "com.releaseshub"
+ext.GRADLE_PLUGIN_ID = "com.dipien.releaseshub.gradle.plugin"
+ext.GRADLE_PLUGIN_IMPLEMENTATION_CLASS = "com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin"
+ext.GRADLE_PLUGIN_PORTAL_TAGS = ["gradle", "plugin", "dependencies", "github", "releases"]
 
 apply plugin: "com.jdroidtools.gradle.plugin"
-apply plugin: "com.gradle.plugin-publish"
 
 buildscript {
 	dependencies {
@@ -17,98 +19,6 @@ dependencies {
 	implementation(Libs.JDROID_JAVA_GITHUB)
 
 	testImplementation(Libs.JUNIT)
-}
-
-gradlePlugin {
-	plugins {
-		releasesHubPlugin {
-			id = "com.releaseshub.gradle.plugin"
-			implementationClass = "com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin"
-		}
-	}
-}
-
-pluginBundle {
-	website = "https://plugin.releaseshub.com/"
-	vcsUrl = "https://github.com/releaseshub/releases-hub-gradle-plugin"
-	description = "Gradle Plugin to automatically upgrade your java gradle project dependencies and send a GitHub pull request with the changes"
-	tags = ["gradle", "plugin", "dependencies", "github"]
-
-	plugins {
-		releasesHubPlugin {
-			displayName = "Releases Hub Gradle Plugin"
-		}
-	}
-}
-
-jdroid {
-	publishingPom = new Action<org.gradle.api.publish.maven.MavenPom>() {
-		@Override
-		public void execute(org.gradle.api.publish.maven.MavenPom mavenPom) {
-			mavenPom.getName().set("releases-hub-gradle-plugin");
-			mavenPom.getDescription().set("Gradle Plugin to automatically upgrade the project dependencies and send a GitHub pull request with the changes");
-
-			mavenPom.getUrl().set("https://releaseshub.com");
-			mavenPom.getInceptionYear().set("2019");
-			mavenPom.organization(new Action<MavenPomOrganization>() {
-				@Override
-				public void execute(MavenPomOrganization mavenPomOrganization) {
-					mavenPomOrganization.getName().set("Releases Hub");
-					mavenPomOrganization.getUrl().set("https://releaseshub.com");
-				}
-
-			});
-			mavenPom.licenses(new Action<MavenPomLicenseSpec>() {
-				@Override
-				public void execute(MavenPomLicenseSpec mavenPomLicenseSpec) {
-					mavenPomLicenseSpec.license(new Action<MavenPomLicense>() {
-						@Override
-						public void execute(MavenPomLicense mavenPomLicense) {
-							mavenPomLicense.getName().set("The Apache License, Version 2.0");
-							mavenPomLicense.getUrl().set("http://www.apache.org/licenses/LICENSE-2.0.txt");
-							mavenPomLicense.getDistribution().set("repo");
-						}
-
-					});
-				}
-
-			});
-			mavenPom.developers(new Action<MavenPomDeveloperSpec>() {
-				@Override
-				public void execute(MavenPomDeveloperSpec mavenPomDeveloperSpec) {
-					mavenPomDeveloperSpec.developer(new Action<MavenPomDeveloper>() {
-						@Override
-						public void execute(MavenPomDeveloper mavenPomDeveloper) {
-							mavenPomDeveloper.getName().set("Maxi Rosson");
-							mavenPomDeveloper.getEmail().set("maxi@releaseshub.com");
-						}
-
-					});
-				}
-
-			});
-
-			mavenPom.scm(new Action<MavenPomScm>() {
-				@Override
-				public void execute(MavenPomScm mavenPomScm) {
-					mavenPomScm.getConnection().set("scm:git:" + jdroid.getRepositorySshUrl());
-					mavenPomScm.getDeveloperConnection().set("scm:git:" + jdroid.getRepositorySshUrl());
-					mavenPomScm.getUrl().set(jdroid.getRepositorySshUrl());
-				}
-
-			});
-			mavenPom.issueManagement(new Action<MavenPomIssueManagement>() {
-				@Override
-				public void execute(MavenPomIssueManagement mavenPomIssueManagement) {
-					mavenPomIssueManagement.getSystem().set("GitHub");
-					mavenPomIssueManagement.getUrl().set(jdroid.getRepositoryUrl() + "/issues");
-				}
-
-			});
-
-		}
-
-	};
 }
 
 sourceSets {
