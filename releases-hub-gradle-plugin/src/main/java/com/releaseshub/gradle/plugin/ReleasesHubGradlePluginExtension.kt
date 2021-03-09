@@ -32,8 +32,12 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var pullRequestReviewers: List<String>? = project.propertyResolver.getStringListProp(::pullRequestReviewers.name)
     var pullRequestTeamReviewers: List<String>? = project.propertyResolver.getStringListProp(::pullRequestTeamReviewers.name)
 
+    // TODO Rename to gitUserName
     var gitHubUserName: String? = project.propertyResolver.getStringProp(::gitHubUserName.name)
+
+    // TODO Rename to gitEmail
     var gitHubUserEmail: String? = project.propertyResolver.getStringProp(::gitHubUserEmail.name)
+
     var gitHubRepositoryOwner: String? = project.propertyResolver.getStringProp(::gitHubRepositoryOwner.name)
     var gitHubRepositoryName: String? = project.propertyResolver.getStringProp(::gitHubRepositoryName.name)
     var gitHubWriteToken: String? = project.propertyResolver.getStringProp(::gitHubWriteToken.name)

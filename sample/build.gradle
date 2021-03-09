@@ -39,7 +39,7 @@ allprojects {
 
 }
 
-apply plugin: "com.releaseshub.gradle.plugin"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
 
 releasesHub {
 	dependenciesClassNames = ["com/sample/dependencies/Libs.kt", "com/sample/dependencies/BuildLibs.kt"]
