@@ -92,7 +92,7 @@ object ArtifactUpgradeHelper {
         if (stableRelease != null) {
             val fromVersion = Version(artifactToCheck.fromVersion!!)
             val fromStableVersion = Version(fromVersion.baseVersion)
-            if (stableRelease.version!! > fromStableVersion.toString()) {
+            if (Version(stableRelease.version!!) > fromStableVersion) {
                 return stableRelease
             } else if (!fromVersion.isStable() && stableRelease.version!! == fromStableVersion.toString()) {
                 return stableRelease
