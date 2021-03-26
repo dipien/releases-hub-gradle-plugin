@@ -16,9 +16,7 @@ class MavenMetadataParser : Parser {
         val versions = mutableListOf<Version>()
         for (line in StreamUtils.readLines(inputStream)) {
             if (line.trim().startsWith("<version>")) {
-                var version = line.trim().replace("<version>", "")
-                version = version.replace("</version>", "")
-                versions.add(Version(version))
+                versions.addAll(line.trim().split("<version>", "</version>").filter { it.trim().isNotEmpty() }.map { Version(it.trim()) })
             } else if (line.trim().startsWith("<lastUpdated>")) {
                 var lastUpdated = line.trim().replace("<lastUpdated>", "")
                 lastUpdated = lastUpdated.replace("</lastUpdated>", "")
