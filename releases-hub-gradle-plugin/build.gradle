@@ -19,6 +19,7 @@ dependencies {
 	implementation(Libs.JDROID_JAVA_GITHUB)
 
 	testImplementation(Libs.JUNIT)
+	testImplementation(Libs.TRUTH)
 }
 
 sourceSets {
