@@ -1,5 +1,8 @@
 # Change Log
 
+## [v2.0.2](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.2) (2021-03-26)
+[Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v2.0.1...v2.0.2)
+
 ## [v2.0.1](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.1) (2021-03-25)
 [Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v2.0.0...v2.0.1)
 
