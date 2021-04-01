@@ -317,6 +317,8 @@ Donations are greatly appreciated. You can help us to pay for our domain and thi
 * [Donate on Patreon](http://patreon.dipien.com/)
 
 ## Follow us
-* [Twitter](https://twitter.com/ReleasesHub)
+* [Twitter](http://twitter.dipien.com)
 * [Medium](http://medium.dipien.com)
+* [Pinterest](http://pinterest.dipien.com)
+* [GitHub](http://github.dipien.com)
 * [Blog](http://blog.dipien.com)
