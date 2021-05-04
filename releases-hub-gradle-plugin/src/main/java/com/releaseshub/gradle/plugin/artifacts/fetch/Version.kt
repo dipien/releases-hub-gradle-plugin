@@ -72,4 +72,19 @@ class Version(version: String) : Comparable<Version> {
     override fun toString(): String {
         return version
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Version
+
+        if (version != other.version) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return version.hashCode()
+    }
 }

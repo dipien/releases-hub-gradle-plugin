@@ -27,7 +27,9 @@ object DependenciesUpgrader {
         val gradlewBatFile = GradleHelper.getGradleBatWrapperFile(rootDir)
         val keepGradleBatFile = gradlewBatFile.exists()
 
-        // We execute this twice because I had cases in the past where I had to do that to upgrade all files
+        // Note that running the wrapper task once will update gradle-wrapper.properties only, but leave the wrapper itself in 
+        // gradle-wrapper.jar untouched. This is usually fine as new versions of Gradle can be run even with ancient wrapper files. 
+        // If you nevertheless want all the wrapper files to be completely up-to-date, you’ll need to run the wrapper task a second time.
         val upgradeCommand = "./gradlew wrapper --gradle-version=${artifactToUpgrade.toVersion!!} --stacktrace"
         try {
             commandExecutor.execute(upgradeCommand)

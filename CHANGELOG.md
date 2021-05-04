@@ -1,5 +1,19 @@
 # Change Log
 
+## [v2.0.2](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.2) (2021-03-26)
+[Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v2.0.1...v2.0.2)
+
+**Fixed bugs:**
+
+- Unexpected behaviour when maven\_metadata.xml is not properly formatted [\#104](https://github.com/dipien/releases-hub-gradle-plugin/issues/104)
+
+## [v2.0.1](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.1) (2021-03-25)
+[Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v2.0.0...v2.0.1)
+
+**Fixed bugs:**
+
+- Some upgrades not detected due to an issue when comparing versions [\#103](https://github.com/dipien/releases-hub-gradle-plugin/issues/103)
+
 ## [v2.0.0](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.0) (2021-03-01)
 [Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v1.7.0...v2.0.0)
 
