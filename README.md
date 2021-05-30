@@ -285,7 +285,7 @@ The GitHub repository name where the pull request will be created. Required Stri
 
 ###### GitHub Write Token
 
-The GitHub write token needed to access the GitHub API to create the pull request. 
+The GitHub write token needed to access the GitHub API to create the pull request. Follow these [steps](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token) to create your token.
 We strongly recommend to not use the `releasesHub` extension for this property, to avoid exposing it on the git repository.
 Required String (only if `pullRequestEnabled` is `true`).
 
