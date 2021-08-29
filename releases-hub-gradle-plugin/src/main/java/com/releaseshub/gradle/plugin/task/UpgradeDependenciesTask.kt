@@ -147,11 +147,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
         gitHubUserEmail?.let {
             gitHelper.configUserEmail(it)
         }
-        commandExecutor.execute("git add .")
-        commandExecutor.execute("git stash")
     }
 
     private fun prepareGitBranch(headBranch: String): Boolean {
+        gitHelper.stashAll()
         gitHelper.checkout(baseBranch!!)
         gitHelper.pull()
 

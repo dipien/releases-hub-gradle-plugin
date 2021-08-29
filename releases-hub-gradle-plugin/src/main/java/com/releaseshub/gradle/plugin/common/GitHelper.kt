@@ -26,6 +26,11 @@ class GitHelper(var commandExecutor: CommandExecutor) {
         commandExecutor.execute("git add .")
     }
 
+    fun stashAll() {
+        commandExecutor.execute("git add .")
+        commandExecutor.execute("git stash")
+    }
+
     fun diffHead() {
         commandExecutor.execute("git diff HEAD")
     }
