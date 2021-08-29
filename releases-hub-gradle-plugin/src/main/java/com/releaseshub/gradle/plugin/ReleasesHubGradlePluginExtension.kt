@@ -35,7 +35,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     // TODO Rename to gitUserName
     var gitHubUserName: String? = project.propertyResolver.getStringProp(::gitHubUserName.name)
 
-    // TODO Rename to gitEmail
+    // TODO Rename to gitUserEmail
     var gitHubUserEmail: String? = project.propertyResolver.getStringProp(::gitHubUserEmail.name)
 
     var gitHubRepositoryOwner: String? = project.propertyResolver.getStringProp(::gitHubRepositoryOwner.name)
