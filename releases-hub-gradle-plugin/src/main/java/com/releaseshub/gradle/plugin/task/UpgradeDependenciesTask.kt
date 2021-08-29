@@ -1,11 +1,11 @@
 package com.releaseshub.gradle.plugin.task
 
-import com.jdroid.github.RepositoryId
-import com.jdroid.github.client.GitHubClient
-import com.jdroid.github.service.IssueService
-import com.jdroid.github.service.LabelsService
-import com.jdroid.github.service.PullRequestService
-import com.jdroid.github.service.ReviewRequestsService
+import com.dipien.github.RepositoryId
+import com.dipien.github.client.GitHubClient
+import com.dipien.github.service.IssueService
+import com.dipien.github.service.LabelsService
+import com.dipien.github.service.PullRequestService
+import com.dipien.github.service.ReviewRequestsService
 import com.jdroid.java.concurrent.ExecutorUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus

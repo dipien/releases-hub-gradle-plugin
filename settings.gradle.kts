@@ -1,7 +1,13 @@
 plugins {
-    id("com.gradle.enterprise").version("3.5")
+    id("com.gradle.enterprise").version("3.6.3")
+}
+
+if (System.getenv("CI") == "true") {
+    buildCache {
+        local {
+            directory = File(System.getProperty("user.home"), "/gradle-build-cache")
+        }
+    }
 }
 
 include(":releases-hub-gradle-plugin")
-
-apply(from = java.io.File(settingsDir, "buildCacheSettings.gradle"))

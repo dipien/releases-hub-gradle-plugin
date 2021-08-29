@@ -8,38 +8,15 @@ apply plugin: "com.dipien.release"
 
 buildscript {
 	repositories {
-		mavenCentral {
-			mavenContent {
-				releasesOnly()
-			}
+		def propertyResolver = new PropertyResolver(project)
+		mavenCentral()
+		if (propertyResolver.getRequiredBooleanProp("LOCAL_MAVEN_REPO_ENABLED", false)) {
+			maven { url = propertyResolver.getRequiredStringProp("LOCAL_MAVEN_REPO") }
 		}
-		google()
-		String localMavenRepoEnabled = project.hasProperty("LOCAL_MAVEN_REPO_ENABLED") ? project.ext.get("LOCAL_MAVEN_REPO_ENABLED") : System.getenv("LOCAL_MAVEN_REPO_EMABLED")
-		boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
-		if (isLocalMavenRepoEnabled) {
-			String localMavenRepo = project.hasProperty("LOCAL_MAVEN_REPO") ? project.ext.get("LOCAL_MAVEN_REPO") : System.getenv("LOCAL_MAVEN_REPO")
-			if (localMavenRepo != null) {
-				maven {
-					url = localMavenRepo
-					content {
-						includeGroup("com.jdroidtools")
-						includeGroup("com.dipien")
-					}
-				}
-			}
-		}
-		maven {
-			url = "https://oss.sonatype.org/content/repositories/snapshots/"
-			content {
-				includeGroup("com.jdroidtools")
-				includeGroup("com.dipien")
-			}
-			mavenContent {
-				snapshotsOnly()
-			}
-		}
+		maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
 		gradlePluginPortal()
 	}
+
 	dependencies {
 		classpath(BuildLibs.DIPIEN_COMPONENT_BUILDER)
 		classpath(BuildLibs.JDROID_GRADLE_ROOT_PLUGIN)
@@ -47,68 +24,25 @@ buildscript {
 	}
 }
 
+def propertyResolver = new PropertyResolver(project)
+
 allprojects {
 	buildscript {
 		repositories {
-			mavenCentral {
-				mavenContent {
-					releasesOnly()
-				}
+			mavenCentral()
+			if (propertyResolver.getRequiredBooleanProp("LOCAL_MAVEN_REPO_ENABLED", false)) {
+				maven { url = propertyResolver.getRequiredStringProp("LOCAL_MAVEN_REPO") }
 			}
-			google()
-			String localMavenRepoEnabled = project.hasProperty("LOCAL_MAVEN_REPO_ENABLED") ? project.ext.get("LOCAL_MAVEN_REPO_ENABLED") : System.getenv("LOCAL_MAVEN_REPO_EMABLED")
-			boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
-			if (isLocalMavenRepoEnabled) {
-				String localMavenRepo = project.hasProperty("LOCAL_MAVEN_REPO") ? project.ext.get("LOCAL_MAVEN_REPO") : System.getenv("LOCAL_MAVEN_REPO")
-				if (localMavenRepo != null) {
-					maven {
-						url = localMavenRepo
-						content {
-							includeGroup("com.jdroidtools")
-							includeGroup("com.dipien")
-						}
-					}
-				}
-			}
-			maven {
-				url = "https://oss.sonatype.org/content/repositories/snapshots/"
-			}
+			maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 			gradlePluginPortal()
 		}
 	}
 
 	repositories {
-		mavenCentral {
-			mavenContent {
-				releasesOnly()
-			}
+		mavenCentral()
+		if (propertyResolver.getRequiredBooleanProp("LOCAL_MAVEN_REPO_ENABLED", false)) {
+			maven { url = propertyResolver.getRequiredStringProp("LOCAL_MAVEN_REPO") }
 		}
-		google()
-		String localMavenRepoEnabled = project.hasProperty("LOCAL_MAVEN_REPO_ENABLED") ? project.ext.get("LOCAL_MAVEN_REPO_ENABLED") : System.getenv("LOCAL_MAVEN_REPO_EMABLED")
-		boolean isLocalMavenRepoEnabled = localMavenRepoEnabled != null && localMavenRepoEnabled == "true"
-		if (isLocalMavenRepoEnabled) {
-			String localMavenRepo = project.hasProperty("LOCAL_MAVEN_REPO") ? project.ext.get("LOCAL_MAVEN_REPO") : System.getenv("LOCAL_MAVEN_REPO")
-			if (localMavenRepo != null) {
-				maven {
-					url = localMavenRepo
-					content {
-						includeGroup("com.jdroidtools")
-						includeGroup("com.dipien")
-					}
-				}
-			}
-		}
-		maven {
-			url = "https://oss.sonatype.org/content/repositories/snapshots/"
-			content {
-				includeGroup("com.jdroidtools")
-				includeGroup("com.dipien")
-			}
-			mavenContent {
-				snapshotsOnly()
-			}
-		}
-		gradlePluginPortal()
+		maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
 	}
 }
-
