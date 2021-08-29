@@ -7,7 +7,7 @@ object Libs {
     const val JDROID_JAVA_HTTP_OKHTTP = "com.jdroidtools:jdroid-java-http-okhttp:3.0.0"
 
     // https://github.com/dipien/github-api/releases
-    const val JDROID_JAVA_GITHUB = "com.dipien:github-api-java:1.2.0"
+    const val GITHUB_API = "com.dipien:github-api-java:1.2.0"
 
     // https://github.com/junit-team/junit4/releases
     const val JUNIT = "junit:junit:4.13.2"
