@@ -1,5 +1,12 @@
 # Change Log
 
+## [v2.0.3](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.3) (2021-08-29)
+[Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v2.0.2...v2.0.3)
+
+**Fixed bugs:**
+
+- Stash changes before upgrading dependencies [\#110](https://github.com/dipien/releases-hub-gradle-plugin/issues/110)
+
 ## [v2.0.2](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.2) (2021-03-26)
 [Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v2.0.1...v2.0.2)
 
