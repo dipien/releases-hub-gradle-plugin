@@ -57,7 +57,9 @@ object PullRequestGenerator {
                 atLeastOneItem = true
             }
             if (!it.artifactUpgrade?.detailsUrl.isNullOrEmpty()) {
+                builder.appendln()
                 builder.appendln("* [Official development resources](${it.artifactUpgrade?.detailsUrl}): blog posts, Youtube videos, courses and trainings")
+                atLeastOneItem = true
             }
             if (atLeastOneItem) {
                 builder.appendln()
