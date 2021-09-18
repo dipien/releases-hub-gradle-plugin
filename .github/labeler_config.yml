@@ -1,0 +1,42 @@
+version: 1
+labels:
+  - label: "xsmall-diff"
+    size-below: 10
+  - label: "small-diff"
+    size-above: 9
+    size-below: 100
+  - label: "medium-diff"
+    size-above: 99
+    size-below: 500
+  - label: "large-diff"
+    size-above: 499
+    size-below: 1000
+  - label: "xlarge-diff"
+    size-above: 999
+
+  - label: "circleci"
+    files:
+      - ".circleci/.*"
+  - label: "github"
+    files:
+      - ".github/.*"
+  - label: "gradle"
+    files:
+      - "gradle/.*"
+      - ".*.gradle"
+      - ".*.gradle.kts"
+      - "buildSrc/.*"
+      - "gradle.properties"
+      - "gradlew"
+      - "build-scripts/.*"
+  - label: "idea"
+    files:
+      - ".idea/.*"
+  - label: "git"
+    files:
+      - ".gitignore"
+      - ".gitattributes"
+  - label: "wiki"
+    files:
+      - "wiki/.*"
+      - "README.md"
