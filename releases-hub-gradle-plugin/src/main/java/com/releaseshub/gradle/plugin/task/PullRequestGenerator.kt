@@ -51,6 +51,9 @@ object PullRequestGenerator {
                 builder.append("[Issue tracker](${it.artifactUpgrade.issueTrackerUrl})")
                 atLeastOneItem = true
             }
+            if (!it.artifactUpgrade?.detailsUrl.isNullOrEmpty()) {
+                builder.appendln("* [Official development resources](${it.artifactUpgrade?.detailsUrl}): blog posts, Youtube videos, courses and trainings")
+            }
             if (atLeastOneItem) {
                 builder.appendln()
             }
