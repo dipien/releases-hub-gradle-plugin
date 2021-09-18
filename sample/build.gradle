@@ -21,7 +21,7 @@ buildscript {
 apply plugin: "java"
 
 dependencies {
-	compile(Libs.ANDROID_SUPPORT)
+	implementation(Libs.ANDROID_SUPPORT)
 }
 
 allprojects {

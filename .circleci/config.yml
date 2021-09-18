@@ -14,6 +14,10 @@ parameters:
     type: boolean
     default: false
 
+  upgradeDependencies:
+    type: boolean
+    default: false
+
 references:
 
   working_dir: &working_dir
@@ -24,6 +28,9 @@ executors:
     working_directory: *working_dir
     docker:
       - image: cimg/openjdk:11.0
+        auth:
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PASSWORD
     environment:
       JVM_OPTS: -Xmx3200m
       GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.caching=true
@@ -31,7 +38,8 @@ executors:
 orbs:
   # https://circleci.com/developer/orbs/orb/eddiewebb/queue
   queue: eddiewebb/queue@1.5.0
-  ruby: circleci/ruby@1.1.2
+  # https://circleci.com/developer/orbs/orb/circleci/ruby
+  ruby: circleci/ruby@1.1.4
 
 commands:
 
@@ -47,12 +55,26 @@ commands:
           paths:
             - gradle-build-cache
 
+  custom_checkout:
+    parameters:
+      switchToGradleBinaryDistributionEnabled:
+        type: boolean
+        default: true
+    steps:
+      - checkout
+      - when:
+          condition: << parameters.switchToGradleBinaryDistributionEnabled >>
+          steps:
+            - run:
+                name: Switch to Gradle Binary Distribution
+                command: sed -i -e 's/-all.zip/-bin.zip/' gradle/wrapper/gradle-wrapper.properties
+
 jobs:
 
   ktlint:
     executor: jdk_executor
     steps:
-      - checkout
+      - custom_checkout
       - run:
           name: Ktlint
           command: ./gradlew ktlint --stacktrace
@@ -60,7 +82,7 @@ jobs:
   security:
     executor: jdk_executor
     steps:
-      - checkout
+      - custom_checkout
       - run:
           name: Verify the integrity of the Gradle Wrapper JAR
           command: |
@@ -74,7 +96,7 @@ jobs:
   build:
     executor: jdk_executor
     steps:
-      - checkout
+      - custom_checkout
       - attach_to_workspace
       - run:
           name: Assemble
@@ -87,7 +109,7 @@ jobs:
   test:
     executor: jdk_executor
     steps:
-      - checkout
+      - custom_checkout
       - attach_to_workspace
       - run:
           name: Run tests
@@ -107,7 +129,7 @@ jobs:
   validatePlugins:
     executor: jdk_executor
     steps:
-      - checkout
+      - custom_checkout
       - attach_to_workspace
       - run:
           name: Validate plugins
@@ -116,7 +138,7 @@ jobs:
   publish:
     executor: jdk_executor
     steps:
-      - checkout
+      - custom_checkout
       - attach_to_workspace
       - queue/until_front_of_line:
           block-workflow: true
@@ -128,7 +150,7 @@ jobs:
   release:
     executor: jdk_executor
     steps:
-      - checkout
+      - custom_checkout
       - run:
           name: Close GitHub Milestone
           command: ./gradlew :closeGitHubMilestone << pipeline.parameters.releaseGradleFlags >>
@@ -162,10 +184,10 @@ jobs:
   upgradeDependencies:
     executor: jdk_executor
     steps:
-      - checkout
+      - custom_checkout
       - run:
           name: Upgrade Dependencies
-          command: ./gradlew upgradeDependencies -PpullRequestEnabled=true --stacktrace
+          command: ./gradlew upgradeDependencies --stacktrace
 
 workflows:
   commit:
@@ -199,6 +221,11 @@ workflows:
             branches:
               only:
                 - master
+    jobs:
+      - upgradeDependencies
+
+  upgradeDependencies:
+    when: << pipeline.parameters.upgradeDependencies >>
     jobs:
       - upgradeDependencies
 

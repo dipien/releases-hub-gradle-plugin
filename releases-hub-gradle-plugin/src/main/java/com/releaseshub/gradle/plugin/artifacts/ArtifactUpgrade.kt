@@ -22,6 +22,7 @@ class ArtifactUpgrade {
     var releaseNotesUrl: String? = null
     var documentationUrl: String? = null
     var issueTrackerUrl: String? = null
+    var detailsUrl: String? = null
     var packages: List<String>? = null
     lateinit var artifactUpgradeStatus: ArtifactUpgradeStatus
 
