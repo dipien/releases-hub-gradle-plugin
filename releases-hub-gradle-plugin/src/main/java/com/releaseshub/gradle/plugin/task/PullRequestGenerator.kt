@@ -34,7 +34,7 @@ object PullRequestGenerator {
                 it.artifactUpgrade?.toAndroidPermissions?.forEach { permission ->
                     // TODO Move the url logic to the backend
                     val url = permission.replace("android.permission.", "https://developer.android.com/reference/android/Manifest.permission#")
-                    builder.appendln("  * `[$permission]($url)`")
+                    builder.appendln("  * [$permission]($url)")
                 }
             }
             if (it.artifactUpgrade?.releaseNotesUrl != null) {
