@@ -30,7 +30,12 @@ object PullRequestGenerator {
                 builder.appendln("* **Release Date:** `${DateUtils.format(Date(it.artifactUpgrade.toReleaseDate!!), DateTimeFormat.MMMDYYYY)}`")
             }
             if (!it.artifactUpgrade?.toAndroidPermissions.isNullOrEmpty()) {
-                builder.appendln("* **Android permissions:** `${it.artifactUpgrade?.toAndroidPermissions}`")
+                builder.appendln("* **Android permissions:**")
+                it.artifactUpgrade?.toAndroidPermissions?.forEach { permission ->
+                    // TODO Move the url logic to the backend
+                    val url = permission.replace("android.permission.", "https://developer.android.com/reference/android/Manifest.permission#")
+                    builder.appendln("  * `[$permission]($url)`")
+                }
             }
             if (it.artifactUpgrade?.releaseNotesUrl != null) {
                 builder.append("* [Releases notes](${it.artifactUpgrade.releaseNotesUrl})")
