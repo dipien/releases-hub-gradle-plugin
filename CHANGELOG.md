@@ -10,7 +10,6 @@
 
 **Fixed bugs:**
 
-- com.jdroid.github.client.RequestException: Bad credentials \(401\) [\#107](https://github.com/dipien/releases-hub-gradle-plugin/issues/107)
 - Gradle Distribution changed as part of other upgrades [\#105](https://github.com/dipien/releases-hub-gradle-plugin/issues/105)
 
 ## [v2.0.3](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.3) (2021-08-29)
