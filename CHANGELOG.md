@@ -1,5 +1,18 @@
 # Change Log
 
+## [v2.1.0](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.1.0) (2021-09-18)
+[Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v2.0.3...v2.1.0)
+
+**Implemented enhancements:**
+
+- Include a link to all the official development resources on the PR description [\#112](https://github.com/dipien/releases-hub-gradle-plugin/issues/112)
+- Add link to Android permission documentation [\#83](https://github.com/dipien/releases-hub-gradle-plugin/issues/83)
+
+**Fixed bugs:**
+
+- com.jdroid.github.client.RequestException: Bad credentials \(401\) [\#107](https://github.com/dipien/releases-hub-gradle-plugin/issues/107)
+- Gradle Distribution changed as part of other upgrades [\#105](https://github.com/dipien/releases-hub-gradle-plugin/issues/105)
+
 ## [v2.0.3](https://github.com/dipien/releases-hub-gradle-plugin/tree/v2.0.3) (2021-08-29)
 [Full Changelog](https://github.com/dipien/releases-hub-gradle-plugin/compare/v2.0.2...v2.0.3)
 
