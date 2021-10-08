@@ -47,8 +47,8 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
             upgradeDependenciesTask.pullRequestLabels = extension.pullRequestLabels
             upgradeDependenciesTask.pullRequestReviewers = extension.pullRequestReviewers
             upgradeDependenciesTask.pullRequestTeamReviewers = extension.pullRequestTeamReviewers
-            upgradeDependenciesTask.gitHubUserName = extension.gitHubUserName
-            upgradeDependenciesTask.gitHubUserEmail = extension.gitHubUserEmail
+            upgradeDependenciesTask.gitUserName = extension.gitUserName
+            upgradeDependenciesTask.gitUserEmail = extension.gitUserEmail
             upgradeDependenciesTask.gitHubRepositoryOwner = extension.gitHubRepositoryOwner
             upgradeDependenciesTask.gitHubRepositoryName = extension.gitHubRepositoryName
             upgradeDependenciesTask.gitHubWriteToken = extension.gitHubWriteToken

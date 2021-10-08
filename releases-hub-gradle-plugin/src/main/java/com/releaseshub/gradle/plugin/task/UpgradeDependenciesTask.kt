@@ -51,11 +51,11 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     @get:Input
     @get:Optional
-    var gitHubUserName: String? = null
+    var gitUserName: String? = null
 
     @get:Input
     @get:Optional
-    var gitHubUserEmail: String? = null
+    var gitUserEmail: String? = null
 
     @get:Input
     var gitHubRepositoryOwner: String? = null
@@ -139,10 +139,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
     }
 
     private fun configureGit() {
-        gitHubUserName?.let {
+        gitUserName?.let {
             gitHelper.configUserName(it)
         }
-        gitHubUserEmail?.let {
+        gitUserEmail?.let {
             gitHelper.configUserEmail(it)
         }
     }
