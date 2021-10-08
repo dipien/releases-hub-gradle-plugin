@@ -54,12 +54,12 @@ class BuildSrcDependenciesExtractorTest {
     }
 
     private fun extractArtifacts(basePath: String): DependenciesExtractorResult {
-        val extractor = BuildSrcDependenciesExtractor(basePath, listOf("Libs.kt"))
+        val extractor = BuildSrcDependenciesExtractor(listOf("$basePath/Libs.kt"))
         return extractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root")))
     }
 
     private fun extractGradleArtifacts(): DependenciesExtractorResult {
-        val extractor = BuildSrcDependenciesExtractor("", emptyList())
+        val extractor = BuildSrcDependenciesExtractor(emptyList())
         return extractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root_gradle")))
     }
 }
