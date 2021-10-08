@@ -1,4 +1,4 @@
-package com.releaseshub.gradle.plugin.task
+package com.releaseshub.gradle.plugin.dependencies
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 

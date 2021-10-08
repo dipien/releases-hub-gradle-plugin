@@ -1,4 +1,4 @@
-package com.releaseshub.gradle.plugin.task
+package com.releaseshub.gradle.plugin.dependencies
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.common.ResourceUtils
@@ -6,7 +6,7 @@ import org.junit.Assert
 import org.junit.Test
 import java.io.File
 
-class DependenciesExtractorTest {
+class BuildSrcDependenciesExtractorTest {
 
     @Test
     fun extractFromEmptyTest() {
@@ -54,12 +54,12 @@ class DependenciesExtractorTest {
     }
 
     private fun extractArtifacts(basePath: String): DependenciesExtractorResult {
-        return DependenciesExtractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root")),
-            basePath, listOf("Libs.kt"), emptyList(), emptyList())
+        val extractor = BuildSrcDependenciesExtractor(basePath, listOf("Libs.kt"))
+        return extractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root")))
     }
 
     private fun extractGradleArtifacts(): DependenciesExtractorResult {
-        return DependenciesExtractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root_gradle")),
-            "", emptyList(), emptyList(), emptyList())
+        val extractor = BuildSrcDependenciesExtractor("", emptyList())
+        return extractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root_gradle")))
     }
 }

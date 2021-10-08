@@ -11,6 +11,7 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.context.BuildConfig
+import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesExtractor
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -88,7 +89,8 @@ open class UpgradeDependenciesTask : AbstractTask() {
             getExtension().validateGitHubWriteToken()
         }
 
-        val dependenciesParserResult = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
+        val extractor = BuildSrcDependenciesExtractor(dependenciesBasePath!!, dependenciesClassNames!!)
+        val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
         val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
 
@@ -119,7 +121,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
                 var dependenciesLinesMap = dependenciesParserResult.dependenciesLinesMap
                 if (!branchCreated) {
-                    dependenciesLinesMap = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
+                    dependenciesLinesMap = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes).dependenciesLinesMap
                 }
                 val upgradeResults = upgradeDependencies(dependenciesLinesMap, artifactsToUpgradeByGroup)
                 if (pullRequestEnabled) {

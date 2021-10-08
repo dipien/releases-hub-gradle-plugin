@@ -1,14 +1,12 @@
-package com.releaseshub.gradle.plugin.task
+package com.releaseshub.gradle.plugin.dependencies
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import com.releaseshub.gradle.plugin.task.GradleHelper
 import java.io.File
 
-object DependenciesExtractor {
+class BuildSrcDependenciesExtractor(private val dependenciesBasePath: String, private val dependenciesClassNames: List<String>): DependenciesExtractor {
 
-    private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
-    private val gradleRegex = """.*/gradle-([^-]+)-.*""".toRegex()
-
-    fun extractArtifacts(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>? = null, excludes: List<String>? = null): DependenciesExtractorResult {
+    override fun extractArtifacts(rootDir: File, includes: List<String>?, excludes: List<String>?): DependenciesExtractorResult {
         val dependenciesParserResult = DependenciesExtractorResult()
 
         extractDependency(rootDir, dependenciesBasePath, dependenciesClassNames, includes, excludes, dependenciesParserResult)
@@ -28,7 +26,7 @@ object DependenciesExtractor {
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
             lines.forEach { line ->
                 var artifact: ArtifactUpgrade? = null
-                val matchResult = getDependencyMatchResult(line)
+                val matchResult = DependenciesExtractor.getDependencyMatchResult(line)
                 if (matchResult != null) {
                     artifact = ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
                 }
@@ -53,7 +51,7 @@ object DependenciesExtractor {
             gradleWrapperFile.forEachLine { line ->
                 var artifact: ArtifactUpgrade? = null
 
-                val matchResult = getGradleMatchResult(line)
+                val matchResult = DependenciesExtractor.getGradleMatchResult(line)
                 if (matchResult != null) {
                     artifact = ArtifactUpgrade(ArtifactUpgrade.GRADLE_ID, matchResult.groupValues[1])
                 }
@@ -68,20 +66,5 @@ object DependenciesExtractor {
             }
             dependenciesParserResult.artifactsMap[pathRelativeToRootProject] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
-    }
-
-    fun getDependencyMatchResult(line: String): MatchResult? {
-        // TODO Add support to inline or multiline /* */ comments
-        if (!line.trim().startsWith("//")) {
-            return dependenciesRegex.matchEntire(line)
-        }
-        return null
-    }
-
-    fun getGradleMatchResult(line: String): MatchResult? {
-        if (line.trim().startsWith("distributionUrl")) {
-            return gradleRegex.matchEntire(line)
-        }
-        return null
     }
 }

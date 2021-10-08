@@ -13,7 +13,6 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var userToken: String? = project.propertyResolver.getStringProp(::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
     var dependenciesBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
-
     var dependenciesClassNames: List<String> = project.propertyResolver.getRequiredStringListProp(::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
 
     var includes: List<String>? = project.propertyResolver.getStringListProp(::includes.name)

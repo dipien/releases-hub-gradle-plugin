@@ -3,6 +3,7 @@ package com.releaseshub.gradle.plugin.task
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.common.CommandExecutor
 import com.releaseshub.gradle.plugin.common.LoggerHelper
+import com.releaseshub.gradle.plugin.dependencies.DependenciesExtractor
 import java.io.File
 import java.lang.Exception
 
