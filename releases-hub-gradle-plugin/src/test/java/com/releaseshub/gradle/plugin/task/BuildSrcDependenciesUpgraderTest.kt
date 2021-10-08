@@ -14,7 +14,7 @@ class BuildSrcDependenciesUpgraderTest {
 
         val artifact = ArtifactUpgrade("a", "b", "0.0.1")
         artifact.toVersion = "1.0.0"
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader.upgradeDependency(line, artifact))
+        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(line, artifact))
     }
 
     @Test
@@ -24,7 +24,7 @@ class BuildSrcDependenciesUpgraderTest {
 
         val artifact = ArtifactUpgrade("a", "b", "0.0.1")
         artifact.toVersion = "1.0.0"
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader.upgradeDependency(line, artifact))
+        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(line, artifact))
     }
 
     @Test
@@ -34,7 +34,7 @@ class BuildSrcDependenciesUpgraderTest {
 
         val artifact = ArtifactUpgrade("com.dipien", "sample")
         artifact.toVersion = "2.0.0"
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader.upgradeDependency(line, artifact))
+        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(line, artifact))
     }
 
     @Test
@@ -44,7 +44,7 @@ class BuildSrcDependenciesUpgraderTest {
         val oldLine = """libs.sample = "com.dipien:sample:2.0.0""""
         val newLine = """libs.sample = "com.dipien:sample:3.0.0""""
         val upgradeResult = UpgradeResult(true, artifact, newLine)
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader.upgradeDependency(oldLine, artifact))
+        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(oldLine, artifact))
     }
 
     @Test
@@ -58,6 +58,6 @@ class BuildSrcDependenciesUpgraderTest {
         val oldLine = """libs.sample = "com.dipien:sample:2.0.0""""
         val newLine = """libs.sample = "com.dipien:sample:3.0.0""""
         val upgradeResult = UpgradeResult(true, artifactResult, newLine)
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader.upgradeDependency(oldLine, artifact))
+        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(oldLine, artifact))
     }
 }

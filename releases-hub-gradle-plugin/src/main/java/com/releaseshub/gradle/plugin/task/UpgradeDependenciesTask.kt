@@ -178,11 +178,12 @@ open class UpgradeDependenciesTask : AbstractTask() {
     private fun upgradeDependencies(dependenciesLinesMap: Map<String, List<String>>, artifactsToUpgradeByGroup: List<ArtifactUpgrade>): List<UpgradeResult> {
         val dependenciesLinesMapByGroup = dependenciesLinesMap.toMutableMap()
         val upgradeResults = mutableListOf<UpgradeResult>()
+        val upgrader = BuildSrcDependenciesUpgrader()
         artifactsToUpgradeByGroup.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                val upgradeResult = BuildSrcDependenciesUpgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
+                val upgradeResult = upgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
                 if (upgradeResult.upgraded) {
                     upgradeResults.add(upgradeResult)
                     log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
@@ -193,7 +194,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     val newLines = mutableListOf<String>()
                     File(entry.key).bufferedWriter().use { out ->
                         entry.value.forEach { line ->
-                            val upgradeResult = BuildSrcDependenciesUpgrader.upgradeDependency(line, artifactToUpgrade)
+                            val upgradeResult = upgrader.upgradeDependency(line, artifactToUpgrade)
                             if (upgradeResult.upgraded) {
                                 upgradeResults.add(upgradeResult)
                                 log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
