@@ -12,6 +12,7 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.context.BuildConfig
 import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesExtractor
+import com.releaseshub.gradle.plugin.dependencies.DependenciesUpgrader
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional

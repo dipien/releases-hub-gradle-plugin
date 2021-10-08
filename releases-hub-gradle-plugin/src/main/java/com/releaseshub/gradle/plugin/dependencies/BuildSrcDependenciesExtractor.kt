@@ -1,10 +1,9 @@
 package com.releaseshub.gradle.plugin.dependencies
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
-import com.releaseshub.gradle.plugin.task.GradleHelper
 import java.io.File
 
-class BuildSrcDependenciesExtractor(private val dependenciesBasePath: String, private val dependenciesClassNames: List<String>): DependenciesExtractor {
+class BuildSrcDependenciesExtractor(private val dependenciesBasePath: String, private val dependenciesClassNames: List<String>) : DependenciesExtractor {
 
     override fun extractArtifacts(rootDir: File, includes: List<String>?, excludes: List<String>?): DependenciesExtractorResult {
         val dependenciesParserResult = DependenciesExtractorResult()

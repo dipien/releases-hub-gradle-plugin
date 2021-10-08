@@ -1,6 +1,7 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import com.releaseshub.gradle.plugin.dependencies.DependenciesUpgrader
 import org.junit.Assert
 import org.junit.Test
 
