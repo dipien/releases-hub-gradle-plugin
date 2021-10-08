@@ -7,7 +7,7 @@ import com.releaseshub.gradle.plugin.task.UpgradeResult
 import java.io.File
 import java.lang.Exception
 
-object DependenciesUpgrader {
+object BuildSrcDependenciesUpgrader {
 
     fun upgradeDependency(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult {
         val matchResult = DependenciesExtractor.getDependencyMatchResult(line)

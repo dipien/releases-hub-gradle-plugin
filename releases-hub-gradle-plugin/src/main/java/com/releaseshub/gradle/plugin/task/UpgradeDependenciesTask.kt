@@ -12,7 +12,7 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.context.BuildConfig
 import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesExtractor
-import com.releaseshub.gradle.plugin.dependencies.DependenciesUpgrader
+import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesUpgrader
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -183,7 +183,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                val upgradeResult = DependenciesUpgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
+                val upgradeResult = BuildSrcDependenciesUpgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
                 if (upgradeResult.upgraded) {
                     upgradeResults.add(upgradeResult)
                     log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
@@ -194,7 +194,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     val newLines = mutableListOf<String>()
                     File(entry.key).bufferedWriter().use { out ->
                         entry.value.forEach { line ->
-                            val upgradeResult = DependenciesUpgrader.upgradeDependency(line, artifactToUpgrade)
+                            val upgradeResult = BuildSrcDependenciesUpgrader.upgradeDependency(line, artifactToUpgrade)
                             if (upgradeResult.upgraded) {
                                 upgradeResults.add(upgradeResult)
                                 log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")

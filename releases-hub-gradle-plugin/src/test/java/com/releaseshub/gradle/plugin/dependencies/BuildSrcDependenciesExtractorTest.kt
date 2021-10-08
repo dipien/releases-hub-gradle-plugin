@@ -28,8 +28,8 @@ class BuildSrcDependenciesExtractorTest {
         Assert.assertEquals(2, dependenciesParserResult.getAllArtifacts().size)
 
         val firstArtifact = dependenciesParserResult.getAllArtifacts()[0]
-        Assert.assertEquals("com.jdroidtools", firstArtifact.groupId)
-        Assert.assertEquals("jdroid-java-core", firstArtifact.artifactId)
+        Assert.assertEquals("com.dipien", firstArtifact.groupId)
+        Assert.assertEquals("sample", firstArtifact.artifactId)
         Assert.assertEquals("3.0.0", firstArtifact.fromVersion)
 
         val secondArtifact = dependenciesParserResult.getAllArtifacts()[1]
