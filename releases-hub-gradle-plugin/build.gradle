@@ -16,6 +16,7 @@ buildscript {
 dependencies {
 	implementation(Libs.JDROID_JAVA_CORE)
 	implementation(Libs.JDROID_JAVA_HTTP_OKHTTP)
+	implementation(Libs.OKHTTP)
 	implementation(Libs.GITHUB_API)
 
 	testImplementation(Libs.JUNIT)
