@@ -9,7 +9,7 @@ import java.lang.Exception
 
 interface DependenciesUpgrader {
 
-    fun upgradeDependency(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult
+    fun upgradeDependenciesFile(dependenciesFile: File, artifactToUpgrade: ArtifactUpgrade): UpgradeResult?
 
     fun upgradeGradle(commandExecutor: CommandExecutor, rootDir: File, artifactToUpgrade: ArtifactUpgrade): UpgradeResult {
         val gradleWrapperPropertiesContent = GradleHelper.getGradleWrapperPropertiesFile(rootDir).readText()

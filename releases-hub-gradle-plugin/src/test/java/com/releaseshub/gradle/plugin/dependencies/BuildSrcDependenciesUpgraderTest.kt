@@ -1,40 +1,44 @@
-package com.releaseshub.gradle.plugin.task
+package com.releaseshub.gradle.plugin.dependencies
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
-import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesUpgrader
+import com.releaseshub.gradle.plugin.task.UpgradeResult
 import org.junit.Assert
 import org.junit.Test
+import java.io.File
 
 class BuildSrcDependenciesUpgraderTest {
 
     @Test
     fun upgradeCommentTest() {
         val line = "// this is a comment"
-        val upgradeResult = UpgradeResult(false, null, line)
 
         val artifact = ArtifactUpgrade("a", "b", "0.0.1")
         artifact.toVersion = "1.0.0"
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(line, artifact))
+        Assert.assertNull(upgradeDependenciesFile(line, artifact))
+    }
+
+    private fun upgradeDependenciesFile(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult? {
+        val dependenciesFile = File.createTempFile("dependenciesFile", "tmp")
+        dependenciesFile.writeText(line)
+        return BuildSrcDependenciesUpgrader().upgradeDependenciesFile(dependenciesFile, artifactToUpgrade)
     }
 
     @Test
     fun notUpgradeTest() {
         val line = """libs.sample = "com.dipien:sample:2.0.0""""
-        val upgradeResult = UpgradeResult(false, null, line)
 
         val artifact = ArtifactUpgrade("a", "b", "0.0.1")
         artifact.toVersion = "1.0.0"
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(line, artifact))
+        Assert.assertNull(upgradeDependenciesFile(line, artifact))
     }
 
     @Test
     fun notUpgradeTest2() {
         val line = """libs.sample = "com.dipien:sample:2.0.0""""
-        val upgradeResult = UpgradeResult(false, null, line)
 
         val artifact = ArtifactUpgrade("com.dipien", "sample")
         artifact.toVersion = "2.0.0"
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(line, artifact))
+        Assert.assertNull(upgradeDependenciesFile(line, artifact))
     }
 
     @Test
@@ -44,7 +48,7 @@ class BuildSrcDependenciesUpgraderTest {
         val oldLine = """libs.sample = "com.dipien:sample:2.0.0""""
         val newLine = """libs.sample = "com.dipien:sample:3.0.0""""
         val upgradeResult = UpgradeResult(true, artifact, newLine)
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(oldLine, artifact))
+        Assert.assertEquals(upgradeResult, upgradeDependenciesFile(oldLine, artifact))
     }
 
     @Test
@@ -58,6 +62,6 @@ class BuildSrcDependenciesUpgraderTest {
         val oldLine = """libs.sample = "com.dipien:sample:2.0.0""""
         val newLine = """libs.sample = "com.dipien:sample:3.0.0""""
         val upgradeResult = UpgradeResult(true, artifactResult, newLine)
-        Assert.assertEquals(upgradeResult, BuildSrcDependenciesUpgrader().upgradeDependency(oldLine, artifact))
+        Assert.assertEquals(upgradeResult, upgradeDependenciesFile(oldLine, artifact))
     }
 }

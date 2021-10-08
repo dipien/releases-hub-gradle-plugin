@@ -19,8 +19,9 @@ class BuildSrcDependenciesExtractor(private val dependenciesBasePath: String, pr
         val basePath = if (dependenciesBasePath.endsWith(File.separator)) dependenciesBasePath else "$dependenciesBasePath${File.separator}"
 
         dependenciesClassNames.forEach { className ->
-            val lines = File(rootDir, basePath + className).readLines()
-            dependenciesParserResult.dependenciesLinesMap[basePath + className] = lines
+            val file = File(rootDir, basePath + className)
+            val lines = file.readLines()
+            dependenciesParserResult.dependenciesFiles.add(file)
 
             val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
             lines.forEach { line ->
