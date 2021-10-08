@@ -1,6 +1,5 @@
 package com.releaseshub.gradle.plugin.common
 
-import com.jdroid.java.utils.TypeUtils
 import org.gradle.api.Project
 
 class PropertyResolver(private val project: Project) {
@@ -21,11 +20,7 @@ class PropertyResolver(private val project: Project) {
 
     fun getBooleanProp(propertyName: String, defaultValue: Boolean? = null): Boolean? {
         val value = getProp(propertyName)
-        return if (value == null) {
-            defaultValue
-        } else {
-            TypeUtils.getBoolean(value.toString())
-        }
+        return value?.toString()?.toBoolean() ?: defaultValue
     }
 
     fun getStringProp(propertyName: String, defaultValue: String? = null): String? {

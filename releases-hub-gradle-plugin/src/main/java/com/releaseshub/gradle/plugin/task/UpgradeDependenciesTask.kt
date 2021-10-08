@@ -6,7 +6,6 @@ import com.dipien.github.service.IssueService
 import com.dipien.github.service.LabelsService
 import com.dipien.github.service.PullRequestService
 import com.dipien.github.service.ReviewRequestsService
-import com.jdroid.java.concurrent.ExecutorUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
@@ -227,7 +226,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         log("The changes were pushed to $headBranch branch.")
 
         // We add this delay to automatically fix this: https://support.circleci.com/hc/en-us/articles/360034536433-Pull-requests-not-building-due-to-Only-build-pull-requests-settings
-        ExecutorUtils.sleep(10, TimeUnit.SECONDS)
+        Thread.sleep(TimeUnit.SECONDS.toMillis(10))
 
         val client = if (gitHubApiHostName.isNullOrEmpty()) {
             GitHubClient()
