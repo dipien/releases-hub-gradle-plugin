@@ -59,8 +59,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
     private fun initTask(task: AbstractTask) {
         task.serverName = extension.server
         task.userToken = extension.userToken
-        task.dependenciesBasePath = extension.dependenciesBasePath
-        task.dependenciesClassNames = extension.dependenciesClassNames
+        task.dependenciesPaths = extension.dependenciesPaths
         task.includes = extension.includes
         task.excludes = extension.excludes
         task.logLevel = extension.logLevel

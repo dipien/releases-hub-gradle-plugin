@@ -79,7 +79,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
         getExtension().validateServerName()
         getExtension().validateUserToken()
-        getExtension().validateDependenciesClassNames()
+        getExtension().validateDependenciesPaths()
 
         if (pullRequestEnabled) {
             getExtension().validateBaseBranch()
@@ -89,7 +89,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             getExtension().validateGitHubWriteToken()
         }
 
-        val extractor = BuildSrcDependenciesExtractor(dependenciesBasePath!!, dependenciesClassNames!!)
+        val extractor = BuildSrcDependenciesExtractor(dependenciesPaths!!)
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
         val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }

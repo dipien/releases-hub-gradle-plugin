@@ -3,23 +3,21 @@ package com.releaseshub.gradle.plugin.dependencies
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import java.io.File
 
-class BuildSrcDependenciesExtractor(private val dependenciesBasePath: String, private val dependenciesClassNames: List<String>) : DependenciesExtractor {
+class BuildSrcDependenciesExtractor(private val dependenciesPaths: List<String>) : DependenciesExtractor {
 
     override fun extractArtifacts(rootDir: File, includes: List<String>?, excludes: List<String>?): DependenciesExtractorResult {
         val dependenciesParserResult = DependenciesExtractorResult()
 
-        extractDependency(rootDir, dependenciesBasePath, dependenciesClassNames, includes, excludes, dependenciesParserResult)
+        extractDependency(rootDir, dependenciesPaths, includes, excludes, dependenciesParserResult)
         extractGradle(rootDir, includes, excludes, dependenciesParserResult)
 
         return dependenciesParserResult
     }
 
-    private fun extractDependency(rootDir: File, dependenciesBasePath: String, dependenciesClassNames: List<String>, includes: List<String>?, excludes: List<String>?, dependenciesParserResult: DependenciesExtractorResult) {
+    private fun extractDependency(rootDir: File, dependenciesPaths: List<String>, includes: List<String>?, excludes: List<String>?, dependenciesParserResult: DependenciesExtractorResult) {
 
-        val basePath = if (dependenciesBasePath.endsWith(File.separator)) dependenciesBasePath else "$dependenciesBasePath${File.separator}"
-
-        dependenciesClassNames.forEach { className ->
-            val file = File(rootDir, basePath + className)
+        dependenciesPaths.forEach { path ->
+            val file = File(rootDir, path)
             val lines = file.readLines()
             dependenciesParserResult.dependenciesFiles.add(file)
 
@@ -39,7 +37,7 @@ class BuildSrcDependenciesExtractor(private val dependenciesBasePath: String, pr
                     }
                 }
             }
-            dependenciesParserResult.artifactsMap[basePath + className] = matchedArtifactsUpgrades.sortedBy { it.toString() }
+            dependenciesParserResult.artifactsMap[path] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
     }
 

@@ -23,9 +23,9 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 
         getExtension().validateServerName()
         getExtension().validateUserToken()
-        getExtension().validateDependenciesClassNames()
+        getExtension().validateDependenciesPaths()
 
-        val extractor = BuildSrcDependenciesExtractor(dependenciesBasePath!!, dependenciesClassNames!!)
+        val extractor = BuildSrcDependenciesExtractor(dependenciesPaths!!)
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
         if (dependenciesParserResult.excludedArtifacts.isNotEmpty()) {
