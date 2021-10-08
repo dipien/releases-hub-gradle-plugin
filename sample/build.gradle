@@ -42,10 +42,16 @@ allprojects {
 apply plugin: "com.dipien.releaseshub.gradle.plugin"
 
 releasesHub {
-	dependenciesPaths = ["buildSrc/src/main/kotlin/com/sample/dependencies/Libs.kt", "buildSrc/src/main/kotlin/com/sample/dependencies/BuildLibs.kt"]
+	dependenciesPaths = [
+			"buildSrc/src/main/kotlin/com/sample/dependencies/Libs.kt",
+			"buildSrc/src/main/kotlin/com/sample/dependencies/BuildLibs.kt",
+			"gradle/libs.versions.toml",
+			"settings.gradle.kts"
+	]
 	excludes = ["ccc", "ddd"]
 	gitHubRepositoryOwner = ""
 	gitHubRepositoryName = ""
+	pullRequestEnabled = false
 }
 
 wrapper {

@@ -1,0 +1,4 @@
+[libraries]
+groovy-core = "org.codehaus.groovy:groovy:3.0.5"
+groovy-json = "org.codehaus.groovy:groovy-json:3.0.5"
+groovy-nio = "org.codehaus.groovy:groovy-nio:3.0.5"

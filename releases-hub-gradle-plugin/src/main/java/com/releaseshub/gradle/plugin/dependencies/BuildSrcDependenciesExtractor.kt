@@ -7,10 +7,8 @@ class BuildSrcDependenciesExtractor(private val dependenciesPaths: List<String>)
 
     override fun extractArtifacts(rootDir: File, includes: List<String>?, excludes: List<String>?): DependenciesExtractorResult {
         val dependenciesParserResult = DependenciesExtractorResult()
-
         extractDependency(rootDir, dependenciesPaths, includes, excludes, dependenciesParserResult)
         extractGradle(rootDir, includes, excludes, dependenciesParserResult)
-
         return dependenciesParserResult
     }
 
@@ -18,26 +16,28 @@ class BuildSrcDependenciesExtractor(private val dependenciesPaths: List<String>)
 
         dependenciesPaths.forEach { path ->
             val file = File(rootDir, path)
-            val lines = file.readLines()
-            dependenciesParserResult.dependenciesFiles.add(file)
+            if (file.exists()) {
+                val lines = file.readLines()
+                dependenciesParserResult.dependenciesFiles.add(file)
 
-            val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
-            lines.forEach { line ->
-                var artifact: ArtifactUpgrade? = null
-                val matchResult = DependenciesExtractor.getDependencyMatchResult(line)
-                if (matchResult != null) {
-                    artifact = ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
-                }
+                val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
+                lines.forEach { line ->
+                    var artifact: ArtifactUpgrade? = null
+                    val matchResult = DependenciesExtractor.getDependencyMatchResult(line)
+                    if (matchResult != null) {
+                        artifact = ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
+                    }
 
-                if (artifact != null) {
-                    if (artifact.match(includes, excludes)) {
-                        matchedArtifactsUpgrades.add(artifact)
-                    } else {
-                        dependenciesParserResult.excludedArtifacts.add(artifact)
+                    if (artifact != null) {
+                        if (artifact.match(includes, excludes)) {
+                            matchedArtifactsUpgrades.add(artifact)
+                        } else {
+                            dependenciesParserResult.excludedArtifacts.add(artifact)
+                        }
                     }
                 }
+                dependenciesParserResult.artifactsMap[path] = matchedArtifactsUpgrades.sortedBy { it.toString() }
             }
-            dependenciesParserResult.artifactsMap[path] = matchedArtifactsUpgrades.sortedBy { it.toString() }
         }
     }
 
