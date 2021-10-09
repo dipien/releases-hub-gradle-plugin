@@ -189,6 +189,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     val upgradeResult = upgrader.upgradeDependenciesFile(dependenciesFile, artifactToUpgrade)
                     if (upgradeResult != null) {
                         upgradedUpgradeResult = upgradeResult
+                        upgradeResults.add(upgradeResult)
                     }
                 }
             }
