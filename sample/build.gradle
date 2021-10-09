@@ -1,4 +1,4 @@
-import com.sample.dependencies.BuildLibs 
+import com.sample.dependencies.BuildLibs
 import com.sample.dependencies.Libs
 
 buildscript {
@@ -42,10 +42,16 @@ allprojects {
 apply plugin: "com.dipien.releaseshub.gradle.plugin"
 
 releasesHub {
-	dependenciesClassNames = ["com/sample/dependencies/Libs.kt", "com/sample/dependencies/BuildLibs.kt"]
+	dependenciesPaths = [
+			"buildSrc/src/main/kotlin/com/sample/dependencies/Libs.kt",
+			"buildSrc/src/main/kotlin/com/sample/dependencies/BuildLibs.kt",
+			"gradle/libs.versions.toml",
+			"settings.gradle.kts"
+	]
 	excludes = ["ccc", "ddd"]
 	gitHubRepositoryOwner = ""
 	gitHubRepositoryName = ""
+	pullRequestEnabled = false
 }
 
 wrapper {

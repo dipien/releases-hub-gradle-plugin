@@ -5,6 +5,7 @@ import com.jdroid.java.date.DateUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.core.FileSizeFormatter
+import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesExtractor
 import java.io.File
 import java.util.Date
 
@@ -22,9 +23,10 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 
         getExtension().validateServerName()
         getExtension().validateUserToken()
-        getExtension().validateDependenciesClassNames()
+        getExtension().validateDependenciesPaths()
 
-        val dependenciesParserResult = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
+        val extractor = BuildSrcDependenciesExtractor(dependenciesPaths!!)
+        val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
         if (dependenciesParserResult.excludedArtifacts.isNotEmpty()) {
             log("${dependenciesParserResult.excludedArtifacts.size} dependencies excluded:")

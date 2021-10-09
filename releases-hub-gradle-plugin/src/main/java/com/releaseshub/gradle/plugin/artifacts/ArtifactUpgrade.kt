@@ -24,6 +24,7 @@ class ArtifactUpgrade {
     var issueTrackerUrl: String? = null
     var detailsUrl: String? = null
     var packages: List<String>? = null
+    var repositoryUrl: String? = null
     lateinit var artifactUpgradeStatus: ArtifactUpgradeStatus
 
     constructor(groupId: String, artifactId: String, fromVersion: String?) {

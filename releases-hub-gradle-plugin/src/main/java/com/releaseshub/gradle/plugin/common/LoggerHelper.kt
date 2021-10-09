@@ -9,10 +9,14 @@ object LoggerHelper {
     lateinit var logLevel: LogLevel
 
     fun log(message: String) {
-        logger.log(logLevel, message)
+        if (::logger.isInitialized) {
+            logger.log(logLevel, message)
+        }
     }
 
     fun log(message: String, throwable: Throwable) {
-        logger.log(logLevel, message, throwable)
+        if (::logger.isInitialized) {
+            logger.log(logLevel, message, throwable)
+        }
     }
 }

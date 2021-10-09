@@ -12,9 +12,13 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var server: String? = project.propertyResolver.getStringProp(::server.name, AppServer.PROD.getServerName())
     var userToken: String? = project.propertyResolver.getStringProp(::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
-    var dependenciesBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
-
-    var dependenciesClassNames: List<String> = project.propertyResolver.getRequiredStringListProp(::dependenciesClassNames.name, listOf("Libs.kt", "BuildLibs.kt"))
+    private var buildSrcBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
+    var dependenciesPaths: List<String> = project.propertyResolver.getRequiredStringListProp(::dependenciesPaths.name, listOf(
+        "${buildSrcBasePath}Libs.kt",
+        "${buildSrcBasePath}BuildLibs.kt",
+        "gradle/libs.versions.toml",
+        "settings.gradle.kts"
+    ))
 
     var includes: List<String>? = project.propertyResolver.getStringListProp(::includes.name)
     var excludes: List<String>? = project.propertyResolver.getStringListProp(::excludes.name)
@@ -32,11 +36,8 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var pullRequestReviewers: List<String>? = project.propertyResolver.getStringListProp(::pullRequestReviewers.name)
     var pullRequestTeamReviewers: List<String>? = project.propertyResolver.getStringListProp(::pullRequestTeamReviewers.name)
 
-    // TODO Rename to gitUserName
-    var gitHubUserName: String? = project.propertyResolver.getStringProp(::gitHubUserName.name)
-
-    // TODO Rename to gitUserEmail
-    var gitHubUserEmail: String? = project.propertyResolver.getStringProp(::gitHubUserEmail.name)
+    var gitUserName: String? = project.propertyResolver.getStringProp(::gitUserName.name)
+    var gitUserEmail: String? = project.propertyResolver.getStringProp(::gitUserEmail.name)
 
     var gitHubRepositoryOwner: String? = project.propertyResolver.getStringProp(::gitHubRepositoryOwner.name)
     var gitHubRepositoryName: String? = project.propertyResolver.getStringProp(::gitHubRepositoryName.name)
@@ -53,8 +54,8 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         requireNotNull(userToken.isNullOrEmpty()) { "The '${::userToken.name}' property is required" }
     }
 
-    fun validateDependenciesClassNames() {
-        require(!dependenciesClassNames.isNullOrEmpty()) { "The '${::dependenciesClassNames.name}' property is required" }
+    fun validateDependenciesPaths() {
+        require(!dependenciesPaths.isNullOrEmpty()) { "The '${::dependenciesPaths.name}' property is required" }
     }
 
     fun validateBaseBranch() {

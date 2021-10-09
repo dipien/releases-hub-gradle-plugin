@@ -6,6 +6,9 @@ object Libs {
     // https://github.com/maxirosson/jdroid-java-http/releases
     const val JDROID_JAVA_HTTP_OKHTTP = "com.jdroidtools:jdroid-java-http-okhttp:3.0.0"
 
+    // https://github.com/square/okhttp/blob/master/CHANGELOG.md
+    const val OKHTTP = "com.squareup.okhttp3:okhttp:4.9.2"
+
     // https://github.com/dipien/github-api/releases
     const val GITHUB_API = "com.dipien:github-api-java:1.2.0"
 

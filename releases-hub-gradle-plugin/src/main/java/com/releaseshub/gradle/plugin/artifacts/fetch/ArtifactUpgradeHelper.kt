@@ -24,6 +24,7 @@ object ArtifactUpgradeHelper {
                 artifactToCheck.toVersion = release.version!!
                 artifactToCheck.toReleaseDate = release.date
                 artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.PENDING_UPGRADE
+                artifactToCheck.repositoryUrl = artifact.repository?.url
                 return artifactToCheck
             } else {
                 artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.ALREADY_UPGRADED
@@ -51,6 +52,7 @@ object ArtifactUpgradeHelper {
                 if (versioningMetadata.lastUpdated != null) {
                     if (lastUpdated == null || versioningMetadata.lastUpdated!!.time > lastUpdated!!) {
                         lastUpdated = versioningMetadata.lastUpdated!!.time
+                        artifact.repository = repository
                     }
                 }
             } catch (e: HttpResponseException) {

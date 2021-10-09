@@ -25,10 +25,7 @@ abstract class AbstractTask : DefaultTask() {
     protected lateinit var gitHelper: GitHelper
 
     @get:Input
-    var dependenciesBasePath: String? = null
-
-    @get:Input
-    var dependenciesClassNames: List<String>? = null
+    var dependenciesPaths: List<String>? = null
 
     @get:Input
     @get:Optional

@@ -20,45 +20,53 @@ object PullRequestGenerator {
 
     private fun addCommonText(builder: StringBuilder, upgradeResults: List<UpgradeResult>) {
         upgradeResults.forEach {
-            builder.appendln("### ${it.artifactUpgrade}")
+            val artifactUpgrade = it.artifactUpgrade!!
+            builder.appendln("### $artifactUpgrade")
             var atLeastOneItem = false
-            builder.appendln("* **Version:** `${it.artifactUpgrade?.fromVersion}` -> `${it.artifactUpgrade?.toVersion}`")
-            if (it.artifactUpgrade?.toSize != null) {
-                builder.appendln("* **Size:** `${FileSizeFormatter.format(it.artifactUpgrade.toSize!!)}`")
+
+            if (artifactUpgrade.repositoryUrl != null) {
+                val baseUrl = "${artifactUpgrade.repositoryUrl}/${artifactUpgrade.groupId!!.replace(".", "/")}/${artifactUpgrade.artifactId}"
+                builder.appendln("* **Version:** [`${artifactUpgrade.fromVersion}`]($baseUrl/${artifactUpgrade.fromVersion}) -> [`${artifactUpgrade.toVersion}`]($baseUrl/${artifactUpgrade.toVersion})")
+            } else {
+                builder.appendln("* **Version:** `${artifactUpgrade.fromVersion}` -> `${artifactUpgrade.toVersion}`")
             }
-            if (it.artifactUpgrade?.toReleaseDate != null) {
-                builder.appendln("* **Release Date:** `${DateUtils.format(Date(it.artifactUpgrade.toReleaseDate!!), DateTimeFormat.MMMDYYYY)}`")
+
+            if (artifactUpgrade.toSize != null) {
+                builder.appendln("* **Size:** `${FileSizeFormatter.format(artifactUpgrade.toSize!!)}`")
             }
-            if (!it.artifactUpgrade?.toAndroidPermissions.isNullOrEmpty()) {
+            if (artifactUpgrade.toReleaseDate != null) {
+                builder.appendln("* **Release Date:** `${DateUtils.format(Date(artifactUpgrade.toReleaseDate!!), DateTimeFormat.MMMDYYYY)}`")
+            }
+            if (!artifactUpgrade.toAndroidPermissions.isNullOrEmpty()) {
                 builder.appendln("* **Android permissions:**")
-                it.artifactUpgrade?.toAndroidPermissions?.forEach { permission ->
+                artifactUpgrade.toAndroidPermissions?.forEach { permission ->
                     // TODO Move the url logic to the backend
                     val url = permission.replace("android.permission.", "https://developer.android.com/reference/android/Manifest.permission#")
                     builder.appendln("  * [$permission]($url)")
                 }
             }
-            if (it.artifactUpgrade?.releaseNotesUrl != null) {
-                builder.append("* [Releases notes](${it.artifactUpgrade.releaseNotesUrl})")
+            if (artifactUpgrade.releaseNotesUrl != null) {
+                builder.append("* [Releases notes](${artifactUpgrade.releaseNotesUrl})")
                 atLeastOneItem = true
             }
-            if (it.artifactUpgrade?.sourceCodeUrl != null) {
+            if (artifactUpgrade.sourceCodeUrl != null) {
                 builder.append(if (atLeastOneItem) " | " else "* ")
-                builder.append("[Source code](${it.artifactUpgrade.sourceCodeUrl})")
+                builder.append("[Source code](${artifactUpgrade.sourceCodeUrl})")
                 atLeastOneItem = true
             }
-            if (it.artifactUpgrade?.documentationUrl != null) {
+            if (artifactUpgrade.documentationUrl != null) {
                 builder.append(if (atLeastOneItem) " | " else "* ")
-                builder.append("[Documentation](${it.artifactUpgrade.documentationUrl})")
+                builder.append("[Documentation](${artifactUpgrade.documentationUrl})")
                 atLeastOneItem = true
             }
-            if (it.artifactUpgrade?.issueTrackerUrl != null) {
+            if (artifactUpgrade.issueTrackerUrl != null) {
                 builder.append(if (atLeastOneItem) " | " else "* ")
-                builder.append("[Issue tracker](${it.artifactUpgrade.issueTrackerUrl})")
+                builder.append("[Issue tracker](${artifactUpgrade.issueTrackerUrl})")
                 atLeastOneItem = true
             }
-            if (!it.artifactUpgrade?.detailsUrl.isNullOrEmpty()) {
+            if (!artifactUpgrade.detailsUrl.isNullOrEmpty()) {
                 builder.appendln()
-                builder.appendln("* [Official development resources](${it.artifactUpgrade?.detailsUrl}): blog posts, Youtube videos, courses and trainings")
+                builder.appendln("* [Official development resources](${artifactUpgrade.detailsUrl}): blog posts, Youtube videos, courses and trainings")
                 atLeastOneItem = true
             }
             if (atLeastOneItem) {

@@ -6,11 +6,12 @@ import com.dipien.github.service.IssueService
 import com.dipien.github.service.LabelsService
 import com.dipien.github.service.PullRequestService
 import com.dipien.github.service.ReviewRequestsService
-import com.jdroid.java.concurrent.ExecutorUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.context.BuildConfig
+import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesExtractor
+import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesUpgrader
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -50,11 +51,11 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     @get:Input
     @get:Optional
-    var gitHubUserName: String? = null
+    var gitUserName: String? = null
 
     @get:Input
     @get:Optional
-    var gitHubUserEmail: String? = null
+    var gitUserEmail: String? = null
 
     @get:Input
     var gitHubRepositoryOwner: String? = null
@@ -78,7 +79,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
         getExtension().validateServerName()
         getExtension().validateUserToken()
-        getExtension().validateDependenciesClassNames()
+        getExtension().validateDependenciesPaths()
 
         if (pullRequestEnabled) {
             getExtension().validateBaseBranch()
@@ -88,7 +89,8 @@ open class UpgradeDependenciesTask : AbstractTask() {
             getExtension().validateGitHubWriteToken()
         }
 
-        val dependenciesParserResult = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes)
+        val extractor = BuildSrcDependenciesExtractor(dependenciesPaths!!)
+        val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
         val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
 
@@ -117,11 +119,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     branchCreated = prepareGitBranch(headBranch)
                 }
 
-                var dependenciesLinesMap = dependenciesParserResult.dependenciesLinesMap
-                if (!branchCreated) {
-                    dependenciesLinesMap = DependenciesExtractor.extractArtifacts(project.rootProject.projectDir, dependenciesBasePath!!, dependenciesClassNames!!, includes, excludes).dependenciesLinesMap
-                }
-                val upgradeResults = upgradeDependencies(dependenciesLinesMap, artifactsToUpgradeByGroup)
+                val upgradeResults = upgradeDependencies(dependenciesParserResult.dependenciesFiles, artifactsToUpgradeByGroup)
                 if (pullRequestEnabled) {
                     if (upgradeResults.isNotEmpty()) {
                         createPullRequest(upgradeResults, headBranch, groupId, group)
@@ -141,10 +139,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
     }
 
     private fun configureGit() {
-        gitHubUserName?.let {
+        gitUserName?.let {
             gitHelper.configUserName(it)
         }
-        gitHubUserEmail?.let {
+        gitUserEmail?.let {
             gitHelper.configUserEmail(it)
         }
     }
@@ -173,35 +171,26 @@ open class UpgradeDependenciesTask : AbstractTask() {
         }
     }
 
-    private fun upgradeDependencies(dependenciesLinesMap: Map<String, List<String>>, artifactsToUpgradeByGroup: List<ArtifactUpgrade>): List<UpgradeResult> {
-        val dependenciesLinesMapByGroup = dependenciesLinesMap.toMutableMap()
+    private fun upgradeDependencies(dependenciesFiles: List<File>, artifactsToUpgradeByGroup: List<ArtifactUpgrade>): List<UpgradeResult> {
         val upgradeResults = mutableListOf<UpgradeResult>()
+        val upgrader = BuildSrcDependenciesUpgrader()
         artifactsToUpgradeByGroup.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
 
             if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                val upgradeResult = DependenciesUpgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
+                val upgradeResult = upgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
                 if (upgradeResult.upgraded) {
                     upgradeResults.add(upgradeResult)
                     log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
                     upgradedUpgradeResult = upgradeResult
                 }
             } else {
-                dependenciesLinesMapByGroup.entries.forEach { entry ->
-                    val newLines = mutableListOf<String>()
-                    File(entry.key).bufferedWriter().use { out ->
-                        entry.value.forEach { line ->
-                            val upgradeResult = DependenciesUpgrader.upgradeDependency(line, artifactToUpgrade)
-                            if (upgradeResult.upgraded) {
-                                upgradeResults.add(upgradeResult)
-                                log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
-                                upgradedUpgradeResult = upgradeResult
-                            }
-                            newLines.add(upgradeResult.line)
-                            out.write(upgradeResult.line + "\n")
-                        }
+                dependenciesFiles.forEach { dependenciesFile ->
+                    val upgradeResult = upgrader.upgradeDependenciesFile(dependenciesFile, artifactToUpgrade)
+                    if (upgradeResult != null) {
+                        upgradedUpgradeResult = upgradeResult
+                        upgradeResults.add(upgradeResult)
                     }
-                    dependenciesLinesMapByGroup[entry.key] = newLines
                 }
             }
 
@@ -224,7 +213,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         log("The changes were pushed to $headBranch branch.")
 
         // We add this delay to automatically fix this: https://support.circleci.com/hc/en-us/articles/360034536433-Pull-requests-not-building-due-to-Only-build-pull-requests-settings
-        ExecutorUtils.sleep(10, TimeUnit.SECONDS)
+        Thread.sleep(TimeUnit.SECONDS.toMillis(10))
 
         val client = if (gitHubApiHostName.isNullOrEmpty()) {
             GitHubClient()
