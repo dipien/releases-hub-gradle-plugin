@@ -26,13 +26,26 @@ class BuildSrcDependenciesUpgrader : DependenciesUpgrader {
     }
 
     private fun upgradeDependency(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult {
-        val matchResult = DependenciesExtractor.getDependencyMatchResult(line)
+        var matchResult = DependenciesExtractor.getDependencyMatchResult(line)
         if (matchResult != null) {
             if (artifactToUpgrade.groupId == matchResult.groupValues[1] && artifactToUpgrade.artifactId == matchResult.groupValues[2]) {
                 val newLine = line.replaceFirst(matchResult.groupValues[3], artifactToUpgrade.toVersion!!)
                 if (newLine != line) {
                     artifactToUpgrade.fromVersion = matchResult.groupValues[3]
                     return UpgradeResult(true, artifactToUpgrade, newLine)
+                }
+            }
+        } else if (artifactToUpgrade.groupId == "com.gradle" && artifactToUpgrade.artifactId == "gradle-enterprise-gradle-plugin") {
+            matchResult = DependenciesExtractor.getPluginsMatchResult(line)
+            if (matchResult != null) {
+                val pluginId = matchResult.groupValues[1]
+                // TODO Find a way to automatically map all the plugin ids to a groupId:artifactId
+                if (pluginId == "com.gradle.enterprise") {
+                    val newLine = line.replaceFirst(matchResult.groupValues[2], artifactToUpgrade.toVersion!!)
+                    if (newLine != line) {
+                        artifactToUpgrade.fromVersion = matchResult.groupValues[2]
+                        return UpgradeResult(true, artifactToUpgrade, newLine)
+                    }
                 }
             }
         }

@@ -7,12 +7,12 @@ class BuildSrcDependenciesExtractor(private val dependenciesPaths: List<String>)
 
     override fun extractArtifacts(rootDir: File, includes: List<String>?, excludes: List<String>?): DependenciesExtractorResult {
         val dependenciesParserResult = DependenciesExtractorResult()
-        extractDependency(rootDir, dependenciesPaths, includes, excludes, dependenciesParserResult)
+        extractDependency(rootDir, includes, excludes, dependenciesParserResult)
         extractGradle(rootDir, includes, excludes, dependenciesParserResult)
         return dependenciesParserResult
     }
 
-    private fun extractDependency(rootDir: File, dependenciesPaths: List<String>, includes: List<String>?, excludes: List<String>?, dependenciesParserResult: DependenciesExtractorResult) {
+    private fun extractDependency(rootDir: File, includes: List<String>?, excludes: List<String>?, dependenciesParserResult: DependenciesExtractorResult) {
 
         dependenciesPaths.forEach { path ->
             val file = File(rootDir, path)
@@ -23,9 +23,18 @@ class BuildSrcDependenciesExtractor(private val dependenciesPaths: List<String>)
                 val matchedArtifactsUpgrades = mutableListOf<ArtifactUpgrade>()
                 lines.forEach { line ->
                     var artifact: ArtifactUpgrade? = null
-                    val matchResult = DependenciesExtractor.getDependencyMatchResult(line)
+                    var matchResult = DependenciesExtractor.getDependencyMatchResult(line)
                     if (matchResult != null) {
                         artifact = ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
+                    } else {
+                        matchResult = DependenciesExtractor.getPluginsMatchResult(line)
+                        if (matchResult != null) {
+                            val pluginId = matchResult.groupValues[1]
+                            // TODO Find a way to automatically map all the plugin ids to a groupId:artifactId
+                            if (pluginId == "com.gradle.enterprise") {
+                                artifact = ArtifactUpgrade("com.gradle", "gradle-enterprise-gradle-plugin", matchResult.groupValues[2])
+                            }
+                        }
                     }
 
                     if (artifact != null) {
@@ -36,6 +45,7 @@ class BuildSrcDependenciesExtractor(private val dependenciesPaths: List<String>)
                         }
                     }
                 }
+
                 dependenciesParserResult.artifactsMap[path] = matchedArtifactsUpgrades.sortedBy { it.toString() }
             }
         }
