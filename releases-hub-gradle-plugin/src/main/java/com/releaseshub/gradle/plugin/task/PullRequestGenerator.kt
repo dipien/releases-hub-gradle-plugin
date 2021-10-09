@@ -26,11 +26,11 @@ object PullRequestGenerator {
 
             if (artifactUpgrade.repository != null) {
                 val baseUrl = "${artifactUpgrade.repository!!.url}/${artifactUpgrade.groupId!!.replace(".", "/")}/${artifactUpgrade.artifactId}"
-                builder.appendln("* **Version:** [`${artifactUpgrade.fromVersion}`](${baseUrl}/${artifactUpgrade.fromVersion}) -> [`${artifactUpgrade.toVersion}`](${baseUrl}/${artifactUpgrade.toVersion})")
+                builder.appendln("* **Version:** [`${artifactUpgrade.fromVersion}`]($baseUrl/${artifactUpgrade.fromVersion}) -> [`${artifactUpgrade.toVersion}`]($baseUrl/${artifactUpgrade.toVersion})")
             } else {
                 builder.appendln("* **Version:** `${artifactUpgrade.fromVersion}` -> `${artifactUpgrade.toVersion}`")
             }
-            
+
             if (artifactUpgrade.toSize != null) {
                 builder.appendln("* **Size:** `${FileSizeFormatter.format(artifactUpgrade.toSize!!)}`")
             }
