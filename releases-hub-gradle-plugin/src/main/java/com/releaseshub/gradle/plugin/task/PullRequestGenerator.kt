@@ -24,8 +24,8 @@ object PullRequestGenerator {
             builder.appendln("### $artifactUpgrade")
             var atLeastOneItem = false
 
-            if (artifactUpgrade.repository != null) {
-                val baseUrl = "${artifactUpgrade.repository!!.url}/${artifactUpgrade.groupId!!.replace(".", "/")}/${artifactUpgrade.artifactId}"
+            if (artifactUpgrade.repositoryUrl != null) {
+                val baseUrl = "${artifactUpgrade.repositoryUrl}/${artifactUpgrade.groupId!!.replace(".", "/")}/${artifactUpgrade.artifactId}"
                 builder.appendln("* **Version:** [`${artifactUpgrade.fromVersion}`]($baseUrl/${artifactUpgrade.fromVersion}) -> [`${artifactUpgrade.toVersion}`]($baseUrl/${artifactUpgrade.toVersion})")
             } else {
                 builder.appendln("* **Version:** `${artifactUpgrade.fromVersion}` -> `${artifactUpgrade.toVersion}`")
