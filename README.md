@@ -80,17 +80,16 @@ ext.gitHubWriteToken = "123"
 
 #### Common Properties
 
-###### Dependencies base path
+###### Dependencies paths
 
-The base path for the class names where the dependencies are defined. The default value is `buildSrc/src/main/kotlin/`. This property is required
-    
-    dependenciesBasePath = "buildSrc/src/main/kotlin/"
-    
-###### Dependencies class names
+The path for the files where the dependencies are defined. This property is required. The default value is:
 
-The class names where the dependencies are defined. The default value is `["Libs.kt", "BuildLibs.kt"]`. This property is required
-    
-    dependenciesClassNames = ["Libs.kt", "BuildLibs.kt"]
+    dependenciesPaths = [
+      "buildSrc/src/main/kotlin/Libs.kt", 
+      "buildSrc/src/main/kotlin/BuildLibs.kt",
+      "gradle/libs.versions.toml",
+      "settings.gradle.kts"
+    ]
     
 ###### Includes
 
@@ -259,17 +258,17 @@ The pull request base branch. Optional String. The default value is `master`.
 
     baseBranch = "master"
 
-###### GitHub User Name
+###### Git User Name
 
-The GitHub user name used by the commit command. Optional String.
+The Git user name used by the commit command. Optional String.
 
-    gitHubUserName = "user"
+    gitUserName = "user"
     
-###### GitHub User Email
+###### Git User Email
 
-The GitHub user email used by the commit command. Optional String.
+The Git user email used by the commit command. Optional String.
 
-    gitHubUserEmail = "email@mail.com"
+    gitUserEmail = "email@mail.com"
 
 ###### GitHub Repository Owner
 
