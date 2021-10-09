@@ -1,6 +1,5 @@
 package com.releaseshub.gradle.plugin.artifacts
 
-
 class ArtifactUpgrade {
 
     companion object {
