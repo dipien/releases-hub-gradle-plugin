@@ -37,8 +37,6 @@ class AppService(private val server: Server, private val userToken: String) : Ab
         return httpService.execute(GsonParser(object : TypeToken<Collection<ArtifactUpgrade>>() {}.type))
     }
 
-
-
     override fun getServer(): Server {
         return server
     }
