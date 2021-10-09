@@ -113,9 +113,53 @@ If you need to exclude the Gradle upgrade, use "gradle". For example:
 
 ## Usage
 
-We suggest to define your dependencies on `/buildSrc/src/main/kotlin/Libs.kt` and `/buildSrc/src/main/kotlin/BuildLibs.kt` classes. For example:
+The plugin find the dependencies to upgrade on the files configured inside the `dependenciesPaths` property extension. The default value is:
 
-##### Libs.kt
+    releasesHub {
+        dependenciesPaths = [
+          "buildSrc/src/main/kotlin/Libs.kt", 
+          "buildSrc/src/main/kotlin/BuildLibs.kt",
+          "gradle/libs.versions.toml",
+          "settings.gradle.kts"
+        ]
+    }
+
+Inside those files, each dependency must be declared with the following format: `"groupId:artifactId:version"`
+
+### Version Catalog example
+
+You can define your dependencies on the `libs.versions.toml` version catalog.
+
+##### gradle/libs.versions.toml
+
+```
+[libraries]
+kotlin = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40"
+kotlin-plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
+```
+
+##### Root build.gradle
+
+```groovy
+apply plugin: "kotlin"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
+
+buildscript {
+    dependencies {
+        classpath(libs.kotlin-plugin)
+    }
+}
+
+dependencies {
+    compile(libs.kotlin)
+}
+```
+
+### BuilsSrc example
+
+You can define your dependencies on `/buildSrc/src/main/kotlin/Libs.kt` and `/buildSrc/src/main/kotlin/BuildLibs.kt` classes.
+
+##### buildSrc/src/main/kotlin/Libs.kt
 
 ```kotlin
 object Libs {
@@ -123,7 +167,7 @@ object Libs {
 }
 ```
 
-##### BuildLibs.kt
+##### buildSrc/src/main/kotlin/BuildLibs.kt
 
 ```kotlin
 object BuildLibs {
