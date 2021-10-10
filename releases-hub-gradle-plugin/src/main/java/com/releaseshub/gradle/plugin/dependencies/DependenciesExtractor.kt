@@ -16,7 +16,7 @@ interface DependenciesExtractor {
 
         fun getDependencyMatchResult(line: String): MatchResult? {
             // TODO Add support to inline or multiline /* */ comments
-            if (!line.trim().startsWith("//")) {
+            if (!line.trim().startsWith("//") && !line.trim().startsWith("@")) {
                 return dependenciesRegex.matchEntire(line)
             }
             return null
@@ -24,7 +24,7 @@ interface DependenciesExtractor {
 
         fun getPluginsMatchResult(line: String): MatchResult? {
             // TODO Add support to inline or multiline /* */ comments
-            if (!line.trim().startsWith("//")) {
+            if (!line.trim().startsWith("//") && !line.trim().startsWith("@")) {
                 return pluginsRegex.matchEntire(line)
             }
             return null

@@ -1,7 +1,7 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.common.AbstractTask
-import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesExtractor
+import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
 
 open class ListDependenciesTask : AbstractTask() {
 
@@ -17,7 +17,7 @@ open class ListDependenciesTask : AbstractTask() {
 
         getExtension().validateDependenciesPaths()
 
-        val extractor = BuildSrcDependenciesExtractor(dependenciesPaths!!)
+        val extractor = BasicDependenciesExtractor(dependenciesPaths!!)
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
         dependenciesPaths!!.forEach {

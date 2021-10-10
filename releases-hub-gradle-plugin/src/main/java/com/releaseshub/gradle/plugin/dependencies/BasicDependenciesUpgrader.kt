@@ -5,7 +5,7 @@ import com.releaseshub.gradle.plugin.common.LoggerHelper
 import com.releaseshub.gradle.plugin.task.UpgradeResult
 import java.io.File
 
-class BuildSrcDependenciesUpgrader : DependenciesUpgrader {
+class BasicDependenciesUpgrader : DependenciesUpgrader {
 
     override fun upgradeDependenciesFile(dependenciesFile: File, artifactToUpgrade: ArtifactUpgrade): UpgradeResult? {
         var upgradedUpgradeResult: UpgradeResult? = null

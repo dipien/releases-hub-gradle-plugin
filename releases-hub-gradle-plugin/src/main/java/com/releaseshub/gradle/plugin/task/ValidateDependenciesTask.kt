@@ -2,7 +2,7 @@ package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.common.AbstractTask
-import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesExtractor
+import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
 import com.releaseshub.gradle.plugin.dependencies.DeclaredDependenciesExtractor
 import com.releaseshub.gradle.plugin.dependencies.DependencyUsageSearcher
 import org.gradle.api.Project
@@ -32,7 +32,7 @@ open class ValidateDependenciesTask : AbstractTask() {
         getExtension().validateDependenciesPaths()
 
         var fail = false
-        val extractor = BuildSrcDependenciesExtractor(dependenciesPaths!!)
+        val extractor = BasicDependenciesExtractor(dependenciesPaths!!)
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir)
         dependenciesParserResult.artifactsMap.forEach { (path, artifacts) ->
             var failOnFile = false

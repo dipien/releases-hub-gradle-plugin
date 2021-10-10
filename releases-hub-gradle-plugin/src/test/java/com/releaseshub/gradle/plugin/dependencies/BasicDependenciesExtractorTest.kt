@@ -1,18 +1,25 @@
 package com.releaseshub.gradle.plugin.dependencies
 
+import com.google.common.truth.Truth
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.common.ResourceUtils
 import org.junit.Assert
 import org.junit.Test
 import java.io.File
 
-class BuildSrcDependenciesExtractorTest {
+class BasicDependenciesExtractorTest {
 
     @Test
     fun extractFromEmptyTest() {
         val dependenciesParserResult = extractArtifacts("empty_dependencies_file")
         Assert.assertTrue(dependenciesParserResult.getAllArtifacts().isEmpty())
         Assert.assertTrue(dependenciesParserResult.excludedArtifacts.isEmpty())
+    }
+    @Test
+    fun extractFromDeprecatedTest() {
+        val dependenciesParserResult = extractArtifacts("deprecated_file")
+        Truth.assertThat(dependenciesParserResult.getAllArtifacts()).isEmpty()
+        Truth.assertThat(dependenciesParserResult.excludedArtifacts).isEmpty()
     }
 
     @Test
@@ -54,12 +61,12 @@ class BuildSrcDependenciesExtractorTest {
     }
 
     private fun extractArtifacts(basePath: String): DependenciesExtractorResult {
-        val extractor = BuildSrcDependenciesExtractor(listOf("$basePath/Libs.kt"))
+        val extractor = BasicDependenciesExtractor(listOf("$basePath/Libs.kt"))
         return extractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root")))
     }
 
     private fun extractGradleArtifacts(): DependenciesExtractorResult {
-        val extractor = BuildSrcDependenciesExtractor(emptyList())
+        val extractor = BasicDependenciesExtractor(emptyList())
         return extractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root_gradle")))
     }
 }

@@ -3,7 +3,7 @@ package com.releaseshub.gradle.plugin.dependencies
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import java.io.File
 
-class BuildSrcDependenciesExtractor(private val dependenciesPaths: List<String>) : DependenciesExtractor {
+class BasicDependenciesExtractor(private val dependenciesPaths: List<String>) : DependenciesExtractor {
 
     override fun extractArtifacts(rootDir: File, includes: List<String>?, excludes: List<String>?): DependenciesExtractorResult {
         val dependenciesParserResult = DependenciesExtractorResult()

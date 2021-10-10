@@ -10,8 +10,8 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.context.BuildConfig
-import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesExtractor
-import com.releaseshub.gradle.plugin.dependencies.BuildSrcDependenciesUpgrader
+import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
+import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesUpgrader
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -89,7 +89,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             getExtension().validateGitHubWriteToken()
         }
 
-        val extractor = BuildSrcDependenciesExtractor(dependenciesPaths!!)
+        val extractor = BasicDependenciesExtractor(dependenciesPaths!!)
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
         val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
@@ -173,7 +173,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     private fun upgradeDependencies(dependenciesFiles: List<File>, artifactsToUpgradeByGroup: List<ArtifactUpgrade>): List<UpgradeResult> {
         val upgradeResults = mutableListOf<UpgradeResult>()
-        val upgrader = BuildSrcDependenciesUpgrader()
+        val upgrader = BasicDependenciesUpgrader()
         artifactsToUpgradeByGroup.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
 

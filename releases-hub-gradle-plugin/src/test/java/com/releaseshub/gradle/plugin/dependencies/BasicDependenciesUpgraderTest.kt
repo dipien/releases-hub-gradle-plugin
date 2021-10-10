@@ -6,7 +6,7 @@ import org.junit.Assert
 import org.junit.Test
 import java.io.File
 
-class BuildSrcDependenciesUpgraderTest {
+class BasicDependenciesUpgraderTest {
 
     @Test
     fun upgradeCommentTest() {
@@ -20,7 +20,7 @@ class BuildSrcDependenciesUpgraderTest {
     private fun upgradeDependenciesFile(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult? {
         val dependenciesFile = File.createTempFile("dependenciesFile", "tmp")
         dependenciesFile.writeText(line)
-        return BuildSrcDependenciesUpgrader().upgradeDependenciesFile(dependenciesFile, artifactToUpgrade)
+        return BasicDependenciesUpgrader().upgradeDependenciesFile(dependenciesFile, artifactToUpgrade)
     }
 
     @Test
