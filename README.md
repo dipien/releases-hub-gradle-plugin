@@ -151,7 +151,7 @@ buildscript {
 }
 
 dependencies {
-    compile(libs.kotlin)
+    implementation(libs.kotlin)
 }
 ```
 
@@ -188,7 +188,7 @@ buildscript {
 }
 
 dependencies {
-    compile(Libs.KOTLIN)
+    implementation(Libs.KOTLIN)
 }
 ```
 
