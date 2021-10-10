@@ -126,7 +126,7 @@ The plugin find the dependencies to upgrade on the files configured inside the `
 
 Inside those files, each dependency must be declared with the following format: `"groupId:artifactId:version"`
 
-### Version Catalog example
+### Version Catalog (libs.versions.toml file) example
 
 You can define your dependencies on the `libs.versions.toml` version catalog.
 
@@ -146,7 +146,41 @@ apply plugin: "com.dipien.releaseshub.gradle.plugin"
 
 buildscript {
     dependencies {
-        classpath(libs.kotlin-plugin)
+        classpath(libs.kotlin.plugin)
+    }
+}
+
+dependencies {
+    implementation(libs.kotlin)
+}
+```
+
+### Version Catalog (settings.gradle.kts file) example
+
+You can define your dependencies on the `settings.gradle.kts` version catalog.
+
+##### settings.gradle.kts
+
+```
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            alias("kotlin").to("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40")
+            alias("kotlin-plugin").to("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41")
+        }
+    }
+}
+```
+
+##### Root build.gradle
+
+```groovy
+apply plugin: "kotlin"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
+
+buildscript {
+    dependencies {
+        classpath(libs.kotlin.plugin)
     }
 }
 
