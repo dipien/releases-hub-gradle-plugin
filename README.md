@@ -82,7 +82,7 @@ ext.gitHubWriteToken = "123"
 
 ###### Dependencies paths
 
-The path for the files where the dependencies are defined. This property is required. The default value is:
+The path (relative to the project root directory) for the files where the dependencies are defined. This property is required. The default value is:
 
     dependenciesPaths = [
       "buildSrc/src/main/kotlin/Libs.kt", 
