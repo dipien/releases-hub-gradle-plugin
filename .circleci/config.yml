@@ -14,10 +14,6 @@ parameters:
     type: boolean
     default: false
 
-  upgradeDependencies:
-    type: boolean
-    default: false
-
 references:
 
   working_dir: &working_dir
@@ -178,14 +174,6 @@ jobs:
           name: Send merge pull request
           command: ./gradlew sendMergePullRequest --stacktrace
 
-  upgradeDependencies:
-    executor: jdk_executor
-    steps:
-      - custom_checkout
-      - run:
-          name: Upgrade Dependencies
-          command: ./gradlew upgradeDependencies --stacktrace
-
 workflows:
   commit:
     unless: << pipeline.parameters.api >>
@@ -210,21 +198,6 @@ workflows:
             - test
             - validatePlugins
             - security
-  weekly:
-    triggers:
-      - schedule:
-          cron: "0 0 * * 0"
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - upgradeDependencies
-
-  upgradeDependencies:
-    when: << pipeline.parameters.upgradeDependencies >>
-    jobs:
-      - upgradeDependencies
 
   release:
     when: << pipeline.parameters.release >>

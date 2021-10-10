@@ -1,0 +1,26 @@
+name: "Upgrade Dependencies"
+on:
+  schedule:
+    - cron: "0 13 * * 3"
+
+jobs:
+  upgradeDependencies:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # https://github.com/actions/setup-java
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - run: ./gradlew upgradeDependencies -PgitHubRepositoryName=${GITHUB_REPOSITORY#*/} --stacktrace
+        env:
+          gitHubWriteToken: ${{ secrets.gitHubWriteToken }}
+          gitUserEmail: ${{ secrets.gitUserEmail }}
+          gitUserName: ${{ secrets.gitUserName }}
+          gitHubRepositoryOwner: ${{ github.repository_owner }}
