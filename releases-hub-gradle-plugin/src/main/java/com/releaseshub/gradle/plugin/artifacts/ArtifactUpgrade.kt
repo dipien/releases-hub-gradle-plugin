@@ -25,7 +25,16 @@ class ArtifactUpgrade {
     var detailsUrl: String? = null
     var packages: List<String>? = null
     var repositoryUrl: String? = null
+    var isFromPluginDSL: Boolean = false
     lateinit var artifactUpgradeStatus: ArtifactUpgradeStatus
+
+    constructor(pluginId: String, isFromPluginDSL: Boolean, fromVersion: String?) {
+        this.groupId = pluginId
+        this.artifactId = "$pluginId.gradle.plugin"
+        this.id = groupId + "_" + artifactId
+        this.fromVersion = fromVersion
+        this.isFromPluginDSL = isFromPluginDSL
+    }
 
     constructor(groupId: String, artifactId: String, fromVersion: String?) {
         this.id = groupId + "_" + artifactId
@@ -37,6 +46,10 @@ class ArtifactUpgrade {
     constructor(id: String, fromVersion: String) {
         this.id = id
         this.fromVersion = fromVersion
+    }
+
+    fun matchPlugin(pluginId: String): Boolean {
+        return isFromPluginDSL && groupId == pluginId && artifactId == "$pluginId.gradle.plugin"
     }
 
     fun match(includes: List<String>?, excludes: List<String>?): Boolean {

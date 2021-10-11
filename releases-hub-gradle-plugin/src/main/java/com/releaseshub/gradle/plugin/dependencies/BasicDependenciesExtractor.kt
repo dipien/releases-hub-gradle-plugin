@@ -27,13 +27,9 @@ class BasicDependenciesExtractor(private val dependenciesPaths: List<String>) : 
                     if (matchResult != null) {
                         artifact = ArtifactUpgrade(matchResult.groupValues[1], matchResult.groupValues[2], matchResult.groupValues[3])
                     } else {
-                        matchResult = DependenciesExtractor.getPluginsMatchResult(line)
+                        matchResult = DependenciesExtractor.getPluginsDSLMatchResult(line)
                         if (matchResult != null) {
-                            val pluginId = matchResult.groupValues[1]
-                            // TODO Find a way to automatically map all the plugin ids to a groupId:artifactId
-                            if (pluginId == "com.gradle.enterprise") {
-                                artifact = ArtifactUpgrade("com.gradle", "gradle-enterprise-gradle-plugin", matchResult.groupValues[2])
-                            }
+                            artifact = ArtifactUpgrade(matchResult.groupValues[1], true, matchResult.groupValues[2])
                         }
                     }
 

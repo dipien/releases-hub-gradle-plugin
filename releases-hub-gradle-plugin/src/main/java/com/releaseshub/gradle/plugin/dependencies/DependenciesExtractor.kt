@@ -7,12 +7,11 @@ interface DependenciesExtractor {
     companion object {
 
         // For example: "com.gradle:enterprise:3.7"
-        // For example: 'com.gradle:enterprise:3.7'
         private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
 
         // For example: id("com.gradle.enterprise").version("3.7")
-        // For example: id("com.jfrog.bintray") version "1.8.5"
-        private val pluginsRegex = """.*id\("([^"]+)".*version.*"([^"]+)".*""".toRegex()
+        // id "com.gradle.enterprise" version "3.7"
+        private val pluginsRegex = """.*id.*"([^"]+)".*version.*"([^"]+)".*""".toRegex()
 
         private val gradleRegex = """.*/gradle-([^-]+)-.*""".toRegex()
 
@@ -24,7 +23,7 @@ interface DependenciesExtractor {
             return null
         }
 
-        fun getPluginsMatchResult(line: String): MatchResult? {
+        fun getPluginsDSLMatchResult(line: String): MatchResult? {
             // TODO Add support to inline or multiline /* */ comments
             if (!line.trim().startsWith("//") && !line.trim().startsWith("@")) {
                 return pluginsRegex.matchEntire(line.replace("'", """""""))

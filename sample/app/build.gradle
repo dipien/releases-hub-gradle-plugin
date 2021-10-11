@@ -11,5 +11,5 @@ buildscript {
 
 dependencies {
 	implementation(Libs.KOTLIN)
-	implementation("com.google.firebase:firebase-perf:1.0.0")
+	implementation("com.google.firebase:firebase-perf:20.0.0")
 }

@@ -35,12 +35,10 @@ class BasicDependenciesUpgrader : DependenciesUpgrader {
                     return UpgradeResult(true, artifactToUpgrade, newLine)
                 }
             }
-        } else if (artifactToUpgrade.groupId == "com.gradle" && artifactToUpgrade.artifactId == "gradle-enterprise-gradle-plugin") {
-            matchResult = DependenciesExtractor.getPluginsMatchResult(line)
+        } else {
+            matchResult = DependenciesExtractor.getPluginsDSLMatchResult(line)
             if (matchResult != null) {
-                val pluginId = matchResult.groupValues[1]
-                // TODO Find a way to automatically map all the plugin ids to a groupId:artifactId
-                if (pluginId == "com.gradle.enterprise") {
+                if (artifactToUpgrade.matchPlugin(matchResult.groupValues[1])) {
                     val newLine = line.replaceFirst(matchResult.groupValues[2], artifactToUpgrade.toVersion!!)
                     if (newLine != line) {
                         artifactToUpgrade.fromVersion = matchResult.groupValues[2]

@@ -45,7 +45,12 @@ object ArtifactUpgradeHelper {
 
         val versions = mutableListOf<Version>()
         var lastUpdated: Long? = null
-        repositories.forEach { repository ->
+
+        var repositoriesToCheck = repositories
+        if (artifactToCheck.isFromPluginDSL) {
+            repositoriesToCheck = listOf(MavenArtifactRepository("Gradle Plugin Portal", "https://plugins.gradle.org/m2"))
+        }
+        repositoriesToCheck.forEach { repository ->
             try {
                 val versioningMetadata = MavenArtifactRepositoryStrategy(repository).getVersioningMetadata(artifact)
                 versions.addAll(versioningMetadata.versions.orEmpty())
