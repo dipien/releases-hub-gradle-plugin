@@ -3,7 +3,6 @@ package com.releaseshub.gradle.plugin
 import com.releaseshub.gradle.plugin.artifacts.api.AppServer
 import com.releaseshub.gradle.plugin.artifacts.api.HeadersAppender
 import com.releaseshub.gradle.plugin.common.propertyResolver
-import java.io.File
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 
