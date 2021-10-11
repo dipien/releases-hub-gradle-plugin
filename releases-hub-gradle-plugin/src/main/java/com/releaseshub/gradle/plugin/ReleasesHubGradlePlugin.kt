@@ -46,6 +46,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
             upgradeDependenciesTask.pullRequestsMax = extension.pullRequestsMax
             upgradeDependenciesTask.pullRequestLabels = extension.pullRequestLabels
             upgradeDependenciesTask.pullRequestReviewers = extension.pullRequestReviewers
+            upgradeDependenciesTask.pullRequestAssignee = extension.pullRequestAssignee
             upgradeDependenciesTask.pullRequestTeamReviewers = extension.pullRequestTeamReviewers
             upgradeDependenciesTask.gitUserName = extension.gitUserName
             upgradeDependenciesTask.gitUserEmail = extension.gitUserEmail

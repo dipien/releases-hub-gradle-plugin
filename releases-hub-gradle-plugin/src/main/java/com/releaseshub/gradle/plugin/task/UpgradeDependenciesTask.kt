@@ -43,6 +43,10 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     @get:Input
     @get:Optional
+    var pullRequestAssignee: String? = null
+
+    @get:Input
+    @get:Optional
     var pullRequestReviewers: List<String>? = null
 
     @get:Input
@@ -122,6 +126,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 val upgradeResults = upgradeDependencies(dependenciesParserResult.dependenciesFiles, artifactsToUpgradeByGroup)
                 if (pullRequestEnabled) {
                     if (upgradeResults.isNotEmpty()) {
+                        gitHelper.push(headBranch)
+                        log("The changes were pushed to $headBranch branch.")
+
                         createPullRequest(upgradeResults, headBranch, groupId, group)
                     } else {
                         if (!branchCreated) {
@@ -209,8 +216,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
     }
 
     private fun createPullRequest(upgradeResults: List<UpgradeResult>, headBranch: String, groupId: String?, group: String) {
-        gitHelper.push(headBranch)
-        log("The changes were pushed to $headBranch branch.")
 
         // We add this delay to automatically fix this: https://support.circleci.com/hc/en-us/articles/360034536433-Pull-requests-not-building-due-to-Only-build-pull-requests-settings
         Thread.sleep(TimeUnit.SECONDS.toMillis(10))
@@ -231,7 +236,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var pullRequest = pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch)
             if (pullRequest == null) {
                 val pullRequestBody = PullRequestGenerator.createBody(upgradeResults, BuildConfig.VERSION)
-                val title: String? = if (groupId == group) {
+                val title: String = if (groupId == group) {
                     "Upgraded dependencies for groupId $groupId"
                 } else {
                     "Upgraded $group from ${upgradeResults.first().artifactUpgrade!!.fromVersion} to ${upgradeResults.first().artifactUpgrade!!.toVersion}"
@@ -249,6 +254,12 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     val labelsService = LabelsService(client)
                     labelsService.addLabelsToIssue(repositoryIdProvider, pullRequest.number, pullRequestLabels!!)
                     log("Labels assigned to pull request #" + pullRequest.number)
+                }
+
+                if (!pullRequestAssignee.isNullOrEmpty()) {
+                    val issueService = IssueService(client)
+                    issueService.addAssignee(repositoryIdProvider, pullRequest.number, pullRequestAssignee)
+                    log("""User [$pullRequestAssignee] assigned to pull request #${pullRequest.number}""")
                 }
             } else {
                 val pullRequestComment = PullRequestGenerator.createComment(upgradeResults)
