@@ -228,6 +228,8 @@ dependencies {
 
 See the [sample](https://github.com/dipien/releases-hub-gradle-plugin/tree/master/sample) for more details.
 
+To automate your dependencies upgrades, you can follow this guide: [How to automate your dependencies upgrades with GitHub Actions](https://blog.dipien.com/how-to-automate-your-dependencies-upgrades-with-github-actions-bedf1337ca3f)
+
 ### Tasks
 
 #### Validate dependencies
