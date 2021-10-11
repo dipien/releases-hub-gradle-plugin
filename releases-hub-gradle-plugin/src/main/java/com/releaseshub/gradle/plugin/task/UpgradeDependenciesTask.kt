@@ -62,6 +62,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
     var gitUserEmail: String? = null
 
     @get:Input
+    var gitHubRepository: String? = null
+
+    @get:Input
     var gitHubRepositoryOwner: String? = null
 
     @get:Input
@@ -86,6 +89,12 @@ open class UpgradeDependenciesTask : AbstractTask() {
         getExtension().validateDependenciesPaths()
 
         if (pullRequestEnabled) {
+
+            if (gitHubRepository != null) {
+                gitHubRepositoryOwner = gitHubRepository?.split("/")?.first()
+                gitHubRepositoryName = gitHubRepository?.split("/")?.last()
+            }
+
             getExtension().validateBaseBranch()
             getExtension().validateHeadBranchPrefix()
             getExtension().validateGitHubRepositoryOwner()

@@ -40,6 +40,7 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var gitUserName: String? = project.propertyResolver.getStringProp(::gitUserName.name)
     var gitUserEmail: String? = project.propertyResolver.getStringProp(::gitUserEmail.name)
 
+    var gitHubRepository: String? = project.propertyResolver.getStringProp(::gitHubRepository.name)
     var gitHubRepositoryOwner: String? = project.propertyResolver.getStringProp(::gitHubRepositoryOwner.name)
     var gitHubRepositoryName: String? = project.propertyResolver.getStringProp(::gitHubRepositoryName.name)
     var gitHubWriteToken: String? = project.propertyResolver.getStringProp(::gitHubWriteToken.name)
