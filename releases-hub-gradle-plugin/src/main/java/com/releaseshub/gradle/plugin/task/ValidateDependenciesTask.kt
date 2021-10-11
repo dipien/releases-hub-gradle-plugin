@@ -32,7 +32,7 @@ open class ValidateDependenciesTask : AbstractTask() {
         getExtension().validateDependenciesPaths()
 
         var fail = false
-        val extractor = BasicDependenciesExtractor(dependenciesPaths!!)
+        val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir)
         dependenciesParserResult.artifactsMap.forEach { (path, artifacts) ->
             var failOnFile = false

@@ -62,6 +62,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         task.serverName = extension.server
         task.userToken = extension.userToken
         task.dependenciesPaths = extension.dependenciesPaths
+        task.autoDetectDependenciesPaths = extension.autoDetectDependenciesPaths
         task.includes = extension.includes
         task.excludes = extension.excludes
         task.logLevel = extension.logLevel

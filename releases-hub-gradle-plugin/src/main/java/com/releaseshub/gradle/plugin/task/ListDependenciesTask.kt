@@ -17,10 +17,10 @@ open class ListDependenciesTask : AbstractTask() {
 
         getExtension().validateDependenciesPaths()
 
-        val extractor = BasicDependenciesExtractor(dependenciesPaths!!)
+        val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
-        dependenciesPaths!!.forEach {
+        getAllDependenciesPaths().forEach {
             val artifacts = dependenciesParserResult.artifactsMap[it]
             log(it)
             if (artifacts.isNullOrEmpty()) {

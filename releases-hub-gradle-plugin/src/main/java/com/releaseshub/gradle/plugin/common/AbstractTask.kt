@@ -12,6 +12,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
+import java.io.File
 
 abstract class AbstractTask : DefaultTask() {
 
@@ -23,6 +24,9 @@ abstract class AbstractTask : DefaultTask() {
 
     @get:Internal
     protected lateinit var gitHelper: GitHelper
+
+    @get:Input
+    var autoDetectDependenciesPaths: Boolean = true
 
     @get:Input
     var dependenciesPaths: List<String>? = null
@@ -59,6 +63,26 @@ abstract class AbstractTask : DefaultTask() {
     @Internal
     protected fun getExtension(): ReleasesHubGradlePluginExtension {
         return project.extensions.getByName(ReleasesHubGradlePlugin.EXTENSION_NAME) as ReleasesHubGradlePluginExtension
+    }
+
+    @Internal
+    protected fun getAllDependenciesPaths(): List<String> {
+        val paths = dependenciesPaths.orEmpty().filter { File(project.rootDir, it).exists() }.toMutableList()
+        if (autoDetectDependenciesPaths) {
+            val buildSrcBasePath = "buildSrc${File.separator}src${File.separator}main${File.separator}kotlin${File.separator}"
+            val defaultPaths = listOf(
+                "${buildSrcBasePath}Libs.kt",
+                "${buildSrcBasePath}BuildLibs.kt",
+                "gradle${File.separator}libs.versions.toml",
+                "settings.gradle.kts",
+                "settings.gradle"
+            ).filter { File(project.rootDir, it).exists() }
+            paths.addAll(defaultPaths)
+            project.rootProject.allprojects {
+                paths.add(it.buildFile.absolutePath.replaceFirst(project.rootDir.absolutePath + File.separator, ""))
+            }
+        }
+        return paths.toSet().toList()
     }
 
     protected fun log(message: String) {

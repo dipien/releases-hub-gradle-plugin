@@ -12,13 +12,9 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var server: String? = project.propertyResolver.getStringProp(::server.name, AppServer.PROD.getServerName())
     var userToken: String? = project.propertyResolver.getStringProp(::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
-    private var buildSrcBasePath: String = "buildSrc" + File.separator + "src" + File.separator + "main" + File.separator + "kotlin" + File.separator
-    var dependenciesPaths: List<String> = project.propertyResolver.getRequiredStringListProp(::dependenciesPaths.name, listOf(
-        "${buildSrcBasePath}Libs.kt",
-        "${buildSrcBasePath}BuildLibs.kt",
-        "gradle/libs.versions.toml",
-        "settings.gradle.kts"
-    ))
+    var autoDetectDependenciesPaths: Boolean = project.propertyResolver.getBooleanProp(::autoDetectDependenciesPaths.name, true) ?: true
+
+    var dependenciesPaths: List<String> = project.propertyResolver.getRequiredStringListProp(::dependenciesPaths.name, listOf())
 
     var includes: List<String>? = project.propertyResolver.getStringListProp(::includes.name)
     var excludes: List<String>? = project.propertyResolver.getStringListProp(::excludes.name)
