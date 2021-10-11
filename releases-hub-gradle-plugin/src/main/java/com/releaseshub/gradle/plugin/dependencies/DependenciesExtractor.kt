@@ -6,6 +6,8 @@ interface DependenciesExtractor {
 
     companion object {
 
+        // For example: "com.gradle:enterprise:3.7"
+        // For example: 'com.gradle:enterprise:3.7'
         private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
 
         // For example: id("com.gradle.enterprise").version("3.7")
@@ -17,7 +19,7 @@ interface DependenciesExtractor {
         fun getDependencyMatchResult(line: String): MatchResult? {
             // TODO Add support to inline or multiline /* */ comments
             if (!line.trim().startsWith("//") && !line.trim().startsWith("@")) {
-                return dependenciesRegex.matchEntire(line)
+                return dependenciesRegex.matchEntire(line.replace("'", """""""))
             }
             return null
         }
@@ -25,7 +27,7 @@ interface DependenciesExtractor {
         fun getPluginsMatchResult(line: String): MatchResult? {
             // TODO Add support to inline or multiline /* */ comments
             if (!line.trim().startsWith("//") && !line.trim().startsWith("@")) {
-                return pluginsRegex.matchEntire(line)
+                return pluginsRegex.matchEntire(line.replace("'", """""""))
             }
             return null
         }
