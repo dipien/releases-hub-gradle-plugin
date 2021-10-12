@@ -1,6 +1,7 @@
 package com.releaseshub.gradle.plugin.dependencies
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import com.releaseshub.gradle.plugin.common.FakeCommandExecutor
 import com.releaseshub.gradle.plugin.task.UpgradeResult
 import org.junit.Assert
 import org.junit.Test
@@ -20,7 +21,7 @@ class BasicDependenciesUpgraderTest {
     private fun upgradeDependenciesFile(line: String, artifactToUpgrade: ArtifactUpgrade): UpgradeResult? {
         val dependenciesFile = File.createTempFile("dependenciesFile", "tmp")
         dependenciesFile.writeText(line)
-        return BasicDependenciesUpgrader().upgradeDependenciesFile(dependenciesFile, artifactToUpgrade)
+        return BasicDependenciesUpgrader(FakeCommandExecutor()).upgradeDependenciesFile(dependenciesFile, dependenciesFile, artifactToUpgrade)
     }
 
     @Test

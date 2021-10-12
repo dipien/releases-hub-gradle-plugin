@@ -6,6 +6,7 @@ import com.releaseshub.gradle.plugin.artifacts.ArtifactsService
 import com.releaseshub.gradle.plugin.artifacts.api.AppServer
 import com.releaseshub.gradle.plugin.artifacts.api.AppService
 import com.releaseshub.gradle.plugin.artifacts.fetch.MavenArtifactRepository
+import com.releaseshub.gradle.plugin.dependencies.GradleHelper
 import org.gradle.api.DefaultTask
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.tasks.Input
@@ -55,7 +56,7 @@ abstract class AbstractTask : DefaultTask() {
         LoggerHelper.logger = logger
         LoggerHelper.logLevel = logLevel!!
 
-        commandExecutor = CommandExecutor(project, logLevel!!)
+        commandExecutor = CommandExecutorImpl(project, logLevel!!)
         gitHelper = GitHelper(commandExecutor)
         onExecute()
     }
@@ -75,7 +76,8 @@ abstract class AbstractTask : DefaultTask() {
                 "${buildSrcBasePath}BuildLibs.kt",
                 "gradle${File.separator}libs.versions.toml",
                 "settings.gradle.kts",
-                "settings.gradle"
+                "settings.gradle",
+                GradleHelper.GRADLE_WRAPPER_PROPERTIES_RELATIVE_PATH
             ).filter { File(project.rootDir, it).exists() }
             paths.addAll(defaultPaths)
             project.rootProject.allprojects {

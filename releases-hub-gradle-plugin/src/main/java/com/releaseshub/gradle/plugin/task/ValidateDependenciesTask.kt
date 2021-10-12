@@ -3,7 +3,6 @@ package com.releaseshub.gradle.plugin.task
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
-import com.releaseshub.gradle.plugin.dependencies.DeclaredDependenciesExtractor
 import com.releaseshub.gradle.plugin.dependencies.DependencyUsageSearcher
 import org.gradle.api.Project
 import org.gradle.api.tasks.Input
@@ -49,10 +48,17 @@ open class ValidateDependenciesTask : AbstractTask() {
                     failOnFile = true
                     log("- The dependency ${artifact.toFromVersionedString()} is using a dynamic version")
                 }
+
+                if (path.endsWith(".gradle") || path.endsWith(".gradle.kts")) {
+                    fail = true
+                    failOnFile = true
+                    log("- The dependency $artifact is explicitly declared on a .gradle(.kts) file instead of using buildSrc or Version Catalog.")
+                }
             }
             if (!failOnFile) {
                 log("- No errors found")
             }
+            log("")
         }
 
         // Find duplicates
@@ -80,17 +86,6 @@ open class ValidateDependenciesTask : AbstractTask() {
         artifactsUpgrades.filter { it.match(null, excludes) }.forEach { artifactUpgrade ->
             if (!dependencyUsageSearcher.isAnyPackageUsed(artifactUpgrade)) {
                 log("- The dependency $artifactUpgrade seems to be unused on your project. See if you can safely remove it.")
-                fail = true
-            }
-        }
-
-        DeclaredDependenciesExtractor.getDeclaredDependencies(project.rootProject).forEach { declaredArtifact ->
-            val parsedArtifact = artifacts.find { it.id == declaredArtifact.id }
-            if (parsedArtifact == null) {
-                log("- The dependency $declaredArtifact is declared on your project but not on your buildSrc or Version Catalog.")
-                fail = true
-            } else if (parsedArtifact.fromVersion != declaredArtifact.fromVersion) {
-                log("- The dependency $declaredArtifact is declared on your project with version ${declaredArtifact.fromVersion} and with version ${parsedArtifact.fromVersion} on your buildSrc or Version Catalog.")
                 fail = true
             }
         }

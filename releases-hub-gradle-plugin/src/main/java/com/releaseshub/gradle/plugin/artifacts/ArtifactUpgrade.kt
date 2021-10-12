@@ -26,6 +26,8 @@ class ArtifactUpgrade {
     var packages: List<String>? = null
     var repositoryUrl: String? = null
     var isFromPluginDSL: Boolean = false
+    var configuration: String? = null
+    var project: String? = null
     lateinit var artifactUpgradeStatus: ArtifactUpgradeStatus
 
     constructor(pluginId: String, isFromPluginDSL: Boolean, fromVersion: String?) {

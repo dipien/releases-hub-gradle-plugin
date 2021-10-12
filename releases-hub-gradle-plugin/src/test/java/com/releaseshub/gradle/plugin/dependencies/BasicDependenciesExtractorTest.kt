@@ -66,7 +66,7 @@ class BasicDependenciesExtractorTest {
     }
 
     private fun extractGradleArtifacts(): DependenciesExtractorResult {
-        val extractor = BasicDependenciesExtractor(emptyList())
+        val extractor = BasicDependenciesExtractor(listOf("gradle" + File.separator + "wrapper" + File.separator + "gradle-wrapper.properties"))
         return extractor.extractArtifacts(File(ResourceUtils.getRequiredResourcePath("root_gradle")))
     }
 }

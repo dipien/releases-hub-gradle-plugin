@@ -189,27 +189,16 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     private fun upgradeDependencies(dependenciesFiles: List<File>, artifactsToUpgradeByGroup: List<ArtifactUpgrade>): List<UpgradeResult> {
         val upgradeResults = mutableListOf<UpgradeResult>()
-        val upgrader = BasicDependenciesUpgrader()
+        val upgrader = BasicDependenciesUpgrader(commandExecutor)
         artifactsToUpgradeByGroup.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
-
-            if (artifactToUpgrade.id == ArtifactUpgrade.GRADLE_ID) {
-                val upgradeResult = upgrader.upgradeGradle(commandExecutor, project.rootProject.projectDir, artifactToUpgrade)
-                if (upgradeResult.upgraded) {
-                    upgradeResults.add(upgradeResult)
-                    log(" - ${upgradeResult.artifactUpgrade} ${upgradeResult.artifactUpgrade?.fromVersion} -> ${upgradeResult.artifactUpgrade?.toVersion}")
+            dependenciesFiles.forEach { dependenciesFile ->
+                val upgradeResult = upgrader.upgradeDependenciesFile(project.rootDir, dependenciesFile, artifactToUpgrade)
+                if (upgradeResult != null) {
                     upgradedUpgradeResult = upgradeResult
-                }
-            } else {
-                dependenciesFiles.forEach { dependenciesFile ->
-                    val upgradeResult = upgrader.upgradeDependenciesFile(dependenciesFile, artifactToUpgrade)
-                    if (upgradeResult != null) {
-                        upgradedUpgradeResult = upgradeResult
-                        upgradeResults.add(upgradeResult)
-                    }
+                    upgradeResults.add(upgradeResult)
                 }
             }
-
             if (pullRequestEnabled && upgradedUpgradeResult != null) {
                 commit(upgradedUpgradeResult!!)
             }
