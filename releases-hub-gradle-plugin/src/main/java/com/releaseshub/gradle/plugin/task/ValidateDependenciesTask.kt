@@ -87,10 +87,10 @@ open class ValidateDependenciesTask : AbstractTask() {
         DeclaredDependenciesExtractor.getDeclaredDependencies(project.rootProject).forEach { declaredArtifact ->
             val parsedArtifact = artifacts.find { it.id == declaredArtifact.id }
             if (parsedArtifact == null) {
-                log("- The dependency $declaredArtifact is declared on your project but not on your dependenciesBasePath classes.")
+                log("- The dependency $declaredArtifact is declared on your project but not on your buildSrc or Version Catalog.")
                 fail = true
             } else if (parsedArtifact.fromVersion != declaredArtifact.fromVersion) {
-                log("- The dependency $declaredArtifact is declared on your project with version ${declaredArtifact.fromVersion} and with version ${parsedArtifact.fromVersion} on your dependenciesBasePath classes.")
+                log("- The dependency $declaredArtifact is declared on your project with version ${declaredArtifact.fromVersion} and with version ${parsedArtifact.fromVersion} on your buildSrc or Version Catalog.")
                 fail = true
             }
         }
