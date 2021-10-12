@@ -62,12 +62,15 @@ open class UpgradeDependenciesTask : AbstractTask() {
     var gitUserEmail: String? = null
 
     @get:Input
+    @get:Optional
     var gitHubRepository: String? = null
 
     @get:Input
+    @get:Optional
     var gitHubRepositoryOwner: String? = null
 
     @get:Input
+    @get:Optional
     var gitHubRepositoryName: String? = null
 
     @get:Input
