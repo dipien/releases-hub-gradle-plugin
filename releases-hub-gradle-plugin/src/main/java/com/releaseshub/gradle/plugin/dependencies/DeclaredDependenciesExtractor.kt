@@ -8,7 +8,8 @@ object DeclaredDependenciesExtractor {
 
     // TODO Improve this to ignore all the configs we don't want
     private val IGNORED_CONFIGURATIONS = listOf("kotlinCompilerClasspath", "kotlinCompilerPluginClasspath",
-        "kotlinNativeCompilerPluginClasspath", "kotlinScriptDef", "kotlinKaptWorkerDependencies", "annotationProcessor", "lintClassPath")
+        "kotlinNativeCompilerPluginClasspath", "releaseUnitTestRuntimeClasspath", "kotlinScriptDef", "kotlinKaptWorkerDependencies", "testAnnotationProcessor",
+        "annotationProcessor", "lintClassPath")
 
     @Suppress("SENSELESS_COMPARISON", "UNNECESSARY_NOT_NULL_ASSERTION")
     fun getDeclaredDependencies(rootProject: Project): List<ArtifactUpgrade> {
