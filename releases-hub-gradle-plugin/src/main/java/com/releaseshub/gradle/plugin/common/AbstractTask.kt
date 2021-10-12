@@ -30,6 +30,7 @@ abstract class AbstractTask : DefaultTask() {
     var autoDetectDependenciesPaths: Boolean = true
 
     @get:Input
+    @get:Optional
     var dependenciesPaths: List<String>? = null
 
     @get:Input
