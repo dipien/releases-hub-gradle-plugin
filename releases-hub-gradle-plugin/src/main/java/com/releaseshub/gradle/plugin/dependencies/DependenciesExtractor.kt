@@ -7,7 +7,7 @@ interface DependenciesExtractor {
     companion object {
 
         // For example: "com.gradle:enterprise:3.7"
-        private val dependenciesRegex = """.*"([^:]+):([^:]+):([^:]+)".*""".toRegex()
+        private val dependenciesRegex = """.*"([^:"]+):([^:"]+):([^:"]+)".*""".toRegex()
 
         // For example: id("com.gradle.enterprise").version("3.7")
         // id "com.gradle.enterprise" version "3.7"

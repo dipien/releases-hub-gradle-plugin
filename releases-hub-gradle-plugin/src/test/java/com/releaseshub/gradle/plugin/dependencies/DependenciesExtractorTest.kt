@@ -16,6 +16,7 @@ class DependenciesExtractorTest {
         notMatchDependency("""// "group:artifact:1.0.0"""")
         notMatchDependency("""//"group:artifact:1.0.0"""")
         notMatchDependency("""    @Deprecated("Use Firebase Installations: https://firebase.google.com/docs/projects/manage-installations#fid-iid")""")
+        notMatchDependency("""		unusedExcludes = ["com.google.dagger:dagger-android-processor", "com.google.dagger:dagger-compiler"]""")
     }
 
     private fun matchDependency(line: String) {
