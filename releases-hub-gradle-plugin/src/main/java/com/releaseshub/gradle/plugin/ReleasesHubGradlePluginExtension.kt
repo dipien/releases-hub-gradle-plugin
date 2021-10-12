@@ -51,10 +51,6 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         requireNotNull(userToken.isNullOrEmpty()) { "The '${::userToken.name}' property is required" }
     }
 
-    fun validateDependenciesPaths() {
-        require(!dependenciesPaths.isNullOrEmpty()) { "The '${::dependenciesPaths.name}' property is required" }
-    }
-
     fun validateBaseBranch() {
         requireNotNull(baseBranch) { "The '${::baseBranch.name}' property is required" }
     }

@@ -15,8 +15,6 @@ open class ListDependenciesTask : AbstractTask() {
 
     override fun onExecute() {
 
-        getExtension().validateDependenciesPaths()
-
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 

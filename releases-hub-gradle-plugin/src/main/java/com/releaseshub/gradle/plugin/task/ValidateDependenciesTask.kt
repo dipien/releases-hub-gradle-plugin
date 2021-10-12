@@ -28,7 +28,6 @@ open class ValidateDependenciesTask : AbstractTask() {
 
         getExtension().validateServerName()
         getExtension().validateUserToken()
-        getExtension().validateDependenciesPaths()
 
         var fail = false
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())

@@ -89,7 +89,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
         getExtension().validateServerName()
         getExtension().validateUserToken()
-        getExtension().validateDependenciesPaths()
 
         if (pullRequestEnabled) {
 
