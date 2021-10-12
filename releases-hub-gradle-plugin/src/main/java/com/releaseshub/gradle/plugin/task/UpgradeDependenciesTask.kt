@@ -99,8 +99,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
             getExtension().validateBaseBranch()
             getExtension().validateHeadBranchPrefix()
-            getExtension().validateGitHubRepositoryOwner()
-            getExtension().validateGitHubRepositoryName()
+            getExtension().validateGitHubRepository()
             getExtension().validateGitHubWriteToken()
         }
 

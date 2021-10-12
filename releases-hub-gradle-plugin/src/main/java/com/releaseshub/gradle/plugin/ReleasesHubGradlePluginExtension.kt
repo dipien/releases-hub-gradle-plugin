@@ -59,12 +59,10 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
         requireNotNull(headBranchPrefix) { "The '${::headBranchPrefix.name}' property is required" }
     }
 
-    fun validateGitHubRepositoryOwner() {
-        requireNotNull(gitHubRepositoryOwner) { "The '${::gitHubRepositoryOwner.name}' property is required" }
-    }
-
-    fun validateGitHubRepositoryName() {
-        requireNotNull(gitHubRepositoryName) { "The '${::gitHubRepositoryName.name}' property is required" }
+    fun validateGitHubRepository() {
+        if (gitHubRepositoryOwner.isNullOrEmpty() && gitHubRepositoryName.isNullOrEmpty()) {
+            requireNotNull(gitHubRepository) { "The '${::gitHubRepository.name}' property is required" }
+        }
     }
 
     fun validateGitHubWriteToken() {
