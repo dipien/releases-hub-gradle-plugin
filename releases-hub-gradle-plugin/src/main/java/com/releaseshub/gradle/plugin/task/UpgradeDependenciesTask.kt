@@ -131,18 +131,33 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     branchCreated = prepareGitBranch(headBranch)
                 }
 
+                // Case 1: headBranch previously created, pull request open, no new upgrades => DO NOTHING
+                // Case 2: headBranch previously created, pull request open, new upgrades => MERGE BRANCH & UPDATE PR BODY
+                // Case 3: headBranch previously created, pull request doesn't exist, no new upgrades => WARNING
+                // Case 4: headBranch previously created, pull request doesn't exist, new upgrades => CREATE PR
+                // Case 5: headBranch not previously created, pull request doesn't exist, no new upgrades => DO NOTHING
+                // Case 6: headBranch not previously created, pull request doesn't exist, new upgrades => CREATE PR
+
                 val upgradeResults = upgradeDependencies(dependenciesParserResult.dependenciesFiles, artifactsToUpgradeByGroup)
                 if (pullRequestEnabled) {
                     if (upgradeResults.isNotEmpty()) {
                         gitHelper.push(headBranch)
                         log("The changes were pushed to $headBranch branch.")
-
                         createPullRequest(upgradeResults, headBranch, groupId, group)
                     } else {
-                        if (!branchCreated) {
+
+                        if (branchCreated) {
+                            log("* Case 5: headBranch not previously created, pull request doesn't exist, no new upgrades => DO NOTHING")
+                        } else {
                             val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", ignoreExitValue = true)
                             if (execResult.isSuccessful()) {
                                 log("Merge pushed to $headBranch branch.")
+                            }
+
+                            if (existPullRequest(headBranch)) {
+                                log("* Case 1: headBranch previously created, pull request open, no new upgrades => DO NOTHING")
+                            } else {
+                                project.logger.warn("* Case 3: headBranch previously created, pull request doesn't exist, no new upgrades => WARNING")
                             }
                         }
                     }
@@ -214,6 +229,22 @@ open class UpgradeDependenciesTask : AbstractTask() {
         gitHelper.commit("Upgraded ${upgradeResult.artifactUpgrade} from ${upgradeResult.artifactUpgrade!!.fromVersion} to ${upgradeResult.artifactUpgrade.toVersion}")
     }
 
+    private fun existPullRequest(headBranch: String): Boolean {
+        val client = if (gitHubApiHostName.isNullOrEmpty()) {
+            GitHubClient()
+        } else {
+            GitHubClient(gitHubApiHostName)
+        }
+
+        client.setSerializeNulls(false)
+        client.setOAuth2Token(gitHubWriteToken)
+
+        val repositoryIdProvider = RepositoryId.create(gitHubRepositoryOwner, gitHubRepositoryName)
+        val pullRequestService = PullRequestService(client)
+        return pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch) != null
+    }
+
+
     private fun createPullRequest(upgradeResults: List<UpgradeResult>, headBranch: String, groupId: String?, group: String) {
 
         // We add this delay to automatically fix this: https://support.circleci.com/hc/en-us/articles/360034536433-Pull-requests-not-building-due-to-Only-build-pull-requests-settings
@@ -234,6 +265,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
         try {
             var pullRequest = pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch)
             if (pullRequest == null) {
+
+                log("Case 4 or 6: pull request doesn't exist, new upgrades => CREATE PR")
+
                 log("Pull request with head [$gitHubRepositoryOwner:$headBranch] and base [$baseBranch] not found")
                 val pullRequestBody = PullRequestGenerator.createBody(upgradeResults, BuildConfig.VERSION)
                 val title: String = if (groupId == group) {
@@ -262,6 +296,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                     log("""User [$pullRequestAssignee] assigned to pull request #${pullRequest.number}""")
                 }
             } else {
+                log("Case 2: headBranch previously created, pull request open, new upgrades => MERGE BRANCH & ADD COMMENT TO PR")
                 val pullRequestComment = PullRequestGenerator.createComment(upgradeResults)
                 val issueService = IssueService(client)
                 issueService.createComment(repositoryIdProvider, pullRequest.number, pullRequestComment)
