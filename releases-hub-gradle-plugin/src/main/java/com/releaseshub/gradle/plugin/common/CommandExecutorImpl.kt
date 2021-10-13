@@ -33,9 +33,7 @@ class CommandExecutorImpl(private val project: Project, private val logLevel: Lo
         }
 
         if (errorOutputStream.size() > 0) {
-            project.logger.error("* Error when executing command: $command")
             project.logger.error(errorOutputStream.toString())
-            project.logger.error("*******************************")
         }
 
         if (!ignoreExitValue && execResult.exitValue > 0) {
