@@ -140,8 +140,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 // Case 6: headBranch not previously created, pull request doesn't exist, new upgrades => CREATE PR
                 // Case 7: headBranch previously created, pull request doesn't exist, no new upgrades => WARNING
 
-
-
                 val upgradeResults = upgradeDependencies(dependenciesParserResult.dependenciesFiles, artifactsToUpgradeByGroup)
                 if (pullRequestEnabled) {
                     if (upgradeResults.isNotEmpty()) {
@@ -307,7 +305,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 }
             } else {
                 log("Case 2: headBranch previously created, pull request open, new upgrades => MERGE BRANCH & ADD COMMENT TO PR")
-                commentPullRequest(pullRequest,PullRequestGenerator.createComment(upgradeResults) )
+                commentPullRequest(pullRequest, PullRequestGenerator.createComment(upgradeResults))
             }
         } catch (e: IOException) {
             throw RuntimeException(e)
