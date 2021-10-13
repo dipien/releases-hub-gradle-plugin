@@ -123,9 +123,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             groupsToUpgrade.forEach { (groupId, artifactsToUpgradeByGroup) ->
 
                 log("# Processing groupId [$groupId]")
-
                 val group: String = groupId ?: artifactsToUpgradeByGroup.first().toString()
-
                 val headBranch = headBranchPrefix + group.replace(".", "_", true)
 
                 var branchCreated = true
