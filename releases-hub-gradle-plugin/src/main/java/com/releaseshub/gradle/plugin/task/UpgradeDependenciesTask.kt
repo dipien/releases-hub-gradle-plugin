@@ -120,9 +120,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 log("")
             }
 
-            log("Dependencies upgraded:")
-
             groupsToUpgrade.forEach { (groupId, artifactsToUpgradeByGroup) ->
+
+                log("# Processing groupId [$groupId]")
 
                 val group: String = groupId ?: artifactsToUpgradeByGroup.first().toString()
 
@@ -149,6 +149,8 @@ open class UpgradeDependenciesTask : AbstractTask() {
                         }
                     }
                 }
+
+                log("##########################")
             }
         } else {
             log("No dependencies upgraded")
@@ -234,6 +236,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         try {
             var pullRequest = pullRequestService.getPullRequest(repositoryIdProvider, IssueService.STATE_OPEN, "$gitHubRepositoryOwner:$headBranch", baseBranch)
             if (pullRequest == null) {
+                log("Pull request with head [$gitHubRepositoryOwner:$headBranch] and base [$baseBranch] not found")
                 val pullRequestBody = PullRequestGenerator.createBody(upgradeResults, BuildConfig.VERSION)
                 val title: String = if (groupId == group) {
                     "Upgraded dependencies for groupId $groupId"
