@@ -21,7 +21,7 @@ You can read [this](https://medium.com/dipien/automate-dependencies-upgrades-wit
   * library size
   * new permissions added by the library (only for android libraries)
 * Support to configure which dependencies include and exclude, where to find their definitions, how many pull requests create and more.
-* Support any java based project using Gradle.
+* Support any Java/Kotlin project using Gradle.
 
 ![](wiki/pull_request.png)
 
