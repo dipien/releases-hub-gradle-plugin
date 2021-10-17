@@ -27,7 +27,7 @@ jobs:
           distribution: 'adopt'
           java-version: 11
 
-      - run: ./gradlew upgradeDependencies -PgitHubRepositoryName=${GITHUB_REPOSITORY#*/} -PpullRequestsMax=${{ github.event.inputs.pullRequestsMax || '20' }} -Pincludes=${{ github.event.inputs.includes || '' }} --stacktrace
+      - run: ./gradlew upgradeDependencies -PgitHubRepository=$GITHUB_REPOSITORY -PpullRequestsMax=${{ github.event.inputs.pullRequestsMax || '20' }} -Pincludes=${{ github.event.inputs.includes || '' }} --stacktrace
         env:
           gitHubWriteToken: ${{ secrets.CI_GITHUB_WRITE_TOKEN }}
           gitUserEmail: ${{ secrets.GIT_USER_EMAIL }}
