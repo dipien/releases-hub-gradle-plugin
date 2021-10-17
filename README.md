@@ -29,15 +29,24 @@ You can read [this](https://medium.com/dipien/automate-dependencies-upgrades-wit
 
 Add the following configuration to your root `build.gradle`, replacing X.Y.Z by the [latest version](https://github.com/dipien/releases-hub-gradle-plugin/releases/latest)
 
-Using the plugins DSL:
+Using the plugins DSL + Groovy:
 
 ```groovy
+plugins {
+  id "com.dipien.releaseshub.gradle.plugin" version "X.Y.Z"
+}
+```
+
+
+Using the plugins DSL + Kotlin DSL:
+
+```kotlin
 plugins {
   id("com.dipien.releaseshub.gradle.plugin").version("X.Y.Z")
 }
 ```
 
-Using legacy plugin application:
+Using legacy plugin application + Groovy:
 
 ```groovy
 buildscript {
@@ -50,6 +59,21 @@ buildscript {
 }
     
 apply plugin: "com.dipien.releaseshub.gradle.plugin"
+```
+
+Using legacy plugin application + Kotlin DSL:
+
+```kotlin
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.dipien:releases-hub-gradle-plugin:X.Y.Z")
+    }
+}
+    
+apply(plugin = "com.dipien.releaseshub.gradle.plugin")
 ```
 
 ## Configure
