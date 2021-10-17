@@ -39,7 +39,7 @@ jobs:
         run: ./gradlew :closeGitHubMilestone $releaseGradleFlags
 
       - name: Install github_changelog_generator
-        run: gem install github_changelog_generator -v 1.13.2
+        run: sudo gem install github_changelog_generator -v 1.13.2
 
       - name: Create GitHub Release
         run: ./gradlew :createGitHubRelease $releaseGradleFlags
