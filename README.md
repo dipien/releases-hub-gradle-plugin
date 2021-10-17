@@ -234,9 +234,6 @@ object BuildLibs {
 ##### Root build.gradle
 
 ```groovy
-apply plugin: "kotlin"
-apply plugin: "com.dipien.releaseshub.gradle.plugin"
-
 buildscript {
     dependencies {
         classpath(BuildLibs.KOTLIN_PLUGIN)
@@ -246,6 +243,9 @@ buildscript {
 dependencies {
     implementation(Libs.KOTLIN)
 }
+
+apply plugin: "kotlin"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
 ```
 
 See the [sample](https://github.com/dipien/releases-hub-gradle-plugin/tree/master/sample) for more details.
