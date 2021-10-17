@@ -80,15 +80,26 @@ ext.gitHubWriteToken = "123"
 
 #### Common Properties
 
+###### Auto Detect Dependencies paths
+
+Whether the plugin should automatically find the files where the dependencies are defined. This property is required. The default value is true
+
+    autoDetectDependenciesPaths = true
+
+The plugin automatically find dependencies on the following files:
+* buildSrc/src/main/kotlin/Libs.kt
+* buildSrc/src/main/kotlin/BuildLibs.kt
+* gradle/libs.versions.toml
+* settings.gradle.kts
+* settings.gradle
+* Any build.gradle or build.gradle.kts file on the root project and all the subprojects
+
 ###### Dependencies paths
 
-The path (relative to the project root directory) for the files where the dependencies are defined. This property is required. The default value is:
+The custom paths (relative to the project root directory) for the files where the dependencies are defined. This list is used in addition to the auto detected paths (if enabled). This property is optional. For example:
 
     dependenciesPaths = [
-      "buildSrc/src/main/kotlin/Libs.kt", 
-      "buildSrc/src/main/kotlin/BuildLibs.kt",
-      "gradle/libs.versions.toml",
-      "settings.gradle.kts"
+      "dependencies.gradle.kts", 
     ]
     
 ###### Includes
@@ -237,11 +248,11 @@ To automate your dependencies upgrades, you can follow this guide: [How to autom
 Validate all the dependencies.
 The following validations are executed:
 
-* All the dependencies defined on each `dependenciesClassNames` are sorted alphabetically by `groupId:artifactId`
-* There are not duplicated dependencies defined on each `dependenciesClassNames`
+* All the dependencies defined on each `dependenciesPaths` are sorted alphabetically by `groupId:artifactId`
+* There are not duplicated dependencies defined on each `dependenciesPaths`
 * There are not dependencies with snapshot or dynamic versions assigned
-* There are dependencies on `dependenciesClassNames` but not used on the project
-* There are declared dependencies on any build.gradle but not defined on `dependenciesClassNames` classes
+* There are dependencies on `dependenciesPaths` but not used on the project
+* There are dependencies explicitly declared on a .gradle(.kts) file instead of using buildSrc or Version Catalog.
 
 ```
 ./gradlew validateDependencies
@@ -313,6 +324,12 @@ This is useful to avoid creating too much pull requests when you still have many
 The list of labels to assign when creating the pull request. Optional list.
 
     pullRequestLabels = ["dependencies"]
+
+###### Pull Request Assignee
+
+The user to be assigned to the pull request. Optional string.
+
+    pullRequestAssignee = "octocat"
     
 ###### Pull Request Reviewers
 
@@ -350,15 +367,21 @@ The Git user email used by the commit command. Optional String.
 
     gitUserEmail = "email@mail.com"
 
+###### GitHub Repository
+
+The GitHub repository where the pull request will be created. Required String (only if `pullRequestEnabled` is `true`).
+
+    gitHubRepository = "repo_owner/repo_name"
+
 ###### GitHub Repository Owner
 
-The GitHub repository owner where the pull request will be created. Required String (only if `pullRequestEnabled` is `true`).
+The GitHub repository owner where the pull request will be created. Required String (only if `pullRequestEnabled` is `true` & `gitHubRepository` was not defined).
 
     gitHubRepositoryOwner = "repo_owner"
 
 ###### GitHub Repository Name
 
-The GitHub repository name where the pull request will be created. Required String (only if `pullRequestEnabled` is `true`).
+The GitHub repository name where the pull request will be created. Required String (only if `pullRequestEnabled` is `true` & `gitHubRepository` was not defined).
 
     gitHubRepositoryName = "repo_name"
 
