@@ -85,20 +85,20 @@ All the plugin configuration properties can be added using any of the following 
 * Using the `releasesHub` extension on the build.gradle. For example:
 ```groovy
 releasesHub {
-    gitHubWriteToken = "123"
+    gitHubRepository = "sample"
 }
 ```
 * As a command line parameter. For example:
 ```
-./gradlew listDependencies -PgitHubWriteToken=123
+./gradlew listDependencies -PgitHubRepository=sample
 ```
 * As a property on a `gradle.properties` file. For example:
 ```
-gitHubWriteToken = "123"
+gitHubRepository = "sample"
 ```
-* As an extra property on the build.gradlee. For example:
+* As an extra property on the build.gradle. For example:
 ```
-ext.gitHubWriteToken = "123"
+ext.gitHubRepository = "sample"
 ```
 * As a System Environment property
 
