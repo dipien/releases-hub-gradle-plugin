@@ -6,9 +6,18 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      gitHubWriteToken: ${{ secrets.gitHubWriteToken }}
-      gitUserEmail: ${{ secrets.gitUserEmail }}
-      gitUserName: ${{ secrets.gitUserName }}
+      GITHUB_WRITE_TOKEN: ${{ secrets.CI_GITHUB_WRITE_TOKEN }}
+      GITHUB_USER_EMAIL: ${{ secrets.GIT_USER_EMAIL }}
+      GITHUB_USER_NAME: ${{ secrets.GIT_USER_NAME }}
+      PUBLISHING_REPO_PASSWORD: ${{ secrets.PUBLISHING_REPO_PASSWORD }}
+      PUBLISHING_REPO_USERNAME: ${{ secrets.PUBLISHING_REPO_USERNAME }}
+      RELEASES_HUB_USER_TOKEN: ${{ secrets.RELEASES_HUB_USER_TOKEN }}
+      SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      SIGNING_SECRET_KEY_RING: ${{ secrets.SIGNING_SECRET_KEY_RING }}
+      SIGNING_SECRET_KEY_RING_FILE: "/tmp/secring.gpg"
+      GRADLE_PUBLISH_KEY: ${{ secrets.GRADLE_PUBLISH_KEY }}
+      GRADLE_PUBLISH_SECRET: ${{ secrets.GRADLE_PUBLISH_SECRET }}
       releaseGradleFlags: '--max-workers 1 -PSNAPSHOT=false -PLOCAL_UPLOAD=false -PRELEASE_BUILD_TYPE_ENABLED=true -PRELEASE_FAKE_ENABLED=true -PACCEPT_SNAPSHOT_DEPENDENCIES=false --stacktrace'
       GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.caching=true'
     steps:

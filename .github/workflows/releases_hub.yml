@@ -29,7 +29,7 @@ jobs:
 
       - run: ./gradlew upgradeDependencies -PgitHubRepositoryName=${GITHUB_REPOSITORY#*/} -PpullRequestsMax=${{ github.event.inputs.pullRequestsMax || '20' }} -Pincludes=${{ github.event.inputs.includes || '' }} --stacktrace
         env:
-          gitHubWriteToken: ${{ secrets.gitHubWriteToken }}
-          gitUserEmail: ${{ secrets.gitUserEmail }}
-          gitUserName: ${{ secrets.gitUserName }}
+          gitHubWriteToken: ${{ secrets.CI_GITHUB_WRITE_TOKEN }}
+          gitUserEmail: ${{ secrets.GIT_USER_EMAIL }}
+          gitUserName: ${{ secrets.GIT_USER_NAME }}
           gitHubRepositoryOwner: ${{ github.repository_owner }}
