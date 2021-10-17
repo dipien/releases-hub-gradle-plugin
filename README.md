@@ -163,9 +163,6 @@ kotlin-plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41"
 ##### Root build.gradle
 
 ```groovy
-apply plugin: "kotlin"
-apply plugin: "com.dipien.releaseshub.gradle.plugin"
-
 buildscript {
     dependencies {
         classpath(libs.kotlin.plugin)
@@ -175,6 +172,9 @@ buildscript {
 dependencies {
     implementation(libs.kotlin)
 }
+
+apply plugin: "kotlin"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
 ```
 
 ### Version Catalog (settings.gradle.kts file) example
@@ -197,9 +197,6 @@ dependencyResolutionManagement {
 ##### Root build.gradle
 
 ```groovy
-apply plugin: "kotlin"
-apply plugin: "com.dipien.releaseshub.gradle.plugin"
-
 buildscript {
     dependencies {
         classpath(libs.kotlin.plugin)
@@ -209,6 +206,9 @@ buildscript {
 dependencies {
     implementation(libs.kotlin)
 }
+
+apply plugin: "kotlin"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
 ```
 
 ### BuilsSrc example
