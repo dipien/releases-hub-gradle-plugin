@@ -1,4 +1,4 @@
-name: "Upgrade Dependencies"
+name: "Release"
 on:
   workflow_dispatch:
 
