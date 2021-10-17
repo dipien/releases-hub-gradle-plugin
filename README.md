@@ -148,19 +148,6 @@ If you need to exclude the Gradle upgrade, use "gradle". For example:
 
 ## Usage
 
-The plugin find the dependencies to upgrade on the files configured inside the `dependenciesPaths` property extension. The default value is:
-
-    releasesHub {
-        dependenciesPaths = [
-          "buildSrc/src/main/kotlin/Libs.kt", 
-          "buildSrc/src/main/kotlin/BuildLibs.kt",
-          "gradle/libs.versions.toml",
-          "settings.gradle.kts"
-        ]
-    }
-
-Inside those files, each dependency must be declared with the following format: `"groupId:artifactId:version"`
-
 ### Version Catalog (libs.versions.toml file) example
 
 You can define your dependencies on the `libs.versions.toml` version catalog.
