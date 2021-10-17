@@ -33,7 +33,7 @@ Using the plugins DSL:
 
 ```groovy
 plugins {
-  id "com.dipien.releaseshub.gradle.plugin" version "X.Y.Z"
+  id("com.dipien.releaseshub.gradle.plugin").version("X.Y.Z")
 }
 ```
 
@@ -42,7 +42,7 @@ Using legacy plugin application:
 ```groovy
 buildscript {
     repositories {
-        mavenCentral() // or gradlePluginPortal()
+        mavenCentral()
     }
     dependencies {
         classpath("com.dipien:releases-hub-gradle-plugin:X.Y.Z")
