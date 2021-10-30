@@ -32,4 +32,5 @@ jobs:
           gitHubWriteToken: ${{ secrets.CI_GITHUB_WRITE_TOKEN }}
           gitUserEmail: ${{ secrets.GIT_USER_EMAIL }}
           gitUserName: ${{ secrets.GIT_USER_NAME }}
+          RELEASES_HUB_USER_TOKEN: ${{ secrets.RELEASES_HUB_USER_TOKEN }}
           gitHubRepositoryOwner: ${{ github.repository_owner }}
