@@ -173,11 +173,11 @@ open class UpgradeDependenciesTask : AbstractTask() {
     }
 
     private fun configureGit() {
-        gitUserName?.let {
-            gitHelper.configUserName(it)
+        if (!gitUserName.isNullOrBlank()) {
+            gitHelper.configUserName(gitUserName!!)
         }
-        gitUserEmail?.let {
-            gitHelper.configUserEmail(it)
+        if (!gitUserEmail.isNullOrBlank()) {
+            gitHelper.configUserEmail(gitUserEmail!!)
         }
     }
 
