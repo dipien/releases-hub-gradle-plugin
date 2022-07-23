@@ -1,0 +1,35 @@
+name: Increment Version
+on:
+  workflow_dispatch:
+    inputs:
+      versionIncrementType:
+        description: 'The type of increment'
+        type: choice
+        required: true
+        options:
+          - MAJOR
+          - MINOR
+          - PATCH
+      versionIncrementBranch:
+        description: 'The branch where the version increment will be committed and pushed'
+        required: true
+        default: 'master'
+jobs:
+  incrementVersion:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # https://github.com/actions/setup-java
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - run: ./gradlew incrementVersion --versionIncrementType=${{ github.event.inputs.versionIncrementType }} --versionIncrementBranch=${{ github.event.inputs.versionIncrementBranch }}
+        env:
+          gitUserEmail: ${{ secrets.GIT_USER_EMAIL }}
+          gitUserName: ${{ secrets.GIT_USER_NAME }}

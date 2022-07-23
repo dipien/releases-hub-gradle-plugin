@@ -1,7 +1,5 @@
 name: "Upgrade Dependencies"
 on:
-  schedule:
-    - cron: "0 13 * * 3"
   workflow_dispatch:
     inputs:
       pullRequestsMax:
@@ -12,6 +10,7 @@ on:
         description: 'The dependencies to include. You can define a groupId to match all the artifacts for that group id, or groupId:artifactId to match a particular artifact. '
         required: false
         default: ''
+
 jobs:
   upgradeDependencies:
     runs-on: ubuntu-latest

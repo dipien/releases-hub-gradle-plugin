@@ -1,0 +1,66 @@
+name: "Commit"
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Switch to Gradle Binary Distribution
+        run: sed -i 's/-all.zip/-bin.zip/' gradle/wrapper/gradle-wrapper.properties
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+  ktlint:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # https://github.com/actions/setup-java
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Switch to Gradle Binary Distribution
+        run: sed -i 's/-all.zip/-bin.zip/' gradle/wrapper/gradle-wrapper.properties
+
+      - name: Ktlint
+        run: ./gradlew ktlint --stacktrace
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # https://github.com/actions/setup-java
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Switch to Gradle Binary Distribution
+        run: sed -i 's/-all.zip/-bin.zip/' gradle/wrapper/gradle-wrapper.properties
+
+      - name: Assemble
+        run: ./gradlew assemble --stacktrace
+
+      - name: Tests
+        run: ./gradlew test --stacktrace
+
+      - name: Validate plugins
+        run: ./gradlew validatePlugins --stacktrace
