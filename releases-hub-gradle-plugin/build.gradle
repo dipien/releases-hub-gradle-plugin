@@ -5,15 +5,18 @@ ext.GRADLE_PLUGIN_ID = "com.dipien.releaseshub.gradle.plugin"
 ext.GRADLE_PLUGIN_IMPLEMENTATION_CLASS = "com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin"
 ext.GRADLE_PLUGIN_PORTAL_TAGS = ["gradle", "plugin", "dependencies", "github", "releases"]
 
+apply plugin: "kotlin"
 apply plugin: "com.jdroidtools.gradle.plugin"
 
 buildscript {
 	dependencies {
+		classpath(BuildLibs.KOTLIN_GRADLE_PLUGIN)
 		classpath(BuildLibs.JDROID_GRADLE_PROJECT_PLUGIN)
 	}
 }
 
 dependencies {
+	implementation(Libs.KOTLIN)
 	implementation(Libs.JDROID_JAVA_CORE)
 	implementation(Libs.JDROID_JAVA_HTTP_OKHTTP)
 	implementation(Libs.OKHTTP)
@@ -25,6 +28,14 @@ dependencies {
 
 sourceSets {
 	main.java.srcDirs += "build/generated"
+}
+
+compileKotlin.kotlinOptions {
+	jvmTarget = JavaVersion.VERSION_1_8.toString()
+}
+
+compileTestKotlin.kotlinOptions {
+	jvmTarget = JavaVersion.VERSION_1_8.toString()
 }
 
 project.afterEvaluate {

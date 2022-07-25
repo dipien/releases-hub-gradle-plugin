@@ -6,6 +6,9 @@ object Libs {
     // https://github.com/maxirosson/jdroid-java-http/releases
     const val JDROID_JAVA_HTTP_OKHTTP = "com.jdroidtools:jdroid-java-http-okhttp:3.0.0"
 
+    // https://github.com/JetBrains/kotlin/blob/master/ChangeLog.md
+    const val KOTLIN = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31"
+
     // https://github.com/square/okhttp/blob/master/CHANGELOG.md
     const val OKHTTP = "com.squareup.okhttp3:okhttp:4.10.0"
 
