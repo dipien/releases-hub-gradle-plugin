@@ -3,6 +3,8 @@ version = "3.2.0"
 ext.GITHUB_REPOSITORY_NAME = "releases-hub-gradle-plugin"
 
 apply plugin: "com.dipien.component.builder"
+apply plugin: "com.dipien.semantic-version"
+apply plugin: "com.dipien.releaseshub.gradle.plugin"
 apply plugin: "com.jdroidtools.root"
 apply plugin: "com.dipien.release"
 
@@ -21,6 +23,8 @@ buildscript {
 		classpath(BuildLibs.DIPIEN_COMPONENT_BUILDER)
 		classpath(BuildLibs.JDROID_GRADLE_ROOT_PLUGIN)
 		classpath(BuildLibs.RELEASE_GRADLE_PLUGIN)
+		classpath(BuildLibs.SEMANTIC_VERSION_GRADLE_PLUGIN)
+		classpath(BuildLibs.RELEASES_HUB_GRADLE_PLUGIN)
 	}
 }
 
