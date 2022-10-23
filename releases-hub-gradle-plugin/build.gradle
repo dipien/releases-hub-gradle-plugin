@@ -50,8 +50,7 @@ project.afterEvaluate {
 				out.writeLine("package com.releaseshub.gradle.plugin.context")
 				out.writeLine("")
 				out.writeLine("object BuildConfig {")
-				com.jdroid.gradle.commons.utils.BuildConfigGenerator(jdroid.propertyResolver).setBuildConfigString(out, 'VERSION', project.version.toString())
-
+				out.writeLine("		const val VERSION = \"${project.version.toString()}\"")
 				out.writeLine("}")
 			}
 		}
