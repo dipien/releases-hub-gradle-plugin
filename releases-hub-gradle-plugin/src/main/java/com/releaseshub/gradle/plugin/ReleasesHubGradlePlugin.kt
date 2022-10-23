@@ -59,6 +59,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
     }
 
     private fun initTask(task: AbstractTask) {
+        task.notCompatibleWithConfigurationCache("Not implemented yet")
         task.serverName = extension.server
         task.userToken = extension.userToken
         task.dependenciesPaths = extension.dependenciesPaths
