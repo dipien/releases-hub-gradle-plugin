@@ -228,7 +228,16 @@ open class UpgradeDependenciesTask : AbstractTask() {
     private fun commit(upgradeResult: UpgradeResult) {
         gitHelper.addAll()
         gitHelper.diffHead()
-        gitHelper.commit("Upgraded ${upgradeResult.artifactUpgrade} from ${upgradeResult.artifactUpgrade!!.fromVersion} to ${upgradeResult.artifactUpgrade.toVersion}")
+        try {
+            gitHelper.commit("Upgraded ${upgradeResult.artifactUpgrade} from ${upgradeResult.artifactUpgrade!!.fromVersion} to ${upgradeResult.artifactUpgrade.toVersion}")
+        } catch (e: Exception) {
+            // FIXME This is logging to detect the cause of a crash
+            println("upgradeResult: $upgradeResult")
+            println("upgradeResult.artifactUpgrade: ${upgradeResult.artifactUpgrade}")
+            println("upgradeResult.artifactUpgrade!!.fromVersion: ${upgradeResult.artifactUpgrade!!.fromVersion}")
+            println("upgradeResult.artifactUpgrade!!.fromVersion: ${upgradeResult.artifactUpgrade.toVersion}")
+            throw e
+        }
     }
 
     private fun getPullRequest(headBranch: String): PullRequest? {
