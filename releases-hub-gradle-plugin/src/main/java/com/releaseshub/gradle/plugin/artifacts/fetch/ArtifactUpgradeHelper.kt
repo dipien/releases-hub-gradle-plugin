@@ -11,7 +11,10 @@ object ArtifactUpgradeHelper {
     fun getArtifactsUpgrades(artifactsToCheck: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>): List<ArtifactUpgrade> {
         val artifactsToUpgrade = mutableListOf<ArtifactUpgrade>()
         artifactsToCheck.forEach { artifactToCheck ->
-            artifactsToUpgrade.add(getArtifactUpgrade(artifactToCheck, repositories))
+            // TODO Add support for gradle artifacts on plugin side
+            if (artifactToCheck.artifactId != null) {
+                artifactsToUpgrade.add(getArtifactUpgrade(artifactToCheck, repositories))
+            }
         }
         return artifactsToUpgrade
     }
