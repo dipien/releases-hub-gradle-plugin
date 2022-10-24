@@ -96,7 +96,7 @@ abstract class AbstractTask : DefaultTask() {
         return ArtifactsService(createAppService())
     }
 
-    protected fun createAppService(): AppService {
+    private fun createAppService(): AppService {
         return AppService(AppServer.valueOf(serverName!!), userToken!!)
     }
 
