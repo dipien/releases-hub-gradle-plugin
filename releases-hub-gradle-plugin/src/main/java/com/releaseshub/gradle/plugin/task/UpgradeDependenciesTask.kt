@@ -212,7 +212,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
             var upgradedUpgradeResult: UpgradeResult? = null
             dependenciesFiles.forEach { dependenciesFile ->
                 val upgradeResult = upgrader.upgradeDependenciesFile(project.rootDir, dependenciesFile, artifactToUpgrade)
-                if (upgradeResult != null) {
+                if (upgradeResult != null && upgradeResult.upgraded) {
                     upgradedUpgradeResult = upgradeResult
                     upgradeResults.add(upgradeResult)
                 }
