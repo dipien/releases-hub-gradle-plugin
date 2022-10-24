@@ -4,7 +4,7 @@ import java.io.File
 
 class FakeCommandExecutor : CommandExecutor {
     override fun execute(
-        command: String,
+        commands: List<String>,
         workingDirectory: File?,
         logStandardOutput: Boolean,
         logErrorOutput: Boolean,

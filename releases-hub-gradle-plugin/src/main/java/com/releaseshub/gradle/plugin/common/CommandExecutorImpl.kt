@@ -7,14 +7,14 @@ import java.io.File
 class CommandExecutorImpl(private val logger: Logger, private val logLevel: LogLevel) : CommandExecutor {
 
     @Suppress("UNCHECKED_CAST")
-    override fun execute(command: String, workingDirectory: File?, logStandardOutput: Boolean, logErrorOutput: Boolean, ignoreExitValue: Boolean): CommandExecutorResult {
-        log("Executing command: $command")
+    override fun execute(commands: List<String>, workingDirectory: File?, logStandardOutput: Boolean, logErrorOutput: Boolean, ignoreExitValue: Boolean): CommandExecutorResult {
+        log("Executing command: $commands")
 
         val processBuilder = ProcessBuilder()
         if (workingDirectory != null) {
             processBuilder.directory(workingDirectory)
         }
-        val process = processBuilder.command(command.split(" ")).start()
+        val process = processBuilder.command(commands).start()
         val exitVal = process.waitFor()
 
         if (logErrorOutput) {
@@ -26,7 +26,7 @@ class CommandExecutorImpl(private val logger: Logger, private val logLevel: LogL
         }
 
         if (!ignoreExitValue && exitVal > 0) {
-            throw RuntimeException("Failed execution of command: $command")
+            throw RuntimeException("Failed execution of command: $commands")
         }
 
         return CommandExecutorResult(exitVal)

@@ -150,7 +150,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                         if (branchCreated) {
                             log("* Case 5: headBranch not previously created, pull request doesn't exist, no new upgrades => DO NOTHING")
                         } else {
-                            val execResult = commandExecutor.execute("git push origin HEAD:$headBranch", ignoreExitValue = true)
+                            val execResult = commandExecutor.execute(listOf("git", "push", "origin", "HEAD:$headBranch"), ignoreExitValue = true)
                             if (execResult.isSuccessful()) {
                                 log("Merge pushed to $headBranch branch.")
                             }
@@ -187,9 +187,9 @@ open class UpgradeDependenciesTask : AbstractTask() {
         gitHelper.pull()
 
         // Local headBranch cleanup
-        commandExecutor.execute("git branch -D $headBranch", ignoreExitValue = true)
+        commandExecutor.execute(listOf("git", "branch", "-D", headBranch), ignoreExitValue = true)
         gitHelper.prune()
-        val execResult = commandExecutor.execute("git checkout $headBranch", ignoreExitValue = true)
+        val execResult = commandExecutor.execute(listOf("git", "checkout", headBranch), ignoreExitValue = true)
         return if (!execResult.isSuccessful()) {
             gitHelper.createBranch(headBranch)
             true
