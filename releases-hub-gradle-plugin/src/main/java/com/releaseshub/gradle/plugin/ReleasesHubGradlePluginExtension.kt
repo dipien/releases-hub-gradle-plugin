@@ -9,6 +9,7 @@ import org.gradle.api.logging.LogLevel
 open class ReleasesHubGradlePluginExtension(project: Project) {
 
     var server: String? = project.propertyResolver.getStringProp(::server.name, AppServer.PROD.getServerName())
+    var serverless: Boolean = project.propertyResolver.getBooleanProp(::serverless.name, false) ?: false
     var userToken: String? = project.propertyResolver.getStringProp(::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
     var autoDetectDependenciesPaths: Boolean = project.propertyResolver.getBooleanProp(::autoDetectDependenciesPaths.name, true) ?: true

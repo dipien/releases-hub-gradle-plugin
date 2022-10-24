@@ -73,7 +73,7 @@ open class ValidateDependenciesTask : AbstractTask() {
             }
         }
 
-        val artifactsUpgrades = createArtifactsService().getArtifactsUpgrades(notDuplicatedArtifacts, getRepositories())
+        val artifactsUpgrades = createArtifactsService().getArtifactsUpgrades(notDuplicatedArtifacts, getRepositories(), getExtension().serverless)
 
         val sourcesDir = mutableListOf<File>()
         project.rootProject.allprojects.forEach {

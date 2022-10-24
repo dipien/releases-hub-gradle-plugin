@@ -6,8 +6,8 @@ import com.releaseshub.gradle.plugin.artifacts.fetch.MavenArtifactRepository
 
 class ArtifactsService(private val apiService: AppService) {
 
-    fun getArtifactsUpgrades(artifactsToCheck: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>): List<ArtifactUpgrade> {
-        val artifactsUpgrades = apiService.getArtifactsToUpgrade(artifactsToCheck).toMutableList()
+    fun getArtifactsUpgrades(artifactsToCheck: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>, serverless: Boolean): List<ArtifactUpgrade> {
+        val artifactsUpgrades = if (serverless) mutableListOf() else apiService.getArtifactsToUpgrade(artifactsToCheck).toMutableList()
 
         val artifactsToCheckLocally = artifactsToCheck.toMutableList()
         artifactsToCheckLocally.removeAll(artifactsUpgrades)
