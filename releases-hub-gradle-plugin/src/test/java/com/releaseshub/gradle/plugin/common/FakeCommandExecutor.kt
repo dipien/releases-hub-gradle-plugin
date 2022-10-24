@@ -9,7 +9,7 @@ class FakeCommandExecutor : CommandExecutor {
         logStandardOutput: Boolean,
         logErrorOutput: Boolean,
         ignoreExitValue: Boolean
-    ): ExtendedExecResult {
+    ): CommandExecutorResult {
         TODO("Not yet implemented")
     }
 }

@@ -57,7 +57,7 @@ abstract class AbstractTask : DefaultTask() {
         LoggerHelper.logger = logger
         LoggerHelper.logLevel = logLevel!!
 
-        commandExecutor = CommandExecutorImpl(project, logLevel!!)
+        commandExecutor = CommandExecutorImpl(logger, logLevel!!)
         gitHelper = GitHelper(commandExecutor)
         onExecute()
     }
