@@ -20,15 +20,15 @@ object ArtifactUpgradeHelper {
         val artifact = getArtifact(artifactToCheck, repositories)
         if (!artifact.releases.isNullOrEmpty()) {
             val release = getReleaseToUpgrade(artifactToCheck, artifact)
-            if (release != null) {
+            return if (release != null) {
                 artifactToCheck.toVersion = release.version!!
                 artifactToCheck.toReleaseDate = release.date
                 artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.PENDING_UPGRADE
                 artifactToCheck.repositoryUrl = artifact.repository?.url
-                return artifactToCheck
+                artifactToCheck
             } else {
                 artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.ALREADY_UPGRADED
-                return artifactToCheck
+                artifactToCheck
             }
         } else {
             artifactToCheck.artifactUpgradeStatus = ArtifactUpgradeStatus.NOT_FOUND
@@ -67,7 +67,7 @@ object ArtifactUpgradeHelper {
             }
         }
 
-        if (!versions.isNullOrEmpty()) {
+        if (versions.isNotEmpty()) {
             val release = Release()
             release.version = getLatestVersion(versions).toString()
             release.date = lastUpdated

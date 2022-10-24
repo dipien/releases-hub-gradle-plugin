@@ -14,7 +14,7 @@ class CommandExecutorImpl(private val logger: Logger, private val logLevel: LogL
         if (workingDirectory != null) {
             processBuilder.directory(workingDirectory)
         }
-        val process = processBuilder.command(command).start()
+        val process = processBuilder.command(command.split(" ")).start()
         val exitVal = process.waitFor()
 
         if (logErrorOutput) {
