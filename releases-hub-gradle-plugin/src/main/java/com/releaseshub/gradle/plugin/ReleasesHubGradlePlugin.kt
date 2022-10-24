@@ -21,6 +21,7 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         extension = project.extensions.create(EXTENSION_NAME, ReleasesHubGradlePluginExtension::class.java, project)
 
         val validateDependenciesTask = project.tasks.create(ValidateDependenciesTask.TASK_NAME, ValidateDependenciesTask::class.java)
+        validateDependenciesTask.notCompatibleWithConfigurationCache("Not implemented yet")
         project.afterEvaluate {
             initTask(validateDependenciesTask)
             validateDependenciesTask.unusedExcludes = extension.unusedExcludes
@@ -28,16 +29,19 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
         }
 
         val listDependenciesTask = project.tasks.create(ListDependenciesTask.TASK_NAME, ListDependenciesTask::class.java)
+        listDependenciesTask.notCompatibleWithConfigurationCache("Not implemented yet")
         project.afterEvaluate {
             initTask(listDependenciesTask)
         }
 
         val listDependenciesToUpgradeTask = project.tasks.create(ListDependenciesToUpgradeTask.TASK_NAME, ListDependenciesToUpgradeTask::class.java)
+        listDependenciesToUpgradeTask.notCompatibleWithConfigurationCache("Not implemented yet")
         project.afterEvaluate {
             initTask(listDependenciesToUpgradeTask)
         }
 
         val upgradeDependenciesTask = project.tasks.create(UpgradeDependenciesTask.TASK_NAME, UpgradeDependenciesTask::class.java)
+        upgradeDependenciesTask.notCompatibleWithConfigurationCache("Not implemented yet")
         project.afterEvaluate {
             initTask(upgradeDependenciesTask)
             upgradeDependenciesTask.baseBranch = extension.baseBranch
@@ -59,7 +63,6 @@ class ReleasesHubGradlePlugin : Plugin<Project> {
     }
 
     private fun initTask(task: AbstractTask) {
-        task.notCompatibleWithConfigurationCache("Not implemented yet")
         task.serverName = extension.server
         task.userToken = extension.userToken
         task.dependenciesPaths = extension.dependenciesPaths
