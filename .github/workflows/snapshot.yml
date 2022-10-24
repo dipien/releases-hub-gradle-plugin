@@ -1,0 +1,36 @@
+name: "Snapshot"
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      PUBLISHING_REPO_PASSWORD: ${{ secrets.PUBLISHING_REPO_PASSWORD }}
+      PUBLISHING_REPO_USERNAME: ${{ secrets.PUBLISHING_REPO_USERNAME }}
+      SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      SIGNING_SECRET_KEY_RING: ${{ secrets.SIGNING_SECRET_KEY_RING }}
+      SIGNING_SECRET_KEY_RING_FILE: "/tmp/secring.gpg"
+      RELEASE_GRADLE_FLAGS: '--max-workers 1 -PSNAPSHOT=true -PLOCAL_UPLOAD=false -PRELEASE_BUILD_TYPE_ENABLED=true -PRELEASE_FAKE_ENABLED=true -PACCEPT_SNAPSHOT_DEPENDENCIES=false --stacktrace'
+      GRADLE_OPTS: '-Dorg.gradle.daemon=false -Dorg.gradle.caching=true'
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # https://github.com/actions/setup-java
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: 11
+
+      - name: Switch to Gradle Binary Distribution
+        run: sed -i -e 's/-all.zip/-bin.zip/' gradle/wrapper/gradle-wrapper.properties
+
+      - name: Copy Signing secret key ring file
+        run: sudo bash -c "echo '$SIGNING_SECRET_KEY_RING' | base64 -d > '$SIGNING_SECRET_KEY_RING_FILE'"
+
+      - name: Publish on Sonatype
+        run: ./gradlew publish $RELEASE_GRADLE_FLAGS
