@@ -3,6 +3,7 @@ package com.releaseshub.gradle.plugin.task
 import com.jdroid.java.date.DateTimeFormat
 import com.jdroid.java.date.DateUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
+import com.releaseshub.gradle.plugin.artifacts.fetch.ArtifactUpgradeHelper
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.core.FileSizeFormatter
 import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
@@ -21,9 +22,6 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 
     override fun onExecute() {
 
-        getExtension().validateServerName()
-        getExtension().validateUserToken()
-
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
@@ -35,7 +33,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             log("")
         }
 
-        val artifactsUpgrades = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories(), getExtension().serverless)
+        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories())
 
         val notFoundArtifacts = artifactsUpgrades.filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.NOT_FOUND }
         if (notFoundArtifacts.isNotEmpty()) {

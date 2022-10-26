@@ -2,9 +2,6 @@ package com.releaseshub.gradle.plugin.common
 
 import com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin
 import com.releaseshub.gradle.plugin.ReleasesHubGradlePluginExtension
-import com.releaseshub.gradle.plugin.artifacts.ArtifactsService
-import com.releaseshub.gradle.plugin.artifacts.api.AppServer
-import com.releaseshub.gradle.plugin.artifacts.api.AppService
 import com.releaseshub.gradle.plugin.artifacts.fetch.MavenArtifactRepository
 import com.releaseshub.gradle.plugin.dependencies.GradleHelper
 import org.gradle.api.DefaultTask
@@ -40,12 +37,6 @@ abstract class AbstractTask : DefaultTask() {
     @get:Input
     @get:Optional
     var excludes: List<String>? = null
-
-    @get:Input
-    var serverName: String? = null
-
-    @get:Input
-    var userToken: String? = null
 
     init {
         group = "Releases Hub"
@@ -90,14 +81,6 @@ abstract class AbstractTask : DefaultTask() {
 
     protected fun log(message: String) {
         LoggerHelper.log(message)
-    }
-
-    protected fun createArtifactsService(): ArtifactsService {
-        return ArtifactsService(createAppService())
-    }
-
-    private fun createAppService(): AppService {
-        return AppService(AppServer.valueOf(serverName!!), userToken!!)
     }
 
     @Internal

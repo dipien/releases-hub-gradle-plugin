@@ -16,7 +16,7 @@ object ArtifactUpgradeHelper {
                 artifactsToUpgrade.add(getArtifactUpgrade(artifactToCheck, repositories))
             }
         }
-        return artifactsToUpgrade
+        return artifactsToUpgrade.sortedBy { it.toReleaseDate }
     }
 
     private fun getArtifactUpgrade(artifactToCheck: ArtifactUpgrade, repositories: List<MavenArtifactRepository>): ArtifactUpgrade {

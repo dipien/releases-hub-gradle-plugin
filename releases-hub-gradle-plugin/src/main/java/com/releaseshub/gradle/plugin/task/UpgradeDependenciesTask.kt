@@ -9,6 +9,7 @@ import com.dipien.github.service.PullRequestService
 import com.dipien.github.service.ReviewRequestsService
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
+import com.releaseshub.gradle.plugin.artifacts.fetch.ArtifactUpgradeHelper
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.context.BuildConfig
 import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
@@ -88,9 +89,6 @@ open class UpgradeDependenciesTask : AbstractTask() {
 
     override fun onExecute() {
 
-        getExtension().validateServerName()
-        getExtension().validateUserToken()
-
         if (pullRequestEnabled) {
 
             if (gitHubRepository != null) {
@@ -107,7 +105,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
         val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
 
-        val artifactsToUpgrade = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories(), getExtension().serverless).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
+        val artifactsToUpgrade = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories()).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
 
         if (artifactsToUpgrade.isNotEmpty()) {
 

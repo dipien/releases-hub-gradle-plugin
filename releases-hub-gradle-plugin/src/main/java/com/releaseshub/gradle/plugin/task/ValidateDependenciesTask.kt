@@ -1,6 +1,7 @@
 package com.releaseshub.gradle.plugin.task
 
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
+import com.releaseshub.gradle.plugin.artifacts.fetch.ArtifactUpgradeHelper
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
 import com.releaseshub.gradle.plugin.dependencies.DependencyUsageSearcher
@@ -25,9 +26,6 @@ open class ValidateDependenciesTask : AbstractTask() {
     }
 
     override fun onExecute() {
-
-        getExtension().validateServerName()
-        getExtension().validateUserToken()
 
         var fail = false
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
@@ -73,7 +71,7 @@ open class ValidateDependenciesTask : AbstractTask() {
             }
         }
 
-        val artifactsUpgrades = createArtifactsService().getArtifactsUpgrades(notDuplicatedArtifacts, getRepositories(), getExtension().serverless)
+        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(notDuplicatedArtifacts, getRepositories())
 
         val sourcesDir = mutableListOf<File>()
         project.rootProject.allprojects.forEach {
