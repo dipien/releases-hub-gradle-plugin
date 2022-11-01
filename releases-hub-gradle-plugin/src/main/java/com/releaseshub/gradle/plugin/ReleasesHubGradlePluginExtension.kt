@@ -37,22 +37,4 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var gitHubApiHostName: String? = project.propertyResolver.getStringProp(::gitHubApiHostName.name)
 
     var logLevel = LogLevel.LIFECYCLE
-
-    fun validateBaseBranch() {
-        requireNotNull(baseBranch) { "The '${::baseBranch.name}' property is required" }
-    }
-
-    fun validateHeadBranchPrefix() {
-        requireNotNull(headBranchPrefix) { "The '${::headBranchPrefix.name}' property is required" }
-    }
-
-    fun validateGitHubRepository() {
-        if (gitHubRepositoryOwner.isNullOrEmpty() && gitHubRepositoryName.isNullOrEmpty()) {
-            requireNotNull(gitHubRepository) { "The '${::gitHubRepository.name}' property is required" }
-        }
-    }
-
-    fun validateGitHubWriteToken() {
-        requireNotNull(gitHubWriteToken) { "The '${::gitHubWriteToken.name}' property is required" }
-    }
 }

@@ -5,8 +5,8 @@ import com.releaseshub.gradle.plugin.artifacts.fetch.ArtifactUpgradeHelper
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
 import com.releaseshub.gradle.plugin.dependencies.DependencyUsageSearcher
-import org.gradle.api.Project
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import java.io.File
 
 open class ValidateDependenciesTask : AbstractTask() {
@@ -21,6 +21,9 @@ open class ValidateDependenciesTask : AbstractTask() {
     @get:Input
     lateinit var unusedExtensionsToSearch: List<String>
 
+    @get:Internal
+    lateinit var projectsDirs: List<File>
+
     init {
         description = "Validate all dependencies"
     }
@@ -29,7 +32,7 @@ open class ValidateDependenciesTask : AbstractTask() {
 
         var fail = false
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
-        val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir)
+        val dependenciesParserResult = extractor.extractArtifacts(rootProjectDir)
         dependenciesParserResult.artifactsMap.forEach { (path, artifacts) ->
             var failOnFile = false
             log(path)
@@ -71,10 +74,10 @@ open class ValidateDependenciesTask : AbstractTask() {
             }
         }
 
-        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(notDuplicatedArtifacts, getRepositories(), false)
+        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(notDuplicatedArtifacts, repositories, false)
 
         val sourcesDir = mutableListOf<File>()
-        project.rootProject.allprojects.forEach {
+        projectsDirs.forEach {
             sourcesDir.addAll(getSourceSets(it))
         }
 
@@ -93,7 +96,7 @@ open class ValidateDependenciesTask : AbstractTask() {
     }
 
     // TODO We should automatically search for projects source sets
-    private fun getSourceSets(project: Project): List<File> {
+    private fun getSourceSets(projectDir: File): List<File> {
         val paths = mutableListOf<String>()
         paths.add("src" + File.separator + "main" + File.separator + "java")
         paths.add("src" + File.separator + "main" + File.separator + "kotlin")
@@ -113,7 +116,7 @@ open class ValidateDependenciesTask : AbstractTask() {
 
         val sourceSets = mutableListOf<File>()
         paths.forEach {
-            val dir = File(project.projectDir, it)
+            val dir = File(projectDir, it)
             if (dir.exists()) {
                 sourceSets.add(dir)
             }

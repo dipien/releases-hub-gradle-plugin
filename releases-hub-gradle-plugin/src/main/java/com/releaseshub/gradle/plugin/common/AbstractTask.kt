@@ -1,7 +1,5 @@
 package com.releaseshub.gradle.plugin.common
 
-import com.releaseshub.gradle.plugin.ReleasesHubGradlePlugin
-import com.releaseshub.gradle.plugin.ReleasesHubGradlePluginExtension
 import com.releaseshub.gradle.plugin.artifacts.fetch.MavenArtifactRepository
 import com.releaseshub.gradle.plugin.dependencies.GradleHelper
 import org.gradle.api.DefaultTask
@@ -22,6 +20,18 @@ abstract class AbstractTask : DefaultTask() {
 
     @get:Internal
     protected lateinit var gitHelper: GitHelper
+
+    @get:Internal
+    lateinit var rootProjectDir: File
+
+    @get:Internal
+    lateinit var rootProjectBuildDir: File
+
+    @get:Internal
+    lateinit var repositories: List<MavenArtifactRepository>
+
+    @get:Internal
+    var buildFileAbsolutePaths: MutableList<String> = mutableListOf()
 
     @get:Input
     var autoDetectDependenciesPaths: Boolean = true
@@ -54,13 +64,8 @@ abstract class AbstractTask : DefaultTask() {
     }
 
     @Internal
-    protected fun getExtension(): ReleasesHubGradlePluginExtension {
-        return project.extensions.getByName(ReleasesHubGradlePlugin.EXTENSION_NAME) as ReleasesHubGradlePluginExtension
-    }
-
-    @Internal
     protected fun getAllDependenciesPaths(): List<String> {
-        val paths = dependenciesPaths.orEmpty().filter { File(project.rootDir, it).exists() }.toMutableList()
+        val paths = dependenciesPaths.orEmpty().filter { File(rootProjectDir, it).exists() }.toMutableList()
         if (autoDetectDependenciesPaths) {
             val buildSrcBasePath = "buildSrc${File.separator}src${File.separator}main${File.separator}kotlin${File.separator}"
             val defaultPaths = listOf(
@@ -70,10 +75,10 @@ abstract class AbstractTask : DefaultTask() {
                 "settings.gradle.kts",
                 "settings.gradle",
                 GradleHelper.GRADLE_WRAPPER_PROPERTIES_RELATIVE_PATH
-            ).filter { File(project.rootDir, it).exists() }
+            ).filter { File(rootProjectDir, it).exists() }
             paths.addAll(defaultPaths)
-            project.rootProject.allprojects {
-                paths.add(it.buildFile.absolutePath.replaceFirst(project.rootDir.absolutePath + File.separator, ""))
+            buildFileAbsolutePaths.forEach {
+                paths.add(it.replaceFirst(rootProjectDir.absolutePath + File.separator, ""))
             }
         }
         return paths.toSet().toList()
@@ -81,20 +86,6 @@ abstract class AbstractTask : DefaultTask() {
 
     protected fun log(message: String) {
         LoggerHelper.log(message)
-    }
-
-    @Internal
-    protected fun getRepositories(): List<MavenArtifactRepository> {
-        val repositories = mutableListOf<MavenArtifactRepository>()
-        project.repositories.plus(project.buildscript.repositories).forEach {
-            if (it is org.gradle.api.artifacts.repositories.MavenArtifactRepository) {
-                if (it.url.scheme == "http" || it.url.scheme == "https") {
-                    val url = it.url.toString().dropLastWhile { char -> char == '/' }
-                    repositories.add(MavenArtifactRepository(it.name, url))
-                }
-            }
-        }
-        return repositories.distinctBy { it.url }
     }
 
     protected abstract fun onExecute()

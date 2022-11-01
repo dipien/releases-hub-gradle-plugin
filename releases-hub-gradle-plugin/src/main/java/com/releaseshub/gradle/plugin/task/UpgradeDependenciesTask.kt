@@ -96,16 +96,18 @@ open class UpgradeDependenciesTask : AbstractTask() {
                 gitHubRepositoryName = gitHubRepository?.split("/")?.last()
             }
 
-            getExtension().validateBaseBranch()
-            getExtension().validateHeadBranchPrefix()
-            getExtension().validateGitHubRepository()
-            getExtension().validateGitHubWriteToken()
+            requireNotNull(baseBranch) { "The '${::baseBranch.name}' property is required" }
+            requireNotNull(headBranchPrefix) { "The '${::headBranchPrefix.name}' property is required" }
+            if (gitHubRepositoryOwner.isNullOrEmpty() && gitHubRepositoryName.isNullOrEmpty()) {
+                requireNotNull(gitHubRepository) { "The '${::gitHubRepository.name}' property is required" }
+            }
+            requireNotNull(gitHubWriteToken) { "The '${::gitHubWriteToken.name}' property is required" }
         }
 
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
-        val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
+        val dependenciesParserResult = extractor.extractArtifacts(rootProjectDir, includes, excludes)
 
-        val artifactsToUpgrade = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories(), true).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
+        val artifactsToUpgrade = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), repositories, true).filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.PENDING_UPGRADE }
 
         if (artifactsToUpgrade.isNotEmpty()) {
 
@@ -157,7 +159,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
                             if (pullRequest != null) {
                                 log("* Case 1: headBranch previously created, pull request open, no new upgrades => DO NOTHING")
                             } else {
-                                project.logger.warn("Case 3: headBranch previously created, pull request doesn't exist, no new upgrades => WARNING")
+                                logger.warn("Case 3: headBranch previously created, pull request doesn't exist, no new upgrades => WARNING")
                             }
                         }
                     }
@@ -209,7 +211,7 @@ open class UpgradeDependenciesTask : AbstractTask() {
         artifactsToUpgradeByGroup.forEach { artifactToUpgrade ->
             var upgradedUpgradeResult: UpgradeResult? = null
             dependenciesFiles.forEach { dependenciesFile ->
-                val upgradeResult = upgrader.upgradeDependenciesFile(project.rootDir, dependenciesFile, artifactToUpgrade)
+                val upgradeResult = upgrader.upgradeDependenciesFile(rootProjectDir, dependenciesFile, artifactToUpgrade)
                 if (upgradeResult != null && upgradeResult.upgraded) {
                     upgradedUpgradeResult = upgradeResult
                     upgradeResults.add(upgradeResult)

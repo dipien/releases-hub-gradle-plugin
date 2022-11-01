@@ -12,7 +12,7 @@ object Libs {
     const val CRASHLYTICS = "com.crashlytics.sdk.android:crashlytics:2.5.0"
     const val FIREBASE_MESSAGING = "com.google.firebase:firebase-messaging:16.0.0"
     const val FIREBASE_PERF = "com.google.firebase:firebase-perf:1.0.0"
-    const val KOTLIN = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.40"
+    const val KOTLIN = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10"
     const val GLIDE = "com.github.bumptech.glide:glide:3.8.0"
     const val OTTO = "com.squareup:otto:1.0.0"
 

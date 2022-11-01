@@ -23,7 +23,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
     override fun onExecute() {
 
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
-        val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
+        val dependenciesParserResult = extractor.extractArtifacts(rootProjectDir, includes, excludes)
 
         if (dependenciesParserResult.excludedArtifacts.isNotEmpty()) {
             log("${dependenciesParserResult.excludedArtifacts.size} dependencies excluded:")
@@ -33,7 +33,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             log("")
         }
 
-        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories(), true)
+        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), repositories, true)
 
         val notFoundArtifacts = artifactsUpgrades.filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.NOT_FOUND }
         if (notFoundArtifacts.isNotEmpty()) {
@@ -87,7 +87,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             }
         }
 
-        val releasesHubDir = File(project.buildDir, File.separator + "releasesHub")
+        val releasesHubDir = File(rootProjectBuildDir, File.separator + "releasesHub")
         releasesHubDir.mkdirs()
         val file = File(releasesHubDir, "dependencies_to_upgrade_count.txt")
         file.writeText(artifactsToUpgrade.size.toString())
