@@ -33,7 +33,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             log("")
         }
 
-        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories())
+        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories(), true)
 
         val notFoundArtifacts = artifactsUpgrades.filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.NOT_FOUND }
         if (notFoundArtifacts.isNotEmpty()) {
