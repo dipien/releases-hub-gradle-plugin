@@ -15,6 +15,9 @@ object Libs {
     // https://github.com/dipien/github-api/releases
     const val GITHUB_API = "com.dipien:github-api-java:1.2.0"
 
+    // https://github.com/maxirosson/jdroid-java-google-drive/blob/master/CHANGELOG.md
+    const val JDROID_JAVA_GOOGLE_DRIVE = "com.jdroidtools:jdroid-java-google-drive:2.0.0"
+
     // https://github.com/junit-team/junit4/releases
     const val JUNIT = "junit:junit:4.13.2"
 

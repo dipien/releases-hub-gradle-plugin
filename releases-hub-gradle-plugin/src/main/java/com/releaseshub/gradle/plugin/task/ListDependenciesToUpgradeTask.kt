@@ -3,6 +3,7 @@ package com.releaseshub.gradle.plugin.task
 import com.jdroid.java.date.DateTimeFormat
 import com.jdroid.java.date.DateUtils
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
+import com.releaseshub.gradle.plugin.artifacts.fetch.ArtifactUpgradeHelper
 import com.releaseshub.gradle.plugin.common.AbstractTask
 import com.releaseshub.gradle.plugin.core.FileSizeFormatter
 import com.releaseshub.gradle.plugin.dependencies.BasicDependenciesExtractor
@@ -21,11 +22,8 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
 
     override fun onExecute() {
 
-        getExtension().validateServerName()
-        getExtension().validateUserToken()
-
         val extractor = BasicDependenciesExtractor(getAllDependenciesPaths())
-        val dependenciesParserResult = extractor.extractArtifacts(project.rootProject.projectDir, includes, excludes)
+        val dependenciesParserResult = extractor.extractArtifacts(rootProjectDir, includes, excludes)
 
         if (dependenciesParserResult.excludedArtifacts.isNotEmpty()) {
             log("${dependenciesParserResult.excludedArtifacts.size} dependencies excluded:")
@@ -35,7 +33,7 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
             log("")
         }
 
-        val artifactsUpgrades = createArtifactsService().getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), getRepositories(), getExtension().serverless)
+        val artifactsUpgrades = ArtifactUpgradeHelper.getArtifactsUpgrades(dependenciesParserResult.getAllArtifacts(), repositories, true)
 
         val notFoundArtifacts = artifactsUpgrades.filter { it.artifactUpgradeStatus == ArtifactUpgradeStatus.NOT_FOUND }
         if (notFoundArtifacts.isNotEmpty()) {
@@ -73,23 +71,23 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
                 if (!it.toAndroidPermissions.isNullOrEmpty()) {
                     log("   - Android permissions: ${it.toAndroidPermissions}")
                 }
-                if (it.releaseNotesUrl != null) {
+                if (!it.releaseNotesUrl.isNullOrEmpty()) {
                     log("   - Releases notes: ${it.releaseNotesUrl}")
                 }
-                if (it.sourceCodeUrl != null) {
+                if (!it.sourceCodeUrl.isNullOrEmpty()) {
                     log("   - Source code: ${it.sourceCodeUrl}")
                 }
-                if (it.documentationUrl != null) {
+                if (!it.documentationUrl.isNullOrEmpty()) {
                     log("   - Documentation: ${it.documentationUrl}")
                 }
-                if (it.issueTrackerUrl != null) {
+                if (!it.issueTrackerUrl.isNullOrEmpty()) {
                     log("   - Issue tracker: ${it.issueTrackerUrl}")
                 }
                 log("")
             }
         }
 
-        val releasesHubDir = File(project.buildDir, File.separator + "releasesHub")
+        val releasesHubDir = File(rootProjectBuildDir, File.separator + "releasesHub")
         releasesHubDir.mkdirs()
         val file = File(releasesHubDir, "dependencies_to_upgrade_count.txt")
         file.writeText(artifactsToUpgrade.size.toString())

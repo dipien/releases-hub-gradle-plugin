@@ -5,18 +5,29 @@ import com.jdroid.java.http.exception.HttpResponseException
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgrade
 import com.releaseshub.gradle.plugin.artifacts.ArtifactUpgradeStatus
 import com.releaseshub.gradle.plugin.common.LoggerHelper
+import com.releaseshub.gradle.plugin.metadata.ArtifactsMetadataLoader
 
 object ArtifactUpgradeHelper {
 
-    fun getArtifactsUpgrades(artifactsToCheck: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>): List<ArtifactUpgrade> {
+    fun getArtifactsUpgrades(artifactsToCheck: List<ArtifactUpgrade>, repositories: List<MavenArtifactRepository>, includeMetadata: Boolean): List<ArtifactUpgrade> {
         val artifactsToUpgrade = mutableListOf<ArtifactUpgrade>()
+        val artifactMetadataMap = if (includeMetadata) ArtifactsMetadataLoader().load() else null
         artifactsToCheck.forEach { artifactToCheck ->
             // TODO Add support for gradle artifacts on plugin side
             if (artifactToCheck.artifactId != null) {
-                artifactsToUpgrade.add(getArtifactUpgrade(artifactToCheck, repositories))
+                val artifactToUpgrade = getArtifactUpgrade(artifactToCheck, repositories)
+                val artifactMetadata = artifactMetadataMap?.get(artifactToUpgrade.id)
+                if (artifactMetadata != null) {
+                    artifactToUpgrade.sourceCodeUrl = artifactMetadata.sourceCodeUrl
+                    artifactToUpgrade.releaseNotesUrl = artifactMetadata.releaseNotesUrl
+                    artifactToUpgrade.issueTrackerUrl = artifactMetadata.issueTrackerUrl
+                    artifactToUpgrade.documentationUrl = artifactMetadata.documentationLink
+                }
+                artifactsToUpgrade.add(artifactToUpgrade)
             }
         }
-        return artifactsToUpgrade
+
+        return artifactsToUpgrade.sortedBy { it.toReleaseDate }
     }
 
     private fun getArtifactUpgrade(artifactToCheck: ArtifactUpgrade, repositories: List<MavenArtifactRepository>): ArtifactUpgrade {

@@ -1,16 +1,10 @@
 package com.releaseshub.gradle.plugin
 
-import com.releaseshub.gradle.plugin.artifacts.api.AppServer
-import com.releaseshub.gradle.plugin.artifacts.api.HeadersAppender
 import com.releaseshub.gradle.plugin.common.propertyResolver
 import org.gradle.api.Project
 import org.gradle.api.logging.LogLevel
 
 open class ReleasesHubGradlePluginExtension(project: Project) {
-
-    var server: String? = project.propertyResolver.getStringProp(::server.name, AppServer.PROD.getServerName())
-    var serverless: Boolean = project.propertyResolver.getBooleanProp(::serverless.name, false) ?: false
-    var userToken: String? = project.propertyResolver.getStringProp(::userToken.name, HeadersAppender.DEFAULT_USER_TOKEN_HEADER)
 
     var autoDetectDependenciesPaths: Boolean = project.propertyResolver.getBooleanProp(::autoDetectDependenciesPaths.name, true) ?: true
 
@@ -43,30 +37,4 @@ open class ReleasesHubGradlePluginExtension(project: Project) {
     var gitHubApiHostName: String? = project.propertyResolver.getStringProp(::gitHubApiHostName.name)
 
     var logLevel = LogLevel.LIFECYCLE
-
-    fun validateServerName() {
-        requireNotNull(server.isNullOrEmpty()) { "The '${::server.name}' property is required" }
-    }
-
-    fun validateUserToken() {
-        requireNotNull(userToken.isNullOrEmpty()) { "The '${::userToken.name}' property is required" }
-    }
-
-    fun validateBaseBranch() {
-        requireNotNull(baseBranch) { "The '${::baseBranch.name}' property is required" }
-    }
-
-    fun validateHeadBranchPrefix() {
-        requireNotNull(headBranchPrefix) { "The '${::headBranchPrefix.name}' property is required" }
-    }
-
-    fun validateGitHubRepository() {
-        if (gitHubRepositoryOwner.isNullOrEmpty() && gitHubRepositoryName.isNullOrEmpty()) {
-            requireNotNull(gitHubRepository) { "The '${::gitHubRepository.name}' property is required" }
-        }
-    }
-
-    fun validateGitHubWriteToken() {
-        requireNotNull(gitHubWriteToken) { "The '${::gitHubWriteToken.name}' property is required" }
-    }
 }

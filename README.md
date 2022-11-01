@@ -416,11 +416,6 @@ The GitHub api host name needed to access the GitHub Enterprise. Optional String
 
 This project uses the [Semantic Versioning guidelines](http://semver.org/) for transparency into our release cycle.
 
-## Privacy Policy
-
-The `listDependenciesToUpgrade` & `upgradeDependencies` tasks send to **Releases Hub** servers the **groupId**, **artifactId** and **version** of the project dependencies, in order to process and fetch the artifacts updates. 
-That information is sent using **SSL** and it is NOT stored on the servers. The dependencies excluded through the plugin configuration are not send to the servers.
-
 ## Sponsor this project
 
 Sponsor this open source project to help us get the funding we need to continue working on it.
