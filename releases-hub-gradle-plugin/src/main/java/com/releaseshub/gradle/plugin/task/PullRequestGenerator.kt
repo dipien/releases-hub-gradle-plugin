@@ -45,21 +45,21 @@ object PullRequestGenerator {
                     builder.appendln("  * [$permission]($url)")
                 }
             }
-            if (artifactUpgrade.releaseNotesUrl != null) {
+            if (!artifactUpgrade.releaseNotesUrl.isNullOrEmpty()) {
                 builder.append("* [Releases notes](${artifactUpgrade.releaseNotesUrl})")
                 atLeastOneItem = true
             }
-            if (artifactUpgrade.sourceCodeUrl != null) {
+            if (!artifactUpgrade.sourceCodeUrl.isNullOrEmpty()) {
                 builder.append(if (atLeastOneItem) " | " else "* ")
                 builder.append("[Source code](${artifactUpgrade.sourceCodeUrl})")
                 atLeastOneItem = true
             }
-            if (artifactUpgrade.documentationUrl != null) {
+            if (!artifactUpgrade.documentationUrl.isNullOrEmpty()) {
                 builder.append(if (atLeastOneItem) " | " else "* ")
                 builder.append("[Documentation](${artifactUpgrade.documentationUrl})")
                 atLeastOneItem = true
             }
-            if (artifactUpgrade.issueTrackerUrl != null) {
+            if (!artifactUpgrade.issueTrackerUrl.isNullOrEmpty()) {
                 builder.append(if (atLeastOneItem) " | " else "* ")
                 builder.append("[Issue tracker](${artifactUpgrade.issueTrackerUrl})")
                 atLeastOneItem = true

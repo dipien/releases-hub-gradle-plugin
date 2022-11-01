@@ -71,16 +71,16 @@ open class ListDependenciesToUpgradeTask : AbstractTask() {
                 if (!it.toAndroidPermissions.isNullOrEmpty()) {
                     log("   - Android permissions: ${it.toAndroidPermissions}")
                 }
-                if (it.releaseNotesUrl != null) {
+                if (!it.releaseNotesUrl.isNullOrEmpty()) {
                     log("   - Releases notes: ${it.releaseNotesUrl}")
                 }
-                if (it.sourceCodeUrl != null) {
+                if (!it.sourceCodeUrl.isNullOrEmpty()) {
                     log("   - Source code: ${it.sourceCodeUrl}")
                 }
-                if (it.documentationUrl != null) {
+                if (!it.documentationUrl.isNullOrEmpty()) {
                     log("   - Documentation: ${it.documentationUrl}")
                 }
-                if (it.issueTrackerUrl != null) {
+                if (!it.issueTrackerUrl.isNullOrEmpty()) {
                     log("   - Issue tracker: ${it.issueTrackerUrl}")
                 }
                 log("")

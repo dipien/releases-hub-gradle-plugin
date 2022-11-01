@@ -21,7 +21,7 @@ object ArtifactUpgradeHelper {
                     artifactToUpgrade.sourceCodeUrl = artifactMetadata.sourceCodeUrl
                     artifactToUpgrade.releaseNotesUrl = artifactMetadata.releaseNotesUrl
                     artifactToUpgrade.issueTrackerUrl = artifactMetadata.issueTrackerUrl
-                    artifactToUpgrade.documentationUrl = artifactMetadata.documentationLinks?.firstOrNull()
+                    artifactToUpgrade.documentationUrl = artifactMetadata.documentationLink
                 }
                 artifactsToUpgrade.add(artifactToUpgrade)
             }
