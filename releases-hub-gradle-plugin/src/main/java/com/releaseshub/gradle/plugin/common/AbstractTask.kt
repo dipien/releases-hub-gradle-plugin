@@ -61,7 +61,7 @@ abstract class AbstractTask : DefaultTask() {
         commandExecutor = CommandExecutorImpl(logger, logLevel!!)
         gitHelper = GitHelper(commandExecutor)
         onExecute()
-        
+
         println()
         println("***********************************************************")
         println("* You can support this project, so we can continue improving it:")
