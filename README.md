@@ -1,4 +1,4 @@
-[![Dipien](https://raw.githubusercontent.com/dipien/dipien-component-builder/master/.github/dipien_logo.png)](http://www.dipien.com)
+[![Dipien](https://raw.githubusercontent.com/dipien/dipien-component-builder/master/.github/dipien_logo.png)](https://medium.com/dipien)
 
 # Releases Hub Gradle Plugin
 Gradle Plugin to automatically upgrade your Java/Kotlin project dependencies and send a GitHub pull request with the changes.
@@ -250,7 +250,7 @@ apply plugin: "com.dipien.releaseshub.gradle.plugin"
 
 See the [sample](https://github.com/dipien/releases-hub-gradle-plugin/tree/master/sample) for more details.
 
-To automate your dependencies upgrades, you can follow this guide: [How to automate your dependencies upgrades with GitHub Actions](https://blog.dipien.com/how-to-automate-your-dependencies-upgrades-with-github-actions-bedf1337ca3f)
+To automate your dependencies upgrades, you can follow this guide: [How to automate your dependencies upgrades with GitHub Actions](https://medium.com/dipien/how-to-automate-your-dependencies-upgrades-with-github-actions-bedf1337ca3f)
 
 ### Tasks
 
@@ -416,20 +416,4 @@ The GitHub api host name needed to access the GitHub Enterprise. Optional String
 
 This project uses the [Semantic Versioning guidelines](http://semver.org/) for transparency into our release cycle.
 
-## Sponsor this project
-
-Sponsor this open source project to help us get the funding we need to continue working on it.
-
-* [Donate with Bitcoin Lightning](https://getalby.com/p/dipien) ⚡️ [dipien@getalby.com](https://getalby.com/p/dipien)
-* [Donate with credit card](http://kofi.dipien.com/)
-* [Donate on Patreon](http://patreon.dipien.com/)
-* [Become a member of Medium](https://membership.medium.dipien.com) [We will receive a portion of your membership fee]
-
-## Follow us
-* [Twitter](http://twitter.dipien.com)
-* [Medium](http://medium.dipien.com)
-* [Instagram](http://instagram.dipien.com)
-* [TikTok](https://tiktok.dipien.com)
-* [Pinterest](http://pinterest.dipien.com)
-* [GitHub](http://github.dipien.com)
 
